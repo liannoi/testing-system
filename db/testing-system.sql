@@ -1,4 +1,4 @@
--- Copyright 2019 Maksym Liannoi
+ï»¿-- Copyright 2019 Maksym Liannoi
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -31,66 +31,6 @@ GO
  *
  */
 
--- Administrators
-
-IF (OBJECT_ID('dbo.Administrators') IS NOT NULL)
-DROP TABLE dbo.Administrators;
-GO
-
-CREATE TABLE dbo.Administrators
-(
-  AdministratorId INT NOT NULL IDENTITY,
-  FirstName NVARCHAR(64) NOT NULL,
-  LastName NVARCHAR(64) NOT NULL,
-  MiddleName NVARCHAR(64) NOT NULL,
-  Birthday DATE NOT NULL,
-  Email NVARCHAR(128) NOT NULL,
-  IsEmailVerified BIT NOT NULL CONSTRAINT DFT_Administrators_IsEmailVerified DEFAULT(0),
-  PhoneNumber NCHAR(17),
-  IsPhoneVerified BIT NOT NULL CONSTRAINT DFT_Administrators_IsPhoneVerified DEFAULT(0),
-  IsRemoved BIT NOT NULL CONSTRAINT DFT_Administrators_IsRemoved DEFAULT(0),
-  CONSTRAINT PK_Administartors PRIMARY KEY(AdministratorId),
-  CONSTRAINT CHK_Administrators_FirstName CHECK(DATALENGTH(FirstName)>2),
-  CONSTRAINT CHK_Administrators_LastName CHECK(DATALENGTH(LastName)>2),
-  CONSTRAINT CHK_Administrators_MiddleName CHECK(DATALENGTH(MiddleName)>2),
-  CONSTRAINT CHK_Administrators_Birthday CHECK(YEAR(Birthday)>=1960),
-  CONSTRAINT CHK_Administrators_Email CHECK(DATALENGTH(Email)>2),
-  CONSTRAINT UNQ_Administrators_Email UNIQUE(Email),
-  CONSTRAINT CHK_Administrators_PhoneNumber CHECK(DATALENGTH(PhoneNumber)>2),
-  CONSTRAINT UNQ_Administrators_PhoneNumber UNIQUE(PhoneNumber)
-);
-GO
-
--- Teachers
-
-IF (OBJECT_ID('dbo.Teachers') IS NOT NULL)
-DROP TABLE dbo.Teachers;
-GO
-
-CREATE TABLE dbo.Teachers
-(
-  TeacherId INT NOT NULL IDENTITY,
-  FirstName NVARCHAR(64) NOT NULL,
-  LastName NVARCHAR(64) NOT NULL,
-  MiddleName NVARCHAR(64) NOT NULL,
-  Birthday DATE,
-  Email NVARCHAR(128) NOT NULL,
-  IsEmailVerified BIT NOT NULL CONSTRAINT DFT_Teachers_IsEmailVerified DEFAULT(0),
-  PhoneNumber NCHAR(17),
-  IsPhoneVerified BIT NOT NULL CONSTRAINT DFT_Teachers_IsPhoneVerified DEFAULT(0),
-  IsRemoved BIT NOT NULL CONSTRAINT DFT_Teachers_IsRemoved DEFAULT(0),
-  CONSTRAINT PK_Teachers PRIMARY KEY(TeacherId),
-  CONSTRAINT CHK_Teachers_FirstName CHECK(DATALENGTH(FirstName)>2),
-  CONSTRAINT CHK_Teachers_LastName CHECK(DATALENGTH(LastName)>2),
-  CONSTRAINT CHK_Teachers_MiddleName CHECK(DATALENGTH(MiddleName)>2),
-  CONSTRAINT CHK_Teachers_Birthday CHECK(YEAR(Birthday)>=1960),
-  CONSTRAINT CHK_Teachers_Email CHECK(DATALENGTH(Email)>2),
-  CONSTRAINT UNQ_Teachers_Email UNIQUE(Email),
-  CONSTRAINT CHK_Teachers_PhoneNumber CHECK(DATALENGTH(PhoneNumber)>2),
-  CONSTRAINT UNQ_Teachers_PhoneNumber UNIQUE(PhoneNumber)
-);
-GO
-
 -- Groups
 
 IF (OBJECT_ID('dbo.Groups') IS NOT NULL)
@@ -108,95 +48,73 @@ CREATE TABLE dbo.Groups
 );
 GO
 
--- Students
+-- Users
 
-IF (OBJECT_ID('dbo.Students') IS NOT NULL)
-DROP TABLE dbo.Students;
+IF (OBJECT_ID('dbo.Users') IS NOT NULL)
+DROP TABLE dbo.Users;
 GO
 
-CREATE TABLE dbo.Students
+CREATE TABLE dbo.Users
 (
-  StudentId INT NOT NULL IDENTITY,
-  GroupId INT NOT NULL,
+  UserId INT NOT NULL IDENTITY,
+  GroupId INT,
   FirstName NVARCHAR(64) NOT NULL,
   LastName NVARCHAR(64) NOT NULL,
   MiddleName NVARCHAR(64) NOT NULL,
-  Birthday DATE,
+  Birthday DATE NOT NULL,
   Email NVARCHAR(128) NOT NULL,
-  IsEmailVerified BIT NOT NULL CONSTRAINT DFT_Students_IsEmailVerified DEFAULT(0),
+  IsEmailVerified BIT NOT NULL CONSTRAINT DFT_Users_IsEmailVerified DEFAULT(0),
   PhoneNumber NCHAR(17),
-  IsPhoneVerified BIT NOT NULL CONSTRAINT DFT_Students_IsPhoneVerified DEFAULT(0),
-  IsRemoved BIT NOT NULL CONSTRAINT DFT_Students_IsRemoved DEFAULT(0),
-  CONSTRAINT PK_Students PRIMARY KEY(StudentId),
-  CONSTRAINT FK_Students_GroupId FOREIGN KEY(GroupId) REFERENCES dbo.Groups(GroupId),
-  CONSTRAINT CHK_Students_FirstName CHECK(DATALENGTH(FirstName)>2),
-  CONSTRAINT CHK_Students_LastName CHECK(DATALENGTH(LastName)>2),
-  CONSTRAINT CHK_Students_MiddleName CHECK(DATALENGTH(MiddleName)>2),
-  CONSTRAINT CHK_Students_Birthday CHECK(YEAR(Birthday)>=1960),
-  CONSTRAINT CHK_Students_Email CHECK(DATALENGTH(Email)>2),
-  CONSTRAINT UNQ_Students_Email UNIQUE(Email),
-  CONSTRAINT CHK_Students_PhoneNumber CHECK(DATALENGTH(PhoneNumber)>2),
-  CONSTRAINT UNQ_Students_PhoneNumber UNIQUE(PhoneNumber)
+  IsPhoneVerified BIT NOT NULL CONSTRAINT DFT_Users_IsPhoneVerified DEFAULT(0),
+  Login NVARCHAR(128) NOT NULL,
+  Password NVARCHAR(128) NOT NULL,
+  IsRemoved BIT NOT NULL CONSTRAINT DFT_Users_IsRemoved DEFAULT(0),
+  CONSTRAINT PK_Users_UserId PRIMARY KEY(UserId),
+  CONSTRAINT FK_Users_GroupId FOREIGN KEY(GroupId) REFERENCES dbo.Groups(GroupId),
+  CONSTRAINT CHK_Users_FirstName CHECK(DATALENGTH(FirstName)>2),
+  CONSTRAINT CHK_Users_LastName CHECK(DATALENGTH(LastName)>2),
+  CONSTRAINT CHK_Users_MiddleName CHECK(DATALENGTH(MiddleName)>2),
+  CONSTRAINT CHK_Users_Birthday CHECK(YEAR(Birthday)>=1960),
+  CONSTRAINT CHK_Users_Email CHECK(DATALENGTH(Email)>2),
+  CONSTRAINT UNQ_Users_Email UNIQUE(Email),
+  CONSTRAINT CHK_Users_PhoneNumber CHECK(DATALENGTH(PhoneNumber)>2),
+  CONSTRAINT UNQ_Users_PhoneNumber UNIQUE(PhoneNumber),
+  CONSTRAINT CHK_Users_Login CHECK(DATALENGTH(Login)>7),
+  CONSTRAINT UNQ_Users_Login UNIQUE(Login),
+  CONSTRAINT CHK_Users_Password CHECK(DATALENGTH(Password) >= 5)
 );
 GO
 
--- AdministratorDetails
+-- Roles
 
-IF (OBJECT_ID('dbo.AdministratorDetails') IS NOT NULL)
-DROP TABLE dbo.AdministratorDetails;
+IF (OBJECT_ID('dbo.Roles') IS NOT NULL)
+DROP TABLE dbo.Roles;
 GO
 
-CREATE TABLE dbo.AdministratorDetails
+CREATE TABLE dbo.Roles
 (
-  AdministratorId INT NOT NULL,
-  Login NVARCHAR(128) NOT NULL,
-  Password NVARCHAR(128) NOT NULL,
-  CONSTRAINT PK_AdministratorDetails PRIMARY KEY (AdministratorId),
-  CONSTRAINT FK_AdministratorDetails FOREIGN KEY (AdministratorId) REFERENCES dbo.Administrators,
-  CONSTRAINT CHK_AdministratorDetails_Login CHECK(DATALENGTH(Login)>2),
-  CONSTRAINT UNQ_AdministratorDetails_Login UNIQUE(Login),
-  CONSTRAINT CHK_AdministratorDetails_Password CHECK(DATALENGTH(Password)>2),
-  CONSTRAINT UNQ_AdministratorDetails_Password UNIQUE(Password)
+  RoleId INT NOT NULL IDENTITY,
+  Name NVARCHAR(128) NOT NULL,
+  IsRemoved BIT NOT NULL CONSTRAINT DFT_Roles_IsRemoved DEFAULT(0),
+  CONSTRAINT PK_Roles PRIMARY KEY(RoleId),
+  CONSTRAINT CHK_Roles_Name CHECK(DATALENGTH(Name)>2),
+  CONSTRAINT UNQ_Roles_Name UNIQUE(Name)
 );
 GO
 
--- TeacherDetails
+-- UserRoles
 
-IF (OBJECT_ID('dbo.TeacherDetails') IS NOT NULL)
-DROP TABLE dbo.TeacherDetails;
+IF (OBJECT_ID('dbo.UserRoles') IS NOT NULL)
+DROP TABLE dbo.UserRoles;
 GO
 
-CREATE TABLE dbo.TeacherDetails
+CREATE TABLE dbo.UserRoles
 (
-  TeacherId INT NOT NULL,
-  Login NVARCHAR(128) NOT NULL,
-  Password NVARCHAR(128) NOT NULL,
-  CONSTRAINT PK_TeacherDetails PRIMARY KEY (TeacherId),
-  CONSTRAINT FK_TeacherDetails FOREIGN KEY (TeacherId) REFERENCES dbo.Teachers,
-  CONSTRAINT CHK_TeacherDetails_Login CHECK(DATALENGTH(Login)>2),
-  CONSTRAINT UNQ_TeacherDetails_Login UNIQUE(Login),
-  CONSTRAINT CHK_TeacherDetails_Password CHECK(DATALENGTH(Password)>2),
-  CONSTRAINT UNQ_TeacherDetails_Password UNIQUE(Password)
-);
-GO
-
--- StudentDetails
-
-IF (OBJECT_ID('dbo.StudentDetails') IS NOT NULL)
-DROP TABLE dbo.StudentDetails;
-GO
-
-CREATE TABLE dbo.StudentDetails
-(
-  StudentId INT NOT NULL,
-  Login NVARCHAR(128) NOT NULL,
-  Password NVARCHAR(128) NOT NULL,
-  CONSTRAINT PK_StudentDetails PRIMARY KEY (StudentId),
-  CONSTRAINT FK_StudentDetails FOREIGN KEY (StudentId) REFERENCES dbo.Students,
-  CONSTRAINT CHK_StudentDetails_Login CHECK(DATALENGTH(Login)>2),
-  CONSTRAINT UNQ_StudentDetails_Login UNIQUE(Login),
-  CONSTRAINT CHK_StudentDetails_Password CHECK(DATALENGTH(Password)>2),
-  CONSTRAINT UNQ_StudentDetails_Password UNIQUE(Password)
+  UserId INT NOT NULL,
+  RoleId INT NOT NULL,
+  CONSTRAINT PK_UserRoles PRIMARY KEY(UserId, RoleId),
+  CONSTRAINT FK_UserRoles_UserId FOREIGN KEY(UserId) REFERENCES dbo.Users,
+  CONSTRAINT FK_UserRoles_RoleId FOREIGN KEY(RoleId) REFERENCES dbo.Roles
 );
 GO
 
@@ -284,14 +202,14 @@ GO
 CREATE TABLE dbo.StudentTests
 (
  RecordId INT NOT NULL IDENTITY,
- StudentId INT NOT NULL,
+UserId INT NOT NULL,
  TestId INT NOT NULL,
  AllowToPass BIT NOT NULL CONSTRAINT DFT_StudentTests_AllowToPass DEFAULT(0),
  /* Percent correct answers */
  PCA FLOAT NOT NULL,
  IsRemoved BIT NOT NULL CONSTRAINT DFT_StudentTests_IsRemoved DEFAULT(0),
  CONSTRAINT PK_StudentTests PRIMARY KEY(RecordId),
- CONSTRAINT FK_StudentTests_StudentId FOREIGN KEY(StudentId) REFERENCES dbo.Students(StudentId),
+ CONSTRAINT FK_StudentTests_UserId FOREIGN KEY(UserId) REFERENCES dbo.Users(UserId),
  CONSTRAINT FK_StudentTests_TestId FOREIGN KEY(TestId) REFERENCES dbo.Tests(TestId),
  CONSTRAINT CHK_StudentTests_PCA CHECK(PCA BETWEEN 0 AND 100)
 );
@@ -305,72 +223,6 @@ GO
 
 SET DATEFORMAT DMY;
 SET NOCOUNT ON;
-
--- Administrators
-
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Annotés', 'Mc Meekan', 'Marylène', '15.06.1970', 'emcmeekan0@naver.com', 1, '+351-123-197-4170', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Maïwenn', 'Fosken', 'Cécile', '25.08.1972', 'tfosken1@meetup.com', 1, '+57-725-731-5449', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Kévina', 'Pybus', 'Daphnée', '02.11.1976', 'cpybus2@prweb.com', 0, '+86-383-335-6306', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Börje', 'Dimitru', 'Yóu', '13.03.1974', 'gdimitru3@cdc.gov', 1, '+86-893-182-8125', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Léa', 'Spurrier', 'Åke', '17.07.1971', 'bspurrier4@squidoo.com', 1, '+1-460-891-4324', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Agnès', 'Philipart', 'Céline', '04.10.1976', 'aphilipart5@plala.or.jp', 0, '+98-468-664-1681', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Mahélie', 'Morteo', 'Nadège', '30.06.1977', 'amorteo6@omniture.com', 0, '+63-753-519-5190', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Anaé', 'Keer', 'Marie-josée', '24.02.1975', 'bkeer7@wikispaces.com', 1, '+33-241-583-1300', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Noëlla', 'Seargeant', 'Lén', '31.03.1972', 'cseargeant8@auda.org.au', 0, '+86-252-202-4767', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Gisèle', 'Kestell', 'Anaël', '19.04.1978', 'pkestell9@nasa.gov', 1, '+389-480-406-3360', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Cinéma', 'Hadden', 'Mélina', '10.11.1975', 'ohaddena@istockphoto.com', 1, '+61-103-553-8776', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Maëlys', 'Glasbey', 'Björn', '21.06.1975', 'kglasbeyb@nydailynews.com', 1, '+7-613-960-1800', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Régine', 'Schwanden', 'Léone', '05.01.1974', 'dschwandenc@youku.com', 0, '+358-364-804-2474', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Thérèse', 'Snasel', 'Maï', '04.07.1978', 'vsnaseld@wsj.com', 1, '+351-568-117-1553', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Lài', 'Faraday', 'Maëline', '25.06.1970', 'pfaradaye@issuu.com', 1, '+92-528-196-4036', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Léane', 'Fine', 'Aloïs', '09.10.1973', 'afinef@barnesandnoble.com', 1, '+1-850-595-3217', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Ruì', 'Clutten', 'Maïlys', '13.12.1979', 'cclutteng@t.co', 0, '+86-472-213-4949', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Gwenaëlle', 'Wormleighton', 'Örjan', '06.05.1976', 'swormleightonh@amazon.co.jp', 0, '+598-465-773-0336', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Eloïse', 'Glasscoe', 'Laurélie', '23.08.1970', 'wglasscoei@youtu.be', 1, '+81-285-368-0608', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Marie-françoise', 'Busswell', 'Zoé', '28.05.1974', 'kbusswellj@dyndns.org', 0, '+351-356-605-9296', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Illustrée', 'Meller', 'Yóu', '24.01.1970', 'hmellerk@wikia.com', 0, '+62-972-821-1810', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Séverine', 'Jaray', 'Bérengère', '26.09.1976', 'rjarayl@hud.gov', 1, '+7-888-364-4285', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Estée', 'Ison', 'Thérèse', '18.06.1975', 'gisonm@networkadvertising.org', 1, '+66-605-180-7149', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Zhì', 'Deeson', 'Loïs', '29.12.1973', 'mdeesonn@chronoengine.com', 1, '+62-554-778-4281', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Eugénie', 'Pischel', 'Mélodie', '12.05.1976', 'kpischelo@g.co', 0, '+507-289-630-7023', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Andrée', 'Baumann', 'Mélanie', '15.01.1978', 'kbaumannp@mapy.cz', 1, '+86-186-631-6455', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Célia', 'Suttell', 'Görel', '15.03.1977', 'lsuttellq@fema.gov', 1, '+386-152-782-5970', 0, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Thérèse', 'Deely', 'Séverine', '01.06.1971', 'edeelyr@mail.ru', 1, '+240-689-375-7421', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Estée', 'Faulkes', 'Méline', '17.04.1970', 'nfaulkess@dion.ne.jp', 1, '+1-881-255-1613', 1, 0);
-INSERT INTO dbo.Administrators (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Lauréna', 'Swane', 'Tú', '18.10.1970', 'wswanet@ihg.com', 1, '+255-397-348-5411', 0, 0);
-
--- Teachers
-
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Adélie', 'Lawden', 'Dà', '25.05.1974', 'clawden0@cnbc.com', 0, '+86-228-365-1958', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Anaïs', 'Staten', 'Maïlis', '10.01.1970', 'tstaten1@wp.com', 1, '+235-864-305-9685', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Eléonore', 'Rebeiro', 'Eloïse', '06.04.1974', 'prebeiro2@rambler.ru', 1, '+62-955-412-4068', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Ophélie', 'Cowl', 'Dà', '30.08.1972', 'kcowl3@theatlantic.com', 1, '+351-211-340-5684', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Åslög', 'Willox', 'Angèle', '02.09.1975', 'bwillox4@altervista.org', 1, '+503-892-371-9217', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Erwéi', 'Garnall', 'Ruì', '12.01.1979', 'bgarnall5@nyu.edu', 0, '+963-705-396-8706', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Åsa', 'Gauthorpp', 'Görel', '06.07.1970', 'hgauthorpp6@eepurl.com', 0, '+1-717-943-7854', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Estève', 'Endrizzi', 'Inès', '06.03.1976', 'sendrizzi7@rediff.com', 1, '+995-101-528-2146', 1, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Zoé', 'Ruprechter', 'Maëlyss', '04.05.1974', 'mruprechter8@hibu.com', 0, '+86-529-362-1642', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Estée', 'Adlem', 'Personnalisée', '14.02.1976', 'radlem9@last.fm', 0, '+86-455-535-0663', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Maïlis', 'Dottridge', 'Gérald', '06.05.1978', 'cdottridgea@epa.gov', 1, '+234-603-897-9511', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Gwenaëlle', 'Ballantine', 'Ruò', '16.11.1976', 'bballantineb@yale.edu', 0, '+381-442-695-4076', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Salomé', 'Wiburn', 'Béatrice', '28.10.1971', 'swiburnc@weather.com', 0, '+86-916-925-6560', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Yóu', 'Goreway', 'Valérie', '14.05.1972', 'tgorewayd@purevolume.com', 0, '+386-195-142-3559', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Cécilia', 'Birkbeck', 'Börje', '25.01.1973', 'mbirkbecke@live.com', 0, '+380-709-164-9674', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Yénora', 'Petrovic', 'Anaé', '11.07.1976', 'gpetrovicf@java.com', 0, '+62-372-959-4547', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Aloïs', 'MacCleay', 'Lauréna', '20.07.1977', 'cmaccleayg@webs.com', 1, '+33-332-772-5841', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Cécile', 'Hrachovec', 'Mélia', '06.07.1973', 'dhrachovech@ocn.ne.jp', 0, '+63-608-830-9148', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Eloïse', 'Chataignier', 'Maïwenn', '24.05.1975', 'bchataignieri@cbsnews.com', 1, '+34-261-218-3828', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Athéna', 'Bruckenthal', 'Crééz', '19.12.1976', 'abruckenthalj@boston.com', 0, '+370-897-478-3042', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Rébecca', 'Ivanishin', 'Cécilia', '01.12.1970', 'civanishink@redcross.org', 1, '+7-518-731-1401', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Régine', 'Tregenna', 'Eugénie', '04.12.1972', 'jtregennal@amazon.co.jp', 1, '+86-664-730-8336', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Tú', 'Ducarel', 'Zhì', '23.06.1973', 'jducarelm@booking.com', 0, '+7-576-315-0164', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Bérengère', 'Tanner', 'Cléopatre', '22.09.1978', 'vtannern@typepad.com', 0, '+351-577-187-5704', 1, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Yáo', 'Threadgill', 'Annotée', '18.12.1973', 'gthreadgillo@salon.com', 0, '+63-496-895-2785', 1, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Anaé', 'Toward', 'Cloé', '11.09.1978', 'itowardp@last.fm', 0, '+48-369-857-4326', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Mélodie', 'Harlow', 'Maëly', '03.05.1976', 'yharlowq@artisteer.com', 0, '+86-996-992-6208', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Frédérique', 'Neames', 'Lén', '20.02.1977', 'cneamesr@virginia.edu', 1, '+48-678-771-8818', 0, 1);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Océane', 'Terbeck', 'Noëlla', '19.03.1970', 'aterbecks@mail.ru', 1, '+48-831-226-7544', 0, 0);
-INSERT INTO dbo.Teachers (FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES ('Andréa', 'Jasiak', 'Jú', '09.02.1979', 'ajasiakt@hexun.com', 0, '+36-858-272-1715', 0, 0);
 
 -- Groups
 
@@ -404,138 +256,6 @@ INSERT INTO dbo.Groups (Name, IsRemoved) VALUES ('8t_83', 1);
 INSERT INTO dbo.Groups (Name, IsRemoved) VALUES ('8b_67', 1);
 INSERT INTO dbo.Groups (Name, IsRemoved) VALUES ('2f_33', 1);
 INSERT INTO dbo.Groups (Name, IsRemoved) VALUES ('6h_66', 0);
-
--- Students
-
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (1, 'Pénélope', 'Gotmann', 'Léonore', '08.05.1994', 'egotmann0@spotify.com', 0, '+351-101-636-7242', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (2, 'Börje', 'Lindsay', 'Maïly', '21.08.1992', 'dlindsay1@ibm.com', 1, '+86-990-517-3189', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (3, 'Maëlla', 'Pickwell', 'Personnalisée', '15.11.1996', 'apickwell2@parallels.com', 0, '+1-797-413-1232', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (4, 'Pénélope', 'Winston', 'Táng', '14.03.1987', 'twinston3@creativecommons.org', 1, '+62-770-557-1876', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (5, 'Irène', 'Binestead', 'Aimée', '26.09.1993', 'gbinestead4@nationalgeographic.com', 1, '+63-500-288-6175', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (6, 'Cinéma', 'Teague', 'Daphnée', '25.08.1991', 'oteague5@newsvine.com', 0, '+63-631-451-2820', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (7, 'Börje', 'Braune', 'Judicaël', '08.03.1988', 'abraune6@gnu.org', 1, '+84-869-165-8017', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (8, 'Mårten', 'Abramchik', 'Åsa', '21.05.1998', 'aabramchik7@rediff.com', 0, '+86-499-122-2631', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (9, 'Naéva', 'Harle', 'Aí', '28.04.1992', 'sharle8@eepurl.com', 1, '+86-936-807-2122', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (10, 'Séréna', 'Lideard', 'Alizée', '09.08.1990', 'jlideard9@thetimes.co.uk', 1, '+56-305-365-6209', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (11, 'Maëlyss', 'Grave', 'Lucrèce', '04.05.1988', 'bgravea@taobao.com', 0, '+48-114-738-6168', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (12, 'Dafnée', 'Arend', 'Wá', '28.04.1992', 'harendb@scientificamerican.com', 0, '+55-764-170-8224', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (13, 'Géraldine', 'Sawley', 'Bénédicte', '17.08.1992', 'lsawleyc@rambler.ru', 0, '+46-441-196-8702', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (14, 'Séréna', 'Culbert', 'Liè', '05.02.1990', 'aculbertd@mail.ru', 0, '+51-833-313-3673', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (15, 'Magdalène', 'Bagshawe', 'Mylène', '28.07.1992', 'abagshawee@elegantthemes.com', 0, '+86-364-573-5445', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (16, 'Clélia', 'Rosenstein', 'Mylène', '03.11.1987', 'jrosensteinf@cpanel.net', 1, '+1-516-453-7815', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (17, 'Kévina', 'Jakubovski', 'Lyséa', '02.11.1995', 'sjakubovskig@lulu.com', 0, '+976-979-656-6865', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (18, 'Mahélie', 'Aspling', 'Annotés', '20.11.1995', 'easplingh@gnu.org', 1, '+7-290-422-3836', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (19, 'Garçon', 'Bernardelli', 'Maéna', '04.09.1999', 'sbernardellii@altervista.org', 1, '+351-992-454-3496', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (20, 'Lèi', 'Maden', 'Chloé', '09.03.1994', 'fmadenj@cpanel.net', 0, '+63-639-598-4842', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (21, 'Åslög', 'Frensche', 'Jú', '16.02.1990', 'dfrenschek@illinois.edu', 0, '+509-161-999-2812', 0, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (22, 'Laurène', 'Goor', 'Aloïs', '16.05.1992', 'ogoorl@techcrunch.com', 1, '+86-163-366-9621', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (23, 'Aloïs', 'Willden', 'Joséphine', '28.08.1997', 'twilldenm@bluehost.com', 1, '+34-270-526-5923', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (24, 'Gisèle', 'Sambiedge', 'Thérèsa', '11.05.1990', 'rsambiedgen@shinystat.com', 0, '+86-242-314-9565', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (25, 'Maï', 'Drayton', 'Marie-noël', '28.01.1988', 'ddraytono@imdb.com', 1, '+48-908-416-9773', 1, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (26, 'Simplifiés', 'Leser', 'Märta', '27.06.1989', 'fleserp@stumbleupon.com', 1, '+54-508-602-7805', 0, 1);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (27, 'Camélia', 'Shaxby', 'Jú', '21.07.1995', 'wshaxbyq@accuweather.com', 0, '+7-450-413-8507', 0, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (28, 'Mahélie', 'Roadknight', 'Renée', '29.09.1999', 'rroadknightr@kickstarter.com', 1, '+93-383-208-7633', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (29, 'Judicaël', 'Templman', 'Bérengère', '20.06.1990', 'ltemplmans@csmonitor.com', 0, '+86-719-893-2776', 1, 0);
-INSERT INTO dbo.Students (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, IsRemoved) VALUES (30, 'Yóu', 'Hattrick', 'Cléa', '23.10.1992', 'rhattrickt@shareasale.com', 0, '+62-301-803-7397', 1, 0);
-
--- AdministratorDetails
-
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (1, 'dlound0', '8642da7d1bfcbfdaec030bb542349911');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (2, 'ldesorts1', 'f7d41e5fb85960f2dd4dd791df46a740');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (3, 'omctavy2', '4d82bf7a78d604c56bb54cfb686b5020');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (4, 'lankrett3', 'f7e5a34a8b72e9c8a812a9189d4d3b40');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (5, 'jlarkcum4', '54fbe8a2c3d3ec3d63559657605db8eb');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (6, 'ejaukovic5', '826710028f968e67bd0131e0a0136e93');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (7, 'kwingate6', '85c9b63f19a1a925cd29c50846a3621d');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (8, 'maggas7', 'a60333bcd29a9a3b8700ea3ff870be8d');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (9, 'owoloschinski8', '4a910a7b5b4c53577f5607d68da5b2d9');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (10, 'mslipper9', 'e014dd2ae00631d50ddf287ec8f1d5aa');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (11, 'lleopolda', 'dee950f0ea04161b2bcb9ab9c8792fe0');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (12, 'esumptonb', 'dd7141a326da86bd54450e5792b2628a');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (13, 'brimerc', 'b5b34d4ad375f70e8cb45f0c903753c0');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (14, 'ccourtd', 'f46e4236f337b04fa9a2452a616195a7');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (15, 'abarnbrooke', 'be070dd8993d7f14a1e03555fd2f2495');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (16, 'cwhiskinf', '256707c3af7ea7448b7a7f729a02bf03');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (17, 'hewingtong', '054605d40ece773be1df97368b003527');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (18, 'ceckleyh', '0488f8075a1acfda7dce70f50802cf52');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (19, 'lcracketti', '39d03170b691bc6e0b5715c366e9d710');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (20, 'amcnameej', '3a7db6a72f72b680906265b4908202e6');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (21, 'akellittk', 'a79df99c7b0cf90e14e419c83ab0cf13');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (22, 'icaberasl', '00a9c8d1a85b221e87f1b6fa28ed3b43');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (23, 'pkupecm', '7e772f35af9ff9038e0abe827a22676d');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (24, 'akiplingn', 'bea0a13edcccdfe4d44dcaebe6252ab2');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (25, 'bgrumbleo', '828475083f2f5369675747b9e03575a0');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (26, 'agirtonp', 'd37de4f73656e005c9fe3d88f85ecb89');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (27, 'dtefftq', '6f74a71093ab702a5894d9739846a01e');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (28, 'jbogr', 'ddbb29d848cfdff7fce6fe96a5ebca34');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (29, 'aflookss', '7693a3382e93e9382ead9fdf5eb4183b');
-INSERT INTO dbo.AdministratorDetails (AdministratorId, Login, Password) VALUES (30, 'zwhitsunt', '0af0de75f768a893d647103e06f8efef');
-
--- TeacherDetails
-
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (1, 'redgerly0', '47abdb0df7a31d51705f6f45247ba558');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (2, 'sdenmead1', '9e701f9c184ab805910cd3ed36c14772');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (3, 'gflintoffe2', 'da4f5d4611b6d675317a65296f938304');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (4, 'hgeggus3', 'abd132f633c92eccf81476f10dcd8095');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (5, 'epetters4', '41ac3aa754c37089e535979ef457d46f');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (6, 'rabbet5', '5ed27001612f9fe29bc9ecbf0e8d044e');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (7, 'kalker6', '8bbb9354e32a10c2a48ac813a05a3de2');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (8, 'tklimushev7', 'b37f8598d5a718bbcbd204619e4d9776');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (9, 'vnolleau8', 'ccdcb8ca66335c421c12fdfc9c7604f7');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (10, 'skeinrat9', '8387b536a55b56db17a7e7a2cc703268');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (11, 'rsangea', 'd203f3d92d5200cae970670eb668d3b6');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (12, 'jbrimmacombeb', 'b90f975a2a36ec3cc75eafea85db9be7');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (13, 'gschererc', '54f63eb35cd94620ec93c9ab061ce281');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (14, 'esidneyd', '6e4c3c8a3fd8646dd463181c563d8276');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (15, 'hginnanee', 'd85d1ea587829c96e5a3a753a913f309');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (16, 'rwrathallf', '7d99ed2b217d4ed153c782c6f318dbae');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (17, 'bmacrierieg', 'c93965c84ff1fdcd27b3c7aeb2ccd97b');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (18, 'cangierh', 'eddf7adcb6edb222832fc89c6a838e90');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (19, 'rirelandi', 'f09e90f1aa1e4a1ecefb6ce010c5957b');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (20, 'amintyj', 'fb8933caf439b533237d11f7479b43ba');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (21, 'ccloughtonk', 'eff8f5bf21e8c917cc9dc38940d80173');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (22, 'aberardtl', 'f66d6b26d29130794d6a27fa61c0fe1d');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (23, 'gdaybellm', '11334a4509cd745749024c8090a7e8d2');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (24, 'crozen', 'd723a2551df0b92cbd34cc59b4754647');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (25, 'lbraamo', '520e7dfddea1aeabeae65ed71af93c85');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (26, 'rmacdearmaidp', 'bbd216839084d159f0117e1fe7658e25');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (27, 'vlowthianq', '8529dbbf6f8823e7bb098bd3fab48db3');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (28, 'cfoxenr', 'fbf0874742701aa971825605bee6eef6');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (29, 'mpetrollos', '0bd696d595108a6c02b1d1bca9924563');
-INSERT INTO dbo.TeacherDetails (TeacherId, Login, Password) VALUES (30, 'imathest', '8fd6d0d2faede1bd286df049bbdd98fd');
-
--- StudentDetails
-
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (1, 'iroblin0', 'ba1fe39b903499cf2a9893dbea3d5b31');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (2, 'gwestwood1', '76d5db8a00ef43493d557d00c41eddad');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (3, 'bjurn2', '2ce7c246c5609b8201e61f21408f7064');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (4, 'rstiegers3', 'd4649a4f515cc2c3f611a070c7b7711e');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (5, 'cdewfall4', '3311e1e76fcb140fcfe51f5cc451ca7f');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (6, 'efitzgibbon5', '0ef8d0e05e63df1268dde89bcf736c6c');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (7, 'smorecomb6', 'c92cf25eb5ddb53ae5b92b6079b0fbff');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (8, 'gscadding7', 'dacf072cdcd3d2ac46bc50addef35ae9');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (9, 'aallsep8', '0fb3286bd2633e3903cad3fa505bbfcd');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (10, 'cfalkous9', 'eed94441f91218c7a456c2ae84963016');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (11, 'ahayseya', '9253acbe891f9334aee551be4c46f981');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (12, 'sblagburnb', '99ff35bc2e36040f967aac374f63a87d');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (13, 'dwitherbyc', '8f27f6e1b4ef9c8856ee8377d6e96627');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (14, 'kmantioned', '7aeb5fff3015a5420ba4cf8720f31f0d');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (15, 'bcorkee', '6346d4b81e643025808309bb68de2145');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (16, 'nguideraf', '8c836b0b7526ac18077457207c441756');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (17, 'jlightbowng', '277b8f82e76f1420bd79408ad373a5da');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (18, 'dbransdonh', '75a7f0ccaadf91a36dbd94faea789efe');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (19, 'stheunisseni', '634707b88b6d826399d8d516aee72e42');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (20, 'ekitteringhamj', 'c3bcb154505832df7457cb06879c44e0');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (21, 'smayfieldk', '2ebbe4bf6c9862c606d23b6666f06531');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (22, 'cdradeyl', 'd05d845e18160441ee588e217608503f');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (23, 'wrawlingsm', 'f125acc8401d6ecb16d58335ae3d5f7e');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (24, 'briggertn', '073b1985ff83c9a0fe1febce5f518167');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (25, 'deynaudo', 'e00ce4fde829d3b23db202e547e3e194');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (26, 'efavelp', '7ba2cdc5b94dbec77601b4947822d915');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (27, 'wbaurerichq', '85cf599e4ef0074d5c7486edead14f91');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (28, 'kleckeyr', '85a4291f62bc3dbc82724fe2dd19fddb');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (29, 'rsperwells', '59bd2ef0be83bc0800d47df1ef863e6f');
-INSERT INTO dbo.StudentDetails (StudentId, Login, Password) VALUES (30, 'pmcduallt', '8dd1f5f94956b4c3c4e776343789fd6f');
 
 --- Tests
 
@@ -662,38 +382,250 @@ INSERT INTO dbo.GroupTests (GroupId, TestId) VALUES (28, 6);
 INSERT INTO dbo.GroupTests (GroupId, TestId) VALUES (29, 1);
 INSERT INTO dbo.GroupTests (GroupId, TestId) VALUES (30, 2);
 
+-- Users
+
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (22, 'EliÃ¨s', 'Melior', 'DÃ ', '25.09.2002', 'dmelior0@over-blog.com', 0, '+55 676 302 3357', 0, 'mmelior0', '5Rfcnj0Q', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (3, 'Ã–rjan', 'Hoffmann', 'DaphnÃ©e', '24.10.1995', 'qhoffmann1@thetimes.co.uk', 1, '+386 384 412 1522', 1, 'rhoffmann1', '7d4Mvy', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (4, 'VÃ©ronique', 'Tyre', 'MaÃ¯ly', '15.03.1965', 'styre2@digg.com', 1, '+63 617 164 2676', 1, 'atyre2', 'MwAqCkXs', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (6, 'GÃ¶sta', 'Dottridge', 'Marie-franÃ§oise', '13.10.1994', 'sdottridge3@aol.com', 1, '+62 342 899 1463', 1, 'bdottridge3', '8BoOOMumNVz', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (13, 'OphÃ©lie', 'Quincee', 'GaÃ¯a', '06.11.1972', 'gquincee4@usnews.com', 1, '+224 559 845 1511', 1, 'cquincee4', 'ofgaeVx', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (25, 'MaÃ¯tÃ©', 'Moloney', 'DaniÃ¨le', '17.06.1982', 'imoloney5@google.es', 1, '+33 162 294 1228', 1, 'rmoloney5', '7W3o1Ms8Zd', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (24, 'MÃ©lina', 'Wilcockes', 'LucrÃ¨ce', '19.06.1978', 'rwilcockes6@nsw.gov.au', 0, '+47 153 850 3056', 0, 'lwilcockes6', 'i6yNDfk', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (22, 'AgnÃ¨s', 'Garriock', 'RÃ¡o', '11.01.1980', 'tgarriock7@bbc.co.uk', 1, '+86 947 985 4042', 1, 'cgarriock7', 'CTi6WGkMtqva', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (4, 'SimplifiÃ©s', 'Abercromby', 'GÃ¶rel', '18.10.1962', 'labercromby8@nifty.com', 0, '+62 677 134 9399', 0, 'dabercromby8', 'K7vUUG', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (30, 'AnaÃ¯s', 'Lamming', 'RÃ©servÃ©s', '28.05.1983', 'dlamming9@zdnet.com', 0, '+57 476 505 4727', 0, 'dlamming9', 'IYjv6tEEB', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (2, 'SÃ©lÃ¨ne', 'Cassie', 'Ã…ke', '07.01.1993', 'ccassiea@reddit.com', 1, '+48 403 642 4515', 0, 'lcassiea', 'pqC1EXRP', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (24, 'AnaÃ¯s', 'Beesey', 'OcÃ©anne', '17.12.1995', 'kbeeseyb@cbc.ca', 1, '+86 770 181 4275', 1, 'mbeeseyb', 'HLdhYEXECN', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (13, 'AimÃ©e', 'Riccione', 'SalomÃ©', '04.07.1994', 'jriccionec@amazon.de', 0, '+389 601 466 1316', 0, 'sriccionec', 'fVVuYw', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (21, 'LÃ©andre', 'Pauluzzi', 'BjÃ¶rn', '25.06.1967', 'tpauluzzid@hibu.com', 1, '+81 155 393 6631', 1, 'rpauluzzid', '8RpNEX', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (12, 'HÃ©lÃ¨ne', 'Strodder', 'AgnÃ¨s', '17.10.1981', 'mstroddere@ustream.tv', 0, '+81 402 533 0013', 1, 'estroddere', 'JtElVujsf', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (12, 'MÃ¤rta', 'Akram', 'TÃº', '28.06.1968', 'takramf@meetup.com', 0, '+84 100 383 6549', 0, 'hakramf', 'uiUGWdzi', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (1, 'RachÃ¨le', 'Marl', 'Marie-josÃ©e', '07.03.1999', 'dmarlg@blogspot.com', 1, '+62 741 327 8075', 1, 'smarlg', 'ViOZuMW20D', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (28, 'PÃ©lagie', 'Hannay', 'NoÃ©mie', '06.05.1968', 'bhannayh@unblog.fr', 1, '+48 121 102 8798', 1, 'ihannayh', 'GFKg07hbau', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (6, 'Marie-noÃ«l', 'Salmoni', 'MÃ¥rten', '06.08.1992', 'csalmonii@scribd.com', 1, '+998 494 901 9046', 1, 'csalmonii', 'YzH0M557', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (23, 'Marie-Ã¨ve', 'Simonite', 'NoÃ«lla', '09.10.1982', 'fsimonitej@sbwire.com', 1, '+86 502 844 7363', 1, 'asimonitej', 'BFyEHTJaM', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (30, 'RÃ©jane', 'Garcia', 'CinÃ©ma', '06.05.1988', 'kgarciak@dailymail.co.uk', 1, '+7 625 717 6824', 1, 'jgarciak', 'krJZ56H', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (20, 'ClÃ©a', 'Kimbrey', 'Marie-hÃ©lÃ¨ne', '27.06.1982', 'akimbreyl@hatena.ne.jp', 1, '+62 540 462 3599', 1, 'ekimbreyl', 'sjReRC', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (22, 'PÃ¥l', 'Caulfield', 'AnaÃ«lle', '06.02.1996', 'mcaulfieldm@noaa.gov', 0, '+62 843 337 5565', 0, 'fcaulfieldm', 'twFKBvwMJ8V', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'BÃ©atrice', 'Querrard', 'GÃ©raldine', '26.06.1969', 'bquerrardn@epa.gov', 1, '+355 298 990 7969', 0, 'oquerrardn', 'pyVgRC5NF6', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (15, 'LysÃ©a', 'McGuirk', 'VÃ©rane', '11.08.1968', 'lmcguirko@opera.com', 1, '+967 433 568 6308', 1, 'dmcguirko', 'GZ10cyV', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (16, 'CÃ©cilia', 'Puckrin', 'MÃ©lodie', '03.08.1968', 'npuckrinp@nbcnews.com', 0, '+86 637 584 8858', 1, 'dpuckrinp', 'SizrkJ', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (21, 'LaurÃ©na', 'Nurny', 'MaÃ¯lys', '29.09.1965', 'mnurnyq@hhs.gov', 0, '+46 535 891 3657', 1, 'bnurnyq', 'RhKJ4G5', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (8, 'AndrÃ©e', 'Thorby', 'RÃ©gine', '07.01.1965', 'ethorbyr@nhs.uk', 1, '+62 441 171 1757', 0, 'dthorbyr', 'KllrFWB7S9', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (16, 'LÃ©onore', 'Flounders', 'MÃ©n', '18.06.1992', 'lflounderss@amazon.co.uk', 0, '+52 137 261 5411', 0, 'oflounderss', 'NtamJZ0l', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (19, 'VÃ©nus', 'Camoys', 'PÃ¥l', '13.03.1969', 'ecamoyst@pinterest.com', 0, '+86 115 128 9529', 0, 'mcamoyst', 'hiiz8tu', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (10, 'NuÃ³', 'Lidierth', 'AngÃ¨le', '29.06.1996', 'glidierthu@columbia.edu', 1, '+86 269 406 1314', 0, 'jlidierthu', 'YdAOfDJ3KcVV', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (26, 'SÃ©lÃ¨ne', 'Drinnan', 'CloÃ©', '30.05.1981', 'adrinnanv@disqus.com', 1, '+58 499 945 2659', 1, 'wdrinnanv', 'PbeWBRiC', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (23, 'AloÃ¯s', 'Piborn', 'RenÃ©e', '15.06.1985', 'spibornw@house.gov', 1, '+63 737 364 2260', 0, 'zpibornw', 'hWF5UJjyC', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (4, 'KallistÃ©', 'Saphin', 'BÃ¶rje', '13.03.1973', 'nsaphinx@goo.ne.jp', 0, '+81 698 388 8535', 1, 'bsaphinx', '2spgdP0MIzMq', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'InÃ¨s', 'Lordon', 'MÃ©line', '16.11.2002', 'mlordony@canalblog.com', 1, '+92 985 990 8554', 0, 'jlordony', 'H9GQABTvStM', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (13, 'JudicaÃ«l', 'Lamborne', 'GÃ¶ran', '22.05.1969', 'blambornez@earthlink.net', 1, '+1 812 814 3257', 0, 'glambornez', 'C0qqHPWC', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (29, 'CÃ©line', 'Earley', 'MÃ©gane', '05.03.1990', 'searley10@mashable.com', 0, '+48 201 143 2218', 0, 'searley10', 'IWhZQW', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (21, 'OphÃ©lie', 'Sille', 'GeneviÃ¨ve', '13.06.1976', 'jsille11@barnesandnoble.com', 1, '+63 542 910 7623', 0, 'msille11', 'Ds7VsWGZy', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (25, 'MÃ©lissandre', 'Baillie', 'DÃ¹', '04.09.1985', 'cbaillie12@slideshare.net', 1, '+62 919 188 2580', 0, 'gbaillie12', 'AIQxS7JYF1K', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (8, 'LÃ©one', 'Blaxland', 'CÃ©lestine', '14.03.1969', 'dblaxland13@ucla.edu', 0, '+46 879 504 0245', 1, 'bblaxland13', 'Wz8ltEX', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'StÃ©vina', 'Pittaway', 'LÃ©a', '31.08.1963', 'dpittaway14@loc.gov', 0, '+591 724 419 5207', 1, 'lpittaway14', 'aeeeuN5Z', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (10, 'LÃ©a', 'Burch', 'AndrÃ©', '19.03.1989', 'mburch15@irs.gov', 0, '+81 518 605 2392', 1, 'dburch15', 'WMFY4i0n', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (1, 'VÃ©rane', 'Bonde', 'LoÃ¯ca', '20.09.1993', 'tbonde16@umn.edu', 0, '+62 780 917 6301', 0, 'kbonde16', '14n4Wyco', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (26, 'FaÃ®tes', 'Breming', 'MÃ©lissandre', '05.01.1978', 'dbreming17@ft.com', 1, '+54 461 363 8846', 0, 'abreming17', 'tgA7ewlG5xs', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (8, 'MarylÃ¨ne', 'Lorking', 'YÃ¨', '17.10.1962', 'alorking18@blog.com', 1, '+84 958 696 3536', 0, 'mlorking18', 'pcVgma', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'MaÃ¯ly', 'Riggeard', 'EsbjÃ¶rn', '21.03.1993', 'lriggeard19@linkedin.com', 1, '+1 399 979 8431', 0, 'kriggeard19', 'mIotuUj3', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (19, 'GÃ¶rel', 'Gaize', 'JudicaÃ«l', '09.10.1991', 'agaize1a@alexa.com', 1, '+55 487 321 9407', 1, 'lgaize1a', 'TPSWP70', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (22, 'MarylÃ¨ne', 'Curnow', 'MilÃ©na', '26.09.2000', 'mcurnow1b@geocities.jp', 0, '+389 397 188 2413', 1, 'scurnow1b', 'nTfHGAkC0', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (13, 'VÃ©rane', 'Kuhndel', 'LÃ©andre', '26.02.2001', 'mkuhndel1c@vimeo.com', 0, '+62 691 306 4606', 0, 'nkuhndel1c', 'HuJOw6l', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (19, 'ChloÃ©', 'McCaffrey', 'BÃ©cassine', '04.03.1972', 'fmccaffrey1d@hao123.com', 1, '+62 461 417 5092', 1, 'tmccaffrey1d', 'im8ZLIuk1a', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (5, 'BÃ©cassine', 'Ostrich', 'MÃ¥ns', '23.10.2000', 'tostrich1e@nba.com', 1, '+61 912 434 1655', 1, 'tostrich1e', 'sU2LivhH', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (29, 'ZoÃ©', 'Pattesall', 'MÃ©ng', '26.03.2000', 'gpattesall1f@stanford.edu', 1, '+27 439 876 1788', 0, 'lpattesall1f', 'i3giEIG', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (24, 'AdÃ©lie', 'Adger', 'MylÃ¨ne', '19.12.1968', 'tadger1g@usgs.gov', 1, '+27 959 988 1193', 1, 'madger1g', 'CtUsOiQDN', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (16, 'YÃ³u', 'MacGruer', 'SÃ©verine', '25.01.1988', 'rmacgruer1h@theguardian.com', 0, '+62 840 291 7198', 0, 'zmacgruer1h', 'k4jjbVhxS', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (3, 'ClÃ©opatre', 'Stickles', 'AlmÃ©rinda', '02.08.1996', 'fstickles1i@harvard.edu', 0, '+86 496 638 0755', 1, 'fstickles1i', 'fGPNRhqkw4pn', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'LucrÃ¨ce', 'Sellan', 'MaÃ«lle', '08.07.1989', 'fsellan1j@joomla.org', 1, '+976 926 177 8667', 0, 'rsellan1j', '8BgHYNnk', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'AudrÃ©anne', 'Kleinstein', 'MÃ¥ns', '24.07.1981', 'pkleinstein1k@psu.edu', 1, '+7 578 331 7605', 0, 'ckleinstein1k', 'u8mCKj4W', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (19, 'NÃ©lie', 'Pallis', 'AngÃ¨le', '22.10.1980', 'dpallis1l@vinaora.com', 1, '+86 789 322 4618', 0, 'jpallis1l', 'zvFsu3Zb1a', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (4, 'VÃ©nus', 'Alwen', 'MÃ©ghane', '30.04.1962', 'ralwen1m@china.com.cn', 1, '+64 841 208 3315', 1, 'palwen1m', 'bIXyyuIDIj', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (28, 'DÃ¹', 'Udden', 'MaÃ«lys', '26.07.1971', 'ludden1n@cpanel.net', 0, '+57 578 982 2918', 1, 'budden1n', 'CwrcC8aiSW', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (29, 'CinÃ©ma', 'Giblett', 'AudrÃ©anne', '14.12.1967', 'lgiblett1o@bizjournals.com', 1, '+30 333 245 7908', 0, 'fgiblett1o', '4vOBdLfvBEM', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (23, 'MÃ©n', 'Issacson', 'ZhÃ¬', '27.02.1998', 'bissacson1p@elegantthemes.com', 0, '+57 837 706 7692', 1, 'sissacson1p', '8UnxYr0St8ZR', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (2, 'BÃ©rÃ©nice', 'Oxtarby', 'MaÃ«lle', '29.04.1961', 'boxtarby1q@gravatar.com', 0, '+86 107 877 0914', 1, 'hoxtarby1q', 'Glve7St', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (14, 'YÃº', 'Larchier', 'AngÃ©lique', '14.08.1982', 'mlarchier1r@mysql.com', 0, '+51 417 710 1170', 1, 'elarchier1r', 'dSKsSK7j2', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (2, 'JÃº', 'Georgel', 'MaÃ©na', '27.11.1982', 'dgeorgel1s@smugmug.com', 0, '+372 674 786 8950', 0, 'cgeorgel1s', '0BO83Rs', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (24, 'FÃ©licie', 'Davidove', 'LaurÃ©na', '03.07.1996', 'jdavidove1t@surveymonkey.com', 0, '+62 558 700 1881', 0, 'adavidove1t', '6nfaiGo2qql', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (7, 'EsbjÃ¶rn', 'Gerram', 'GeneviÃ¨ve', '23.10.1990', 'fgerram1u@rakuten.co.jp', 1, '+62 176 717 7862', 0, 'jgerram1u', 'LCe1NSHTKpL', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (12, 'BÃ©rengÃ¨re', 'Jose', 'KÃ©vina', '22.01.1994', 'ajose1v@dion.ne.jp', 0, '+51 675 762 3368', 1, 'ojose1v', 'O76lNMXS1A', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (14, 'RuÃ¬', 'Semiras', 'CrÃ©Ã©z', '30.04.1974', 'jsemiras1w@hao123.com', 0, '+55 554 614 0276', 0, 'ssemiras1w', 'ot0BZ0', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (4, 'ClÃ©a', 'Burberye', 'MaÃ«lys', '06.11.1992', 'aburberye1x@ucoz.com', 1, '+86 878 557 3425', 1, 'dburberye1x', 'IupWeKbqutS3', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (4, 'Ã…ke', 'Cottam', 'ChloÃ©', '11.02.1978', 'rcottam1y@acquirethisname.com', 0, '+46 361 206 8571', 0, 'scottam1y', 'bSvGlN', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (11, 'KÃ©vina', 'Lavigne', 'HÃ©lÃ¨na', '03.01.2001', 'jlavigne1z@joomla.org', 1, '+92 346 262 4029', 0, 'alavigne1z', 'jFXjxV', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (18, 'PÃ²', 'Finders', 'MÃ©n', '02.12.1994', 'efinders20@paypal.com', 1, '+351 916 284 6064', 1, 'ofinders20', 'cRuedec2yw', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (16, 'EloÃ¯se', 'Frances', 'YÃ©nora', '13.05.1969', 'sfrances21@mozilla.com', 1, '+62 133 556 6048', 1, 'jfrances21', 'eYfbGRZli', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (6, 'MahÃ©lie', 'Veevers', 'GeneviÃ¨ve', '19.03.1963', 'rveevers22@hhs.gov', 0, '+995 357 393 6374', 1, 'oveevers22', 'jPOVnjPq', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (19, 'MÃ¥ns', 'Laydon', 'RÃ¡o', '13.05.1995', 'slaydon23@theguardian.com', 0, '+30 821 704 3053', 0, 'flaydon23', 'aDpRZG3etjJ', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (18, 'MaÃ«lyss', 'Espin', 'MaÃ«lyss', '06.05.1989', 'respin24@xing.com', 0, '+55 242 746 1867', 1, 'lespin24', 'UKYAGvAgW', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'MaÃ«line', 'Comello', 'IrÃ¨ne', '16.08.1966', 'ocomello25@icio.us', 1, '+996 782 789 3746', 0, 'scomello25', 'FZQFL9Fic', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (26, 'EstÃ©e', 'Larrosa', 'MaÃ¯lys', '19.04.1993', 'jlarrosa26@businesswire.com', 0, '+505 556 728 7857', 0, 'slarrosa26', 'qNKnpks', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (27, 'MÃ©gane', 'Vinden', 'AngÃ¨le', '17.06.1968', 'nvinden27@fotki.com', 1, '+30 455 380 7570', 0, 'avinden27', 'H0lxgH', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (30, 'MaÃ«lle', 'Bain', 'MagdalÃ¨ne', '08.07.1980', 'obain28@nih.gov', 1, '+48 291 861 4055', 0, 'abain28', 'uByB1s0', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (12, 'EsbjÃ¶rn', 'Renard', 'MaÃ«line', '23.11.1976', 'lrenard29@ihg.com', 1, '+34 710 376 0731', 0, 'krenard29', '6v4xYr9bU', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (17, 'TÃ¡n', 'Jimpson', 'EstÃ©e', '04.05.1989', 'ljimpson2a@dmoz.org', 1, '+98 391 782 5171', 1, 'sjimpson2a', 'pYpOapSrOV', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (5, 'ThÃ©rÃ¨sa', 'Meikle', 'AngÃ©lique', '05.10.1974', 'mmeikle2b@omniture.com', 1, '+33 114 235 3948', 1, 'hmeikle2b', 'VV3y9QQHt', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (14, 'CamÃ©lia', 'Clutheram', 'AgnÃ¨s', '10.03.1971', 'aclutheram2c@chronoengine.com', 0, '+7 479 723 6947', 0, 'jclutheram2c', '414PRmcy', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (15, 'VÃ©ronique', 'Brocket', 'DorothÃ©e', '12.07.1965', 'qbrocket2d@nbcnews.com', 1, '+351 463 815 3256', 1, 'nbrocket2d', '45DqtUO4sOZ', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (2, 'AgnÃ¨s', 'Anthonsen', 'MÃ©thode', '08.01.2001', 'oanthonsen2e@elegantthemes.com', 0, '+7 180 171 0175', 1, 'santhonsen2e', 'Ku0GurDI', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (6, 'MahÃ©lie', 'McRobert', 'AngÃ¨le', '09.02.1967', 'jmcrobert2f@ucsd.edu', 0, '+7 734 544 8599', 0, 'wmcrobert2f', 'FY0VLoPIZgQo', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (5, 'EloÃ¯se', 'Arias', 'MÃ©lys', '27.10.1969', 'marias2g@github.io', 0, '+212 665 768 1637', 0, 'aarias2g', 'eelOWtfu', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (30, 'RachÃ¨le', 'Pitt', 'ClÃ©mence', '28.11.1994', 'spitt2h@hexun.com', 0, '+86 963 412 0000', 1, 'npitt2h', 'XkAD1vxPTThq', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (19, 'FÃ©licie', 'Reoch', 'ThÃ©rÃ¨se', '28.05.1965', 'mreoch2i@loc.gov', 0, '+20 172 681 2360', 0, 'creoch2i', 'TNrCoDYO4', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (21, 'AÃ­', 'Menichi', 'Ã…sa', '28.12.1962', 'mmenichi2j@360.cn', 0, '+86 319 289 5579', 0, 'smenichi2j', 'QLhurX', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (30, 'MarylÃ¨ne', 'Hurche', 'KuÃ­', '20.03.1999', 'dhurche2k@1688.com', 0, '+86 165 665 9911', 0, 'ahurche2k', 'luUUZLfMSfCU', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (15, 'SalomÃ©', 'Grouvel', 'EugÃ©nie', '29.12.2000', 'wgrouvel2l@goo.ne.jp', 1, '+62 403 359 6649', 0, 'zgrouvel2l', '1Csa6Z', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (16, 'AloÃ¯s', 'Bateup', 'GaÃ©tane', '22.10.1964', 'ibateup2m@cbslocal.com', 0, '+62 985 415 6326', 0, 'kbateup2m', 'tt0gUnd', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (6, 'MÃ©diamass', 'Rozalski', 'AlizÃ©e', '26.06.1988', 'erozalski2n@goo.ne.jp', 0, '+62 298 828 7563', 0, 'mrozalski2n', 'Fd25Um', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (24, 'HÃ©lÃ¨ne', 'Whittlesea', 'IrÃ¨ne', '03.10.2000', 'ewhittlesea2o@dedecms.com', 1, '+33 521 236 6215', 1, 'awhittlesea2o', '4pKUVGKfbAbb', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (1, 'AnnotÃ©s', 'Shuard', 'AimÃ©e', '12.01.1998', 'nshuard2p@cbslocal.com', 1, '+62 500 282 9696', 0, 'cshuard2p', 'gf5A5co7O', 1);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (9, 'OphÃ©lie', 'Durban', 'CrÃ©Ã©z', '13.04.2002', 'mdurban2q@tripadvisor.com', 1, '+55 470 571 3328', 1, 'gdurban2q', 'MiwO2b', 0);
+INSERT INTO dbo.Users (GroupId, FirstName, LastName, MiddleName, Birthday, Email, IsEmailVerified, PhoneNumber, IsPhoneVerified, Login, Password, IsRemoved) VALUES (13, 'LiÃ¨', 'Madoc-Jones', 'CunÃ©gonde', '07.04.1968', 'amadocjones2r@addthis.com', 0, '+352 683 974 8678', 1, 'cmadocjones2r', 'cZEQvmDAUr2d', 1);
+
 -- StudentTests
 
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (4, 2, 1, 98.16, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (5, 1, 0, 91.99, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (24, 1, 0, 80.53, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (10, 2, 0, 17.45, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (14, 1, 0, 65.07, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (26, 2, 0, 98.07, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (9, 5, 0, 25.67, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (10, 2, 0, 86.39, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (3, 4, 0, 42.76, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (25, 2, 0, 86.87, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (19, 2, 0, 44.96, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (28, 1, 1, 97.32, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (14, 2, 1, 75.87, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (25, 6, 0, 22.12, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (2, 4, 1, 68.61, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (26, 4, 1, 45.61, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (8, 6, 1, 61.33, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (18, 7, 1, 81.42, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (12, 3, 1, 79.44, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (24, 2, 0, 44.07, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (29, 5, 1, 68.01, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (18, 1, 0, 78.18, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (1, 6, 0, 21.5, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (23, 5, 0, 82.03, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (20, 1, 0, 79.87, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (5, 1, 1, 4.17, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (23, 2, 0, 36.75, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (15, 1, 1, 87.71, 0);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (27, 7, 1, 64.88, 1);
-INSERT INTO dbo.StudentTests (StudentId, TestId, AllowToPass, PCA, IsRemoved) VALUES (26, 7, 0, 46.1, 0);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (19, 8, 1, 15.41, 0.17);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (89, 8, 0, 47.54, 0.18);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (35, 6, 1, 97.49, 0.49);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (29, 3, 0, 50.18, 0.5);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (9, 3, 1, 47.56, 0.94);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (67, 6, 0, 34.32, 0.08);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (7, 2, 1, 12.36, 0.33);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (65, 5, 0, 52.69, 0.99);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (94, 8, 0, 54.75, 0.98);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (30, 3, 0, 30.37, 0.77);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (5, 2, 1, 83.51, 0.78);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (82, 3, 1, 69.15, 0.8);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (25, 7, 0, 51.73, 0.88);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (65, 5, 1, 81.45, 0.52);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (11, 3, 1, 39.3, 0.47);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (39, 6, 0, 37.41, 0.97);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (26, 6, 1, 61.5, 0.32);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (65, 8, 0, 74.2, 0.96);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (68, 3, 1, 84.24, 0.28);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (90, 1, 1, 75.9, 0.54);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (64, 8, 1, 80.07, 0.68);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (38, 7, 1, 2.86, 0.71);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (87, 2, 1, 96.68, 0.24);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (12, 7, 1, 89.33, 0.66);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (54, 1, 1, 73.57, 0.35);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (68, 3, 0, 54.53, 0.4);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (88, 8, 0, 65.31, 0.07);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (73, 1, 1, 15.86, 0.62);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (64, 8, 1, 82.17, 0.76);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (32, 3, 0, 79.22, 0.26);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (69, 1, 1, 49.39, 0.94);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (58, 8, 0, 77.39, 0.2);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (52, 6, 0, 69.38, 0.67);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (18, 7, 0, 83.08, 0.4);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (22, 6, 0, 12.11, 0.73);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (80, 1, 1, 5.44, 0.37);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (48, 2, 0, 80.45, 0.77);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (76, 4, 0, 79.99, 0.22);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (43, 5, 0, 22.24, 0.85);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (47, 8, 0, 64.15, 0.03);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (42, 3, 0, 51.64, 0.02);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (83, 5, 1, 97.35, 0.93);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (98, 2, 1, 33.67, 0.07);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (48, 6, 1, 62.13, 0.03);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (70, 7, 0, 92.93, 0.44);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (89, 8, 1, 17.67, 0.7);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (50, 6, 1, 36.86, 0.41);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (50, 2, 0, 47.85, 0.74);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (31, 2, 0, 44.53, 0.23);
+INSERT INTO dbo.StudentTests (UserId, TestId, AllowToPass, PCA, IsRemoved) VALUES (56, 5, 1, 69.18, 0.4);
+
+-- Roles
+
+INSERT INTO dbo.Roles (Name) VALUES ('Administrator'), ('Student'), ('Teacher');
+
+-- UserRoles
+
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (87, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (48, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (18, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (87, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (91, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (72, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (68, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (16, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (47, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (90, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (85, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (78, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (65, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (51, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (55, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (95, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (24, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (61, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (34, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (30, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (90, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (66, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (27, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (24, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (6, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (65, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (62, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (43, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (67, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (78, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (100, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (31, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (58, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (74, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (19, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (85, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (67, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (50, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (49, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (43, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (25, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (63, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (40, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (69, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (35, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (41, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (36, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (94, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (95, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (81, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (51, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (43, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (5, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (75, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (70, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (72, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (47, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (61, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (21, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (89, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (8, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (72, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (99, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (94, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (23, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (54, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (91, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (25, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (57, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (3, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (96, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (53, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (17, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (76, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (55, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (75, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (80, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (35, 2);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (63, 3);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (29, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (16, 1);
+INSERT INTO dbo.UserRoles (UserId, RoleId) VALUES (11, 3);
 
 SET NOCOUNT OFF;
 GO
