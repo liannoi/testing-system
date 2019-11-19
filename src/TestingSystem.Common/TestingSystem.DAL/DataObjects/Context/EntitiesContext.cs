@@ -1,11 +1,13 @@
-namespace TestingSystem.DAL.DataObjects
+namespace TestingSystem.DAL.DataObjects.Context
 {
+    using System;
     using System.Data.Entity;
-    using TestingSystem.DAL.DataObjects.Context;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     public partial class EntitiesContext : BaseContext
     {
-        public EntitiesContext() : base("EntitiesContext")
+        public EntitiesContext()  : base("EntitiesContext")
         {
         }
 

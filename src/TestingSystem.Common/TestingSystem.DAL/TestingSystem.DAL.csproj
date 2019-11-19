@@ -64,7 +64,7 @@
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="DataServices\Database\Infrastructure\BaseDatabaseDataService.cs" />
     <Compile Include="DataServices\Database\Infrastructure\IDatabaseDataService.cs" />
-    <Compile Include="DataServices\Database\DatabaseDataServices.cs" />
+    <Compile Include="DataServices\Database\DatabaseDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -43,15 +43,22 @@
   <ItemGroup>
     <Compile Include="BusinessObjects\AnswerBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupBusinessObject.cs" />
+    <Compile Include="BusinessObjects\GroupTestsBusinessObject.cs" />
     <Compile Include="BusinessObjects\QuestionBusinessObject.cs" />
     <Compile Include="BusinessObjects\RoleBusinessObject.cs" />
     <Compile Include="BusinessObjects\StudentTestBusinessObject.cs" />
     <Compile Include="BusinessObjects\TestBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserBusinessObject.cs" />
+    <Compile Include="BusinessObjects\UserRolesBusinessObject.cs" />
+    <Compile Include="BusinessServices\BaseBusinessService.cs" />
+    <Compile Include="BusinessServices\TestBusinessService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BusinessServices\" />
+    <ProjectReference Include="..\TestingSystem.DAL\TestingSystem.DAL.csproj">
+      <Project>{0A61B58C-F0B3-4A1C-922F-EE865FC9770E}</Project>
+      <Name>TestingSystem.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,7 +4,7 @@ using TestingSystem.DAL.DataServices.Database.Infrastructure;
 
 namespace TestingSystem.DAL.DataServices
 {
-    public sealed class DatabaseDataServices
+    public sealed class DatabaseDataService
     {
         private readonly BaseContext context;
         private BaseDatabaseDataService<Answer> answers;
@@ -23,7 +23,7 @@ namespace TestingSystem.DAL.DataServices
         public IDatabaseDataService<Test> Tests => tests ?? (tests = new BaseDatabaseDataService<Test>(context));
         public IDatabaseDataService<User> Users => users ?? (users = new BaseDatabaseDataService<User>(context));
 
-        public DatabaseDataServices(BaseContext context)
+        public DatabaseDataService(BaseContext context)
         {
             this.context = context;
         }
