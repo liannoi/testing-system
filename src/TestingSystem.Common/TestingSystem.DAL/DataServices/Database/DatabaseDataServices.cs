@@ -4,7 +4,7 @@ using TestingSystem.DAL.DataServices.Database.Infrastructure;
 
 namespace TestingSystem.DAL.DataServices
 {
-    public class DatabaseDataServices
+    public sealed class DatabaseDataServices
     {
         private readonly BaseContext context;
         private BaseDatabaseDataService<Answer> answers;
