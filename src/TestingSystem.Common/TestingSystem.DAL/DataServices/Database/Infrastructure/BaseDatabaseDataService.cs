@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestingSystem.DAL.DataObjects.Context;
 
-namespace TestingSystem.DAL.DataServices.Database
+namespace TestingSystem.DAL.DataServices.Database.Infrastructure
 {
-    public class CommonDataService<TEntity> : IDataService<TEntity> where TEntity : class
+    public class BaseDatabaseDataService<TEntity> : IDatabaseDataService<TEntity> where TEntity : class
     {
         private readonly BaseContext context;
         private readonly DbSet<TEntity> entities;
 
-        public CommonDataService(BaseContext context)
+        public BaseDatabaseDataService(BaseContext context)
         {
             this.context = context;
             entities = context.Set<TEntity>();
@@ -27,7 +24,7 @@ namespace TestingSystem.DAL.DataServices.Database
 
         public virtual void Drop(int id)
         {
-            Drop(entities.Find(id));
+            Drop(Select(id));
         }
 
         public virtual void Insert(TEntity entity)
@@ -37,20 +34,20 @@ namespace TestingSystem.DAL.DataServices.Database
 
         public virtual TEntity Select(int id)
         {
-            throw new NotImplementedException();
+            return entities.Find(id);
         }
 
-        public virtual IEnumerable<TEntity> Select(string query, params object[] parameters)
+        public virtual IEnumerable<BTEntity> Select<BTEntity>(string query, params object[] parameters) where BTEntity : class
         {
-            throw new NotImplementedException();
+            return context.Database.SqlQuery<BTEntity>(query, parameters);
         }
 
-        public virtual IEnumerable<TEntity> Select(string query)
+        public virtual IEnumerable<BTEntity> Select<BTEntity>(string query) where BTEntity : class
         {
-            throw new NotImplementedException();
+            return context.Database.SqlQuery<BTEntity>(query).AsEnumerable();
         }
 
-        public virtual void AddOrUpdate(TEntity entity)
+        public virtual void InsertOrUpdate(TEntity entity)
         {
             entities.AddOrUpdate(entity);
         }

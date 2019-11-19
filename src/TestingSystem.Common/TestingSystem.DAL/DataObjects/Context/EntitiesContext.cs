@@ -1,9 +1,6 @@
 namespace TestingSystem.DAL.DataObjects
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
     using TestingSystem.DAL.DataObjects.Context;
 
     public partial class EntitiesContext : BaseContext
@@ -17,7 +14,6 @@ namespace TestingSystem.DAL.DataObjects
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<StudentTest> StudentTests { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
