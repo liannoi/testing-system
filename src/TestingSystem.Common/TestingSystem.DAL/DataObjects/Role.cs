@@ -11,7 +11,7 @@ namespace TestingSystem.DAL.DataObjects
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Role()
         {
-            Users = new HashSet<User>();
+            UserRoles = new HashSet<UserRole>();
         }
 
         public int RoleId { get; set; }
@@ -23,6 +23,6 @@ namespace TestingSystem.DAL.DataObjects
         public bool IsRemoved { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

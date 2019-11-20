@@ -11,8 +11,8 @@ namespace TestingSystem.DAL.DataObjects
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Group()
         {
+            GroupTests = new HashSet<GroupTest>();
             Users = new HashSet<User>();
-            Tests = new HashSet<Test>();
         }
 
         public int GroupId { get; set; }
@@ -24,9 +24,9 @@ namespace TestingSystem.DAL.DataObjects
         public bool IsRemoved { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<GroupTest> GroupTests { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Test> Tests { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

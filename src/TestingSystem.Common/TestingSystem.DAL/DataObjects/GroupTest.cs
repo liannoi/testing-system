@@ -6,18 +6,14 @@ namespace TestingSystem.DAL.DataObjects
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class StudentTest
+    public partial class GroupTest
     {
         [Key]
         public int RecordId { get; set; }
 
-        public int UserId { get; set; }
+        public int GroupId { get; set; }
 
         public int TestId { get; set; }
-
-        public bool AllowToPass { get; set; }
-
-        public double? PCA { get; set; }
 
         public bool IsPassed { get; set; }
 
@@ -27,8 +23,8 @@ namespace TestingSystem.DAL.DataObjects
 
         public bool IsRemoved { get; set; }
 
-        public virtual Test Test { get; set; }
+        public virtual Group Group { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual Test Test { get; set; }
     }
 }

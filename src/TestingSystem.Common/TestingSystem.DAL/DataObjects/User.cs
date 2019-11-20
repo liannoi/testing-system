@@ -12,7 +12,7 @@ namespace TestingSystem.DAL.DataObjects
         public User()
         {
             StudentTests = new HashSet<StudentTest>();
-            Roles = new HashSet<Role>();
+            UserRoles = new HashSet<UserRole>();
         }
 
         public int UserId { get; set; }
@@ -61,6 +61,6 @@ namespace TestingSystem.DAL.DataObjects
         public virtual ICollection<StudentTest> StudentTests { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

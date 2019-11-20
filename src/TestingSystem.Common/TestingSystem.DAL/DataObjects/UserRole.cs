@@ -6,28 +6,21 @@ namespace TestingSystem.DAL.DataObjects
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class StudentTest
+    public partial class UserRole
     {
         [Key]
-        public int RecordId { get; set; }
-
+        [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
 
-        public int TestId { get; set; }
-
-        public bool AllowToPass { get; set; }
-
-        public double? PCA { get; set; }
-
-        public bool IsPassed { get; set; }
-
-        public DateTime? Start { get; set; }
-
-        public DateTime? End { get; set; }
+        [Key]
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int RoleId { get; set; }
 
         public bool IsRemoved { get; set; }
 
-        public virtual Test Test { get; set; }
+        public virtual Role Role { get; set; }
 
         public virtual User User { get; set; }
     }
