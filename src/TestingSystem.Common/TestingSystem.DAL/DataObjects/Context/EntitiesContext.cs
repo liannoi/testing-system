@@ -1,9 +1,6 @@
 namespace TestingSystem.DAL.DataObjects
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
     using TestingSystem.DAL.DataObjects.Context;
 
     public partial class EntitiesContext : BaseContext
