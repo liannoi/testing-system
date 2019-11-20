@@ -1,4 +1,4 @@
-﻿using TestingSystem.DAL.DataObjects;
+﻿using TestingSystem.DAL.DataObjects.Context;
 using TestingSystem.DAL.DataServices;
 
 namespace TestingSystem.BL.BusinessServices
@@ -9,7 +9,7 @@ namespace TestingSystem.BL.BusinessServices
 
         public BaseBusinessService()
         {
-            databaseDataService = new DatabaseDataService(new EntitiesContext());
+            databaseDataService = new DatabaseDataService(new BaseContext("EntitiesContext"));
         }
     }
 }

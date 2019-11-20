@@ -6,12 +6,12 @@ namespace TestingSystem.DAL.DataObjects.Context
 {
     public class BaseContext : DbContext
     {
-        protected BaseContext(string databaseAlias, Action<string> logAction) : base($"name={databaseAlias}")
+        public BaseContext(string databaseAlias, Action<string> logAction) : base($"name={databaseAlias}")
         {
             Database.Log = logAction;
         }
 
-        protected BaseContext(string databaseAlias) : base($"name={databaseAlias}")
+        public BaseContext(string databaseAlias) : base($"name={databaseAlias}")
         {
             Database.Log = a => Debug.WriteLine(a);
         }

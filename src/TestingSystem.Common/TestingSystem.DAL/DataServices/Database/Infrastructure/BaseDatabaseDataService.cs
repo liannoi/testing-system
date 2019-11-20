@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using System.Linq;
 using TestingSystem.DAL.DataObjects.Context;
 
 namespace TestingSystem.DAL.DataServices.Database.Infrastructure
@@ -37,14 +36,19 @@ namespace TestingSystem.DAL.DataServices.Database.Infrastructure
             return entities.Find(id);
         }
 
-        public virtual IEnumerable<BTEntity> Select<BTEntity>(string query, params object[] parameters) where BTEntity : class
+        public virtual IEnumerable<TEntity> Select()
         {
-            return context.Database.SqlQuery<BTEntity>(query, parameters);
+            return entities;
         }
 
-        public virtual IEnumerable<BTEntity> Select<BTEntity>(string query) where BTEntity : class
+        public virtual IEnumerable<TEntity> Select(string query, params object[] parameters)
         {
-            return context.Database.SqlQuery<BTEntity>(query).AsEnumerable();
+            return context.Database.SqlQuery<TEntity>(query, parameters);
+        }
+
+        public virtual IEnumerable<TEntity> Select(string query) 
+        {
+            return context.Database.SqlQuery<TEntity>(query);
         }
 
         public virtual void InsertOrUpdate(TEntity entity)

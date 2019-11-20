@@ -65,8 +65,8 @@
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="DataObjects\UserRole.cs" />
     <Compile Include="DataServices\Database\Infrastructure\BaseDatabaseDataService.cs" />
-    <Compile Include="DataServices\Database\Infrastructure\IDatabaseDataService.cs" />
     <Compile Include="DataServices\Database\DatabaseDataService.cs" />
+    <Compile Include="DataServices\Database\Infrastructure\IDatabaseDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
