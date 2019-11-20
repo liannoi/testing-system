@@ -43,6 +43,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,15 +53,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\Answer.cs" />
     <Compile Include="DataObjects\Contexts\BaseContext.cs" />
+    <Compile Include="DataObjects\Contexts\EntitiesContext.cs" />
+    <Compile Include="DataObjects\Group.cs" />
+    <Compile Include="DataObjects\GroupTest.cs" />
+    <Compile Include="DataObjects\Question.cs" />
+    <Compile Include="DataObjects\Role.cs" />
+    <Compile Include="DataObjects\StudentTest.cs" />
+    <Compile Include="DataObjects\Test.cs" />
+    <Compile Include="DataObjects\User.cs" />
+    <Compile Include="DataObjects\UserRole.cs" />
+    <Compile Include="DataServices\BaseDatabaseDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataServices\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{cc802faf-eaf5-4ee1-a85c-1567b2755662}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
