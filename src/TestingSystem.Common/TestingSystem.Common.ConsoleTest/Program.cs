@@ -11,9 +11,9 @@ namespace TestingSystem.Common.ConsoleTest
         {
             ContainerConfig container = new ContainerConfig();
             IBusinessService<AnswerBusinessObject> businessService = container.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
-            businessService.Remove(new AnswerBusinessObject
+            var result = businessService.Remove(new AnswerBusinessObject
             {
-                AnswerId = 7
+                AnswerId = 1
             });
         }
     }

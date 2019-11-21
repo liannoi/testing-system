@@ -69,7 +69,7 @@
     <Compile Include="BusinessObjects\TestBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserRoleBusinessObject.cs" />
-    <Compile Include="BusinessServices\AnswersBusinessService.cs" />
+    <Compile Include="BusinessServices\BaseBusinessService.cs" />
     <Compile Include="Infrastructure\ContainerConfig.cs" />
     <Compile Include="Infrastructure\ContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

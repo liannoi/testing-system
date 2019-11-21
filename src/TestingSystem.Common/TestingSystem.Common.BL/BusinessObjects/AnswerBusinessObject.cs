@@ -1,4 +1,6 @@
-﻿namespace TestingSystem.Common.BL.BusinessObjects
+﻿using System;
+
+namespace TestingSystem.Common.BL.BusinessObjects
 {
     public sealed class AnswerBusinessObject
     {

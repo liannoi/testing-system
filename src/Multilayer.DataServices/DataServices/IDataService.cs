@@ -8,9 +8,10 @@ namespace Multilayer.DataServices
     {
         TEntity Add(TEntity entity);
         IEnumerable<TEntity> Select();
-        TEntity Select(int id);
-        TEntity Update(int id, TEntity entity);
-        TEntity Remove(int id);
+        TEntity Select(TEntity entity);
+        TEntity Update(TEntity oldEntity, TEntity entity);
+        TEntity Remove(TEntity entity);
+        TEntity Restore(TEntity entity);
         int Commit();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression);
     }

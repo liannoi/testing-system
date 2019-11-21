@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Multilayer.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -32,9 +33,9 @@ namespace Multilayer.DataServices
             return entities;
         }
 
-        public virtual TEntity Select(int id)
+        public virtual TEntity Select(TEntity entity)
         {
-            return entities.Find(id);
+            return entities.Find(ActionTools<TEntity>.EntityId(entity));
         }
 
         public virtual TEntity Add(TEntity entity)
@@ -42,16 +43,20 @@ namespace Multilayer.DataServices
             return entities.Add(entity);
         }
 
-        public virtual TEntity Update(int id, TEntity entity)
+        public virtual TEntity Update(TEntity oldEntity,TEntity entity)
         {
-            TEntity find = Select(id);
-            context.Entry(find).CurrentValues.SetValues(entity);
-            return find;
+            context.Entry(Select(oldEntity)).CurrentValues.SetValues(entity);
+            return Select(entity);
         }
 
-        public virtual TEntity Remove(int id)
+        public virtual TEntity Remove(TEntity entity)
         {
-            return entities.Remove(Select(id));
+            return entities.Remove(Select(entity));
+        }
+
+        public virtual TEntity Restore(TEntity entity)
+        {
+            throw new NotSupportedException("This method is implemented in business logic.");
         }
     }
 }
