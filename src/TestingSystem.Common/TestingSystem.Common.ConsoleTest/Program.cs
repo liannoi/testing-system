@@ -10,10 +10,10 @@ namespace TestingSystem.Common.ConsoleTest
         private static void Main(string[] args)
         {
             ContainerConfig container = new ContainerConfig();
-            IBusinessService<AnswerBusinessObject> businessService = container.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
-            var result = businessService.Remove(new AnswerBusinessObject
+            var businessService = container.Container.Resolve<IBusinessService<UserRoleBusinessObject>>();
+            var result = businessService.Remove(new UserRoleBusinessObject
             {
-                AnswerId = 1
+                UserId = 1
             });
         }
     }
