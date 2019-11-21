@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
 using Multilayer.BusinessServices;
 using Multilayer.DataServices;
+using System;
 using System.Data.Entity;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices;
@@ -18,31 +19,59 @@ namespace TestingSystem.Common.BL.Infrastructure
             #region Dependency injection at the Data Access Level.
 
             // Context.
-            InjectContext(builder);
+            InjectDataService(builder, typeof(EntitiesContext), typeof(DbContext));
 
             // Answer Data Service.
-            InjectAnswersDataService(builder);
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Answer>), typeof(IDataService<Answer>));
 
             // Group Data Service.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Group>), typeof(IDataService<Group>));
+
             // Group Test Data Service.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<GroupTest>), typeof(IDataService<GroupTest>));
+
             // Question.
-            // Role Test.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Question>), typeof(IDataService<Question>));
+
+            // Role.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Role>), typeof(IDataService<Role>));
+
             // Student Test.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<StudentTest>), typeof(IDataService<StudentTest>));
+
             // Test.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Test>), typeof(IDataService<Test>));
+
             // User.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<User>), typeof(IDataService<User>));
+
             // User Role.
+            InjectDataService(builder, typeof(BaseDatabaseDataService<UserRole>), typeof(IDataService<UserRole>));
 
             #endregion
 
             #region Dependency injection at the Business Logic Level.
 
             // Answer Business Service.
-            InjectAnswersBusinessService(builder);
+            InjectBusinessService(builder,
+                typeof(BusinessServices.BaseBusinessService<Answer, AnswerBusinessObject>),
+                typeof(IBusinessService<AnswerBusinessObject>),
+                new BusinessServiceInitializer
+                {
+                    MapperConfiguration = new MapperConfiguration(cfg =>
+                    {
+                        cfg.AddExpressionMapping();
+                        cfg.CreateMap<Answer, AnswerBusinessObject>().ForMember(nameof(AnswerBusinessObject.QuestionTitle), o => o.MapFrom(s => s.Question.Text));
+                        cfg.CreateMap<AnswerBusinessObject, Answer>();
+                    }).CreateMapper()
+                });
 
             // Group Business Service.
+
+
             // Group Test Business Service.
             // Question.
-            // Role Test.
+            // Role.
             // Student Test.
             // Test.
             // User.
@@ -51,29 +80,17 @@ namespace TestingSystem.Common.BL.Infrastructure
             #endregion
         }
 
-        private static void InjectAnswersBusinessService(ContainerBuilder builder)
+        private void InjectDataService(ContainerBuilder builder, Type registerType, Type asType)
         {
-            builder.RegisterType(typeof(BusinessServices.BaseBusinessService<Answer, AnswerBusinessObject>))
-                .As(typeof(IBusinessService<AnswerBusinessObject>))
-                .WithParameter("mapper", new MapperConfiguration(cfg =>
-                {
-                    cfg.AddExpressionMapping();
-                    cfg.CreateMap<Answer, AnswerBusinessObject>()
-                       .ForMember(nameof(AnswerBusinessObject.QuestionTitle), o => o.MapFrom(s => s.Question.Text));
-                    cfg.CreateMap<AnswerBusinessObject, Answer>();
-                }).CreateMapper());
+            builder.RegisterType(registerType)
+                .As(asType);
         }
 
-        private static void InjectAnswersDataService(ContainerBuilder builder)
+        private void InjectBusinessService(ContainerBuilder builder, Type registerType, Type asType, BusinessServiceInitializer serviceInitializer)
         {
-            builder.RegisterType(typeof(BaseDatabaseDataService<Answer>))
-                .As(typeof(IDataService<Answer>));
-        }
-
-        private static void InjectContext(ContainerBuilder builder)
-        {
-            builder.RegisterType(typeof(EntitiesContext))
-                .As(typeof(DbContext));
+            builder.RegisterType(registerType)
+                .As(asType)
+                .WithParameter(serviceInitializer.ParameterName, serviceInitializer.MapperConfiguration);
         }
     }
 }
