@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using Multilayer.BusinessServices;
 using Multilayer.DataServices;
 using System.Data.Entity;
@@ -14,11 +16,21 @@ namespace TestingSystem.Common.BL.Infrastructure
         protected override void Load(ContainerBuilder builder)
         {
             // DAL.
-            builder.RegisterType(typeof(AnswersMarkableDataService)).As(typeof(IDataService<Answer>));
-            builder.RegisterType(typeof(EntitiesContext)).As(typeof(DbContext));
+            builder.RegisterType(typeof(BaseDatabaseDataService<Answer>))
+                .As(typeof(IDataService<Answer>));
+            builder.RegisterType(typeof(EntitiesContext))
+                .As(typeof(DbContext));
 
             // BL.
-            builder.RegisterType(typeof(AnswersBusinessService)).As(typeof(IBusinessService<AnswerBusinessObject>));
+            builder.RegisterType(typeof(BusinessServices.BaseBusinessService<Answer, AnswerBusinessObject>))
+                .As(typeof(IBusinessService<AnswerBusinessObject>))
+                .WithParameter("mapper", new MapperConfiguration(cfg =>
+                {
+                    cfg.AddExpressionMapping();
+                    cfg.CreateMap<Answer, AnswerBusinessObject>()
+                       .ForMember(nameof(AnswerBusinessObject.QuestionTitle), o => o.MapFrom(s => s.Question.Text));
+                    cfg.CreateMap<AnswerBusinessObject, Answer>();
+                }).CreateMapper());
         }
     }
 }
