@@ -1,11 +1,10 @@
 namespace TestingSystem.Common.DAL.DataObjects
 {
     using System.Data.Entity;
-    using TestingSystem.Common.DAL.DataObjects.Contexts;
 
-    public partial class EntitiesContext : BaseContext
+    public partial class EntitiesContext : DbContext
     {
-        public EntitiesContext() : base("EntitiesContext")
+        public EntitiesContext() : base("name=EntitiesContext")
         {
         }
 

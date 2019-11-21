@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataObjects\Answer.cs" />
-    <Compile Include="DataObjects\Contexts\BaseContext.cs" />
     <Compile Include="DataObjects\Contexts\EntitiesContext.cs" />
     <Compile Include="DataObjects\Group.cs" />
     <Compile Include="DataObjects\GroupTest.cs" />
@@ -64,6 +63,7 @@
     <Compile Include="DataObjects\Test.cs" />
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="DataObjects\UserRole.cs" />
+    <Compile Include="DataServices\AnswersMarkableDataService.cs" />
     <Compile Include="DataServices\BaseDatabaseDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
