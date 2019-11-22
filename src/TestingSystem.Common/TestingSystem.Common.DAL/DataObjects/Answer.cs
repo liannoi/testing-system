@@ -12,6 +12,8 @@ namespace TestingSystem.Common.DAL.DataObjects
         [StringLength(256)]
         public string Text { get; set; }
 
+        public bool IsSuitable { get; set; }
+
         public bool IsRemoved { get; set; }
 
         public virtual Question Question { get; set; }

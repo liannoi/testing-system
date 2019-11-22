@@ -16,7 +16,7 @@ namespace TestingSystem.Common.DAL.DataObjects
         public int TestId { get; set; }
 
         [Required]
-        [StringLength(64)]
+        [StringLength(256)]
         public string Title { get; set; }
 
         [StringLength(4000)]
