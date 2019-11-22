@@ -61,7 +61,6 @@
     <Compile Include="BusinessServices\IBusinessService.cs" />
     <Compile Include="DataServices\BaseDataService.cs" />
     <Compile Include="DataServices\IDataService.cs" />
-    <Compile Include="Infrastructure\Exceptions\SpecifyNamePropertyException.cs" />
     <Compile Include="Infrastructure\Helpers\ITypeTools.cs" />
     <Compile Include="Infrastructure\Helpers\TypeTools.cs" />
     <Compile Include="Infrastructure\Initializers\BaseBusinessServiceInitializer.cs" />
