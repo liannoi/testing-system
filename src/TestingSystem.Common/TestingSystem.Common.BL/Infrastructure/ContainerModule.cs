@@ -36,7 +36,7 @@ namespace TestingSystem.Common.BL.Infrastructure
                 {
                     FirstKeyAttribute = new EntityKeyAttribute
                     {
-                        PropertyName = "RecordId"
+                        PropertyName = nameof(GroupTest.RecordId)
                     }
                 }
             });
@@ -48,7 +48,7 @@ namespace TestingSystem.Common.BL.Infrastructure
                 {
                     FirstKeyAttribute = new EntityKeyAttribute
                     {
-                        PropertyName = "QuestionId"
+                        PropertyName = nameof(Question.QuestionId)
                     }
                 }
             });
@@ -63,7 +63,7 @@ namespace TestingSystem.Common.BL.Infrastructure
                 {
                     FirstKeyAttribute = new EntityKeyAttribute
                     {
-                        PropertyName = "RecordId"
+                        PropertyName = nameof(StudentTest.RecordId)
                     }
                 }
             });
@@ -81,11 +81,11 @@ namespace TestingSystem.Common.BL.Infrastructure
                 {
                     FirstKeyAttribute = new EntityKeyAttribute
                     {
-                        PropertyName = "UserId"
+                        PropertyName = nameof(UserRole.UserId)
                     },
                     SecondKeyAttribute = new EntityKeyAttribute
                     {
-                        PropertyName = "RoleId"
+                        PropertyName = nameof(UserRole.RoleId)
                     }
                 }
             });
