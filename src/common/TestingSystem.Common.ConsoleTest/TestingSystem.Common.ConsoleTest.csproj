@@ -5,18 +5,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F82BBDC7-B2D1-4B29-AD47-1D28C24B210F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestingSystem.Common.DAL</RootNamespace>
-    <AssemblyName>TestingSystem.Common.DAL</AssemblyName>
+    <ProjectGuid>{78B51619-A652-4BC2-B971-6FE1C29E4F93}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TestingSystem.Common.ConsoleTest</RootNamespace>
+    <AssemblyName>TestingSystem.Common.ConsoleTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,6 +27,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.4.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -43,8 +48,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,28 +56,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataObjects\Answer.cs" />
-    <Compile Include="DataObjects\Contexts\EntitiesContext.cs" />
-    <Compile Include="DataObjects\Group.cs" />
-    <Compile Include="DataObjects\GroupTest.cs" />
-    <Compile Include="DataObjects\Question.cs" />
-    <Compile Include="DataObjects\Role.cs" />
-    <Compile Include="DataObjects\StudentTest.cs" />
-    <Compile Include="DataObjects\Test.cs" />
-    <Compile Include="DataObjects\User.cs" />
-    <Compile Include="DataObjects\UserRole.cs" />
-    <Compile Include="DataServices\BaseDatabaseDataService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Multilayer.DataServices\Multilayer.DataServices.csproj">
-      <Project>{cc802faf-eaf5-4ee1-a85c-1567b2755662}</Project>
-      <Name>Multilayer.DataServices</Name>
+    <ProjectReference Include="..\TestingSystem.Common.BL\TestingSystem.Common.BL.csproj">
+      <Project>{5010A608-B20D-48EB-A41A-59D25E682DB5}</Project>
+      <Name>TestingSystem.Common.BL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

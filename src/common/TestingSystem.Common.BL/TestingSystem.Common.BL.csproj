@@ -80,10 +80,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Multilayer.DataServices\Multilayer.DataServices.csproj">
-      <Project>{CC802FAF-EAF5-4EE1-A85C-1567B2755662}</Project>
-      <Name>Multilayer.DataServices</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TestingSystem.Common.DAL\TestingSystem.Common.DAL.csproj">
       <Project>{F82BBDC7-B2D1-4B29-AD47-1D28C24B210F}</Project>
       <Name>TestingSystem.Common.DAL</Name>
