@@ -1,4 +1,4 @@
-﻿using Multilayer.Helpers;
+﻿using Multilayer.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,11 +11,13 @@ namespace Multilayer.DataServices
     {
         protected readonly DbContext context;
         protected readonly IDbSet<TEntity> entities;
+        protected readonly ITypeTools<TEntity> typeTools;
 
-        public BaseDataService(DbContext context)
+        public BaseDataService(DbContext context, ITypeTools<TEntity> typeTools)
         {
             this.context = context;
             entities = context.Set<TEntity>();
+            this.typeTools = typeTools;
         }
 
         public virtual int Commit()
@@ -35,7 +37,7 @@ namespace Multilayer.DataServices
 
         public virtual TEntity Select(TEntity entity)
         {
-            return entities.Find(ActionTools<TEntity>.EntityId(entity));
+            return typeTools.Find(entities, entity);
         }
 
         public virtual TEntity Add(TEntity entity)
@@ -43,7 +45,7 @@ namespace Multilayer.DataServices
             return entities.Add(entity);
         }
 
-        public virtual TEntity Update(TEntity oldEntity,TEntity entity)
+        public virtual TEntity Update(TEntity oldEntity, TEntity entity)
         {
             context.Entry(Select(oldEntity)).CurrentValues.SetValues(entity);
             return Select(entity);

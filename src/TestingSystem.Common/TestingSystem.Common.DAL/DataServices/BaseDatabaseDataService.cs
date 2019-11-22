@@ -1,23 +1,23 @@
 ﻿using Multilayer.DataServices;
-using Multilayer.Helpers;
+using Multilayer.Infrastructure.Helpers;
 using System.Data.Entity;
 
 namespace TestingSystem.Common.DAL.DataServices
 {
     public class BaseDatabaseDataService<TEntity> : BaseDataService<TEntity> where TEntity : class, new()
     {
-        public BaseDatabaseDataService(DbContext context) : base(context)
+        public BaseDatabaseDataService(DbContext context, ITypeTools<TEntity> typeTools) : base(context, typeTools)
         {
         }
 
         public override TEntity Remove(TEntity entity)
         {
-            return ActionTools<TEntity>.ActionWithEntity(entities, entity, true);
+            return typeTools.AddOrUpdate(entities, entity, true);
         }
 
         public override TEntity Restore(TEntity entity)
         {
-            return ActionTools<TEntity>.ActionWithEntity(entities, entity, false);
+            return typeTools.AddOrUpdate(entities, entity, false);
         }
     }
 }

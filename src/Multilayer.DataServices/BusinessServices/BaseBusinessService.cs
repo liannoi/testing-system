@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
-using Multilayer.BusinessServices;
 using Multilayer.DataServices;
-using Multilayer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Multilayer.BusinessServices
 {
@@ -26,7 +22,7 @@ namespace Multilayer.BusinessServices
 
         public virtual BTEntity Add(BTEntity entity)
         {
-            var result = dataService.Add(mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Add(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
@@ -39,13 +35,13 @@ namespace Multilayer.BusinessServices
 
         public virtual BTEntity Remove(BTEntity entity)
         {
-            var result = dataService.Remove(mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Remove(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
         public virtual BTEntity Restore(BTEntity entity)
         {
-            var result = dataService.Restore(mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Restore(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 

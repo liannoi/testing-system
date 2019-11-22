@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 
-namespace TestingSystem.Common.BL.Infrastructure
+namespace Multilayer.Infrastructure.Initializers
 {
-    public class BusinessServiceInitializer
+    public class BaseBusinessServiceInitializer : IBusinessServiceInitializer
     {
         public string ParameterName { get; set; } = "mapper";
 

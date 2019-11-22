@@ -61,7 +61,15 @@
     <Compile Include="BusinessServices\IBusinessService.cs" />
     <Compile Include="DataServices\BaseDataService.cs" />
     <Compile Include="DataServices\IDataService.cs" />
-    <Compile Include="Helpers\ActionTools.cs" />
+    <Compile Include="Infrastructure\Exceptions\SpecifyNamePropertyException.cs" />
+    <Compile Include="Infrastructure\Helpers\ITypeTools.cs" />
+    <Compile Include="Infrastructure\Helpers\TypeTools.cs" />
+    <Compile Include="Infrastructure\Initializers\BaseBusinessServiceInitializer.cs" />
+    <Compile Include="Infrastructure\Initializers\BaseDataServiceInitializer.cs" />
+    <Compile Include="Infrastructure\Initializers\IBusinessServiceInitializer.cs" />
+    <Compile Include="Infrastructure\Initializers\IDataServiceInitializer.cs" />
+    <Compile Include="Infrastructure\Keys\EntityKeyAttribute.cs" />
+    <Compile Include="Infrastructure\Keys\IEntityKeyAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

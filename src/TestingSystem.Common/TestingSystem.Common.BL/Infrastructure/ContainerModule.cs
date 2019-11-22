@@ -3,10 +3,12 @@ using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
 using Multilayer.BusinessServices;
 using Multilayer.DataServices;
+using Multilayer.Infrastructure.Helpers;
+using Multilayer.Infrastructure.Initializers;
+using Multilayer.Infrastructure.Keys;
 using System;
 using System.Data.Entity;
 using TestingSystem.Common.BL.BusinessObjects;
-using TestingSystem.Common.BL.BusinessServices;
 using TestingSystem.Common.DAL.DataObjects;
 using TestingSystem.Common.DAL.DataServices;
 
@@ -28,16 +30,43 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectDataService(builder, typeof(BaseDatabaseDataService<Group>), typeof(IDataService<Group>));
 
             // Group Test Data Service.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<GroupTest>), typeof(IDataService<GroupTest>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<GroupTest>), typeof(IDataService<GroupTest>), new BaseDataServiceInitializer<GroupTest>
+            {
+                TypeTools = new TypeTools<GroupTest>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = "RecordId"
+                    }
+                }
+            });
 
             // Question.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<Question>), typeof(IDataService<Question>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Question>), typeof(IDataService<Question>), new BaseDataServiceInitializer<Question>
+            {
+                TypeTools = new TypeTools<Question>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = "QuestionId"
+                    }
+                }
+            });
 
             // Role.
             InjectDataService(builder, typeof(BaseDatabaseDataService<Role>), typeof(IDataService<Role>));
 
             // Student Test.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<StudentTest>), typeof(IDataService<StudentTest>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<StudentTest>), typeof(IDataService<StudentTest>), new BaseDataServiceInitializer<StudentTest>
+            {
+                TypeTools = new TypeTools<StudentTest>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = "RecordId"
+                    }
+                }
+            });
 
             // Test.
             InjectDataService(builder, typeof(BaseDatabaseDataService<Test>), typeof(IDataService<Test>));
@@ -46,17 +75,30 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectDataService(builder, typeof(BaseDatabaseDataService<User>), typeof(IDataService<User>));
 
             // User Role.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<UserRole>), typeof(IDataService<UserRole>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<UserRole>), typeof(IDataService<UserRole>), new BaseDataServiceInitializer<UserRole>
+            {
+                TypeTools = new TypeTools<UserRole>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = "UserId"
+                    },
+                    SecondKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = "RoleId"
+                    }
+                }
+            });
 
             #endregion
 
             #region Dependency injection at the Business Logic Level.
-            
+
             // Answer Business Service.
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<Answer, AnswerBusinessObject>),
                 typeof(IBusinessService<AnswerBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
@@ -71,7 +113,7 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<Group, GroupBusinessObject>),
                 typeof(IBusinessService<GroupBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
@@ -81,32 +123,34 @@ namespace TestingSystem.Common.BL.Infrastructure
                     }).CreateMapper()
                 });
 
-            // TODO: Correct this.
             // Group Test Business Service.
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<GroupTest, GroupTestBusinessObject>),
                 typeof(IBusinessService<GroupTestBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
                         cfg.AddExpressionMapping();
-                        cfg.CreateMap<GroupTest, GroupTestBusinessObject>();
+                        cfg.CreateMap<GroupTest, GroupTestBusinessObject>()
+                            .ForMember(nameof(GroupTestBusinessObject.GroupName), o => o.MapFrom(s => s.Group.Name))
+                            .ForMember(nameof(GroupTestBusinessObject.TestName), o => o.MapFrom(s => s.Test.Title));
                         cfg.CreateMap<GroupTestBusinessObject, GroupTest>();
                     }).CreateMapper()
                 });
 
-            // TODO: Correct this.
             // Question.
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<Question, QuestionBusinessObject>),
                 typeof(IBusinessService<QuestionBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
                         cfg.AddExpressionMapping();
-                        cfg.CreateMap<Question, QuestionBusinessObject>();
+                        cfg.CreateMap<Question, QuestionBusinessObject>()
+                            .ForMember(nameof(QuestionBusinessObject.Question), o => o.MapFrom(s => s.Text))
+                            .ForMember(nameof(QuestionBusinessObject.TestName), o => o.MapFrom(s => s.Test.Title));
                         cfg.CreateMap<QuestionBusinessObject, Question>();
                     }).CreateMapper()
                 });
@@ -115,7 +159,7 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<Role, RoleBusinessObject>),
                 typeof(IBusinessService<RoleBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
@@ -125,17 +169,18 @@ namespace TestingSystem.Common.BL.Infrastructure
                     }).CreateMapper()
                 });
 
-            // TODO: Correct this.
             // Student Test.
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<StudentTest, StudentTestBusinessObject>),
                 typeof(IBusinessService<StudentTestBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
                         cfg.AddExpressionMapping();
-                        cfg.CreateMap<StudentTest, StudentTestBusinessObject>();
+                        cfg.CreateMap<StudentTest, StudentTestBusinessObject>()
+                            .ForMember(nameof(StudentTestBusinessObject.UserName), o => o.MapFrom(s => $"{s.User.LastName} {s.User.FirstName} {s.User.MiddleName}"))
+                            .ForMember(nameof(StudentTestBusinessObject.TestName), o => o.MapFrom(s => s.Test.Title));
                         cfg.CreateMap<StudentTestBusinessObject, StudentTest>();
                     }).CreateMapper()
                 });
@@ -144,7 +189,7 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<Test, TestBusinessObject>),
                 typeof(IBusinessService<TestBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
@@ -158,7 +203,7 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<User, UserBusinessObject>),
                 typeof(IBusinessService<UserBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
@@ -168,17 +213,18 @@ namespace TestingSystem.Common.BL.Infrastructure
                     }).CreateMapper()
                 });
 
-            // TODO: Correct this.
             // User Role.
             InjectBusinessService(builder,
                 typeof(BusinessServices.BaseBusinessService<UserRole, UserRoleBusinessObject>),
                 typeof(IBusinessService<UserRoleBusinessObject>),
-                new BusinessServiceInitializer
+                new BaseBusinessServiceInitializer
                 {
                     MapperConfiguration = new MapperConfiguration(cfg =>
                     {
                         cfg.AddExpressionMapping();
-                        cfg.CreateMap<UserRole, UserRoleBusinessObject>();
+                        cfg.CreateMap<UserRole, UserRoleBusinessObject>()
+                            .ForMember(nameof(UserRoleBusinessObject.UserName), o => o.MapFrom(s => $"{s.User.LastName} {s.User.FirstName} {s.User.MiddleName}"))
+                            .ForMember(nameof(UserRoleBusinessObject.RoleName), o => o.MapFrom(s => s.Role.Name));
                         cfg.CreateMap<UserRoleBusinessObject, UserRole>();
                     }).CreateMapper()
                 });
@@ -192,11 +238,18 @@ namespace TestingSystem.Common.BL.Infrastructure
                 .As(asType);
         }
 
-        private void InjectBusinessService(ContainerBuilder builder, Type registerType, Type asType, BusinessServiceInitializer serviceInitializer)
+        private void InjectDataService<TEntity>(ContainerBuilder builder, Type registerType, Type asType, IDataServiceInitializer<TEntity> dataServiceInitializer) where TEntity : class, new()
         {
             builder.RegisterType(registerType)
                 .As(asType)
-                .WithParameter(serviceInitializer.ParameterName, serviceInitializer.MapperConfiguration);
+                .WithParameter(dataServiceInitializer.ParameterName, dataServiceInitializer.TypeTools);
+        }
+
+        private void InjectBusinessService(ContainerBuilder builder, Type registerType, Type asType, IBusinessServiceInitializer businessServiceInitializer)
+        {
+            builder.RegisterType(registerType)
+                .As(asType)
+                .WithParameter(businessServiceInitializer.ParameterName, businessServiceInitializer.MapperConfiguration);
         }
     }
 }
