@@ -24,10 +24,28 @@ namespace TestingSystem.Common.BL.Infrastructure
             InjectDataService(builder, typeof(EntitiesContext), typeof(DbContext));
 
             // Answer Data Service.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<Answer>), typeof(IDataService<Answer>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Answer>), typeof(IDataService<Answer>), new BaseDataServiceInitializer<Answer>
+            {
+                TypeTools = new TypeTools<Answer>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = nameof(Answer.AnswerId)
+                    }
+                }
+            });
 
             // Group Data Service.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<Group>), typeof(IDataService<Group>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Group>), typeof(IDataService<Group>), new BaseDataServiceInitializer<Group>
+            {
+                TypeTools = new TypeTools<Group>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = nameof(Group.GroupId)
+                    }
+                }
+            });
 
             // Group Test Data Service.
             InjectDataService(builder, typeof(BaseDatabaseDataService<GroupTest>), typeof(IDataService<GroupTest>), new BaseDataServiceInitializer<GroupTest>
@@ -54,7 +72,16 @@ namespace TestingSystem.Common.BL.Infrastructure
             });
 
             // Role.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<Role>), typeof(IDataService<Role>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Role>), typeof(IDataService<Role>), new BaseDataServiceInitializer<Role>
+            {
+                TypeTools = new TypeTools<Role>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = nameof(Role.RoleId)
+                    }
+                }
+            });
 
             // Student Test.
             InjectDataService(builder, typeof(BaseDatabaseDataService<StudentTest>), typeof(IDataService<StudentTest>), new BaseDataServiceInitializer<StudentTest>
@@ -69,10 +96,28 @@ namespace TestingSystem.Common.BL.Infrastructure
             });
 
             // Test.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<Test>), typeof(IDataService<Test>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<Test>), typeof(IDataService<Test>), new BaseDataServiceInitializer<Test>
+            {
+                TypeTools = new TypeTools<Test>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = nameof(Test.TestId)
+                    }
+                }
+            });
 
             // User.
-            InjectDataService(builder, typeof(BaseDatabaseDataService<User>), typeof(IDataService<User>));
+            InjectDataService(builder, typeof(BaseDatabaseDataService<User>), typeof(IDataService<User>), new BaseDataServiceInitializer<User>
+            {
+                TypeTools = new TypeTools<User>
+                {
+                    FirstKeyAttribute = new EntityKeyAttribute
+                    {
+                        PropertyName = nameof(User.UserId)
+                    }
+                }
+            });
 
             // User Role.
             InjectDataService(builder, typeof(BaseDatabaseDataService<UserRole>), typeof(IDataService<UserRole>), new BaseDataServiceInitializer<UserRole>

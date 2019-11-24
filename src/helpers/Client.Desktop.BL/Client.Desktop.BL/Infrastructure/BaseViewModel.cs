@@ -1,4 +1,6 @@
-﻿using Client.Desktop.BL.Infrastructure.Helpers;
+﻿using Client.Desktop.BL.Infrastructure.Events;
+using Client.Desktop.BL.Infrastructure.Events.Interfaces;
+using Client.Desktop.BL.Infrastructure.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
@@ -8,16 +10,13 @@ using System.Windows.Input;
 
 namespace Client.Desktop.BL.Infrastructure
 {
-    public class BaseViewModel : Bindable, IDisposable
+    public class BaseViewModel : Bindable, IDisposable, INotifyUIBusy, INotifyUIUnfrozen
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly ConcurrentDictionary<string, ICommand> cachedCommands;
 
-        public bool IsLoadDataStarted
-        {
-            get => Get<bool>();
-            protected internal set => Set(value);
-        }
+        public event UIBusyEventHandler UIBusy;
+        public event UIUnfrozenEventHandler UIUnfrozen;
 
         public CancellationToken CancellationToken => cancellationTokenSource?.Token ?? CancellationToken.None;
 
@@ -38,17 +37,6 @@ namespace Client.Desktop.BL.Infrastructure
             GC.SuppressFinalize(this);
         }
 
-        public void LoadData()
-        {
-            if (IsLoadDataStarted)
-            {
-                return;
-            }
-
-            IsLoadDataStarted = true;
-            Task.Run(LoadDataAsync, CancellationToken);
-        }
-
         public void CancelRequests()
         {
             cancellationTokenSource.Cancel();
@@ -64,17 +52,19 @@ namespace Client.Desktop.BL.Infrastructure
             return GetCommand(propertyName) ?? SaveCommand(new RelayCommand(commandAction, func), propertyName);
         }
 
-        /// <summary>
-        /// Override this method for load data.
-        /// </summary>
-        protected virtual Task LoadDataAsync()
-        {
-            return Task.FromResult(0);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             CancelRequests();
+        }
+
+        protected virtual void OnUIBusy(UIBusyEventArgs e)
+        {
+            UIBusy?.Invoke(this, e);
+        }
+
+        protected virtual void OnUIUnfrozen(UIUnfrozenEventArgs e)
+        {
+            UIUnfrozen?.Invoke(this, e);
         }
 
         // TODO: Describe non-statistical methods that would show download windows, hiding them. Also, you need to describe static methods for displaying messages for the client ("Are you sure ...?").
