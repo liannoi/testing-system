@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:behaviors="clr-namespace:Client.Desktop.BL.Infrastructure.Behaviors;assembly=Client.Desktop.BL"
+        xmlns:vm="clr-namespace:TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels;assembly=TestingSystem.Client.Desktop.BL"
         mc:Ignorable="d"
         Title="Login - Testing System"
         Height="720"
@@ -11,6 +14,9 @@
         MinWidth="617"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
+    <Window.DataContext>
+        <vm:AuthenticationLoginViewModel />
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
@@ -40,7 +46,8 @@
                  Grid.Row="1"
                  Width="300"
                  Height="35"
-                 VerticalContentAlignment="Center" />
+                 VerticalContentAlignment="Center"
+                 Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <TextBlock Text="Password"
                    VerticalAlignment="Bottom"
                    HorizontalAlignment="Center"
@@ -53,12 +60,17 @@
                      Grid.Row="3"
                      Width="300"
                      Height="35"
-                     VerticalContentAlignment="Center" />
+                     VerticalContentAlignment="Center">
+            <i:Interaction.Behaviors>
+                <behaviors:PasswordBehavior Password="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
         <Button Content="Sign in"
                 Height="30"
                 Width="100"
                 Grid.Column="1"
                 Grid.ColumnSpan="2"
-                Grid.Row="5" />
+                Grid.Row="5"
+                Command="{Binding SignInCommand}" />
     </Grid>
 </Window>

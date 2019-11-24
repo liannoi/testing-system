@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingSystem.Client.Deskto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Desktop.BL", "..\..\helpers\Client.Desktop.BL\Client.Desktop.BL.csproj", "{4FE70A80-3F4E-4837-A922-C94238A79F15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingSystem.Client.Desktop.BL", "TestingSystem.Client.Desktop.BL\TestingSystem.Client.Desktop.BL.csproj", "{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4FE70A80-3F4E-4837-A922-C94238A79F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE70A80-3F4E-4837-A922-C94238A79F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE70A80-3F4E-4837-A922-C94238A79F15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

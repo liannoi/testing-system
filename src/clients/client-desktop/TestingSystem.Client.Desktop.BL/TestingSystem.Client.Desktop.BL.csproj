@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4FE70A80-3F4E-4837-A922-C94238A79F15}</ProjectGuid>
+    <ProjectGuid>{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Client.Desktop.BL</RootNamespace>
-    <AssemblyName>Client.Desktop.BL</AssemblyName>
+    <RootNamespace>TestingSystem.Client.Desktop.BL</RootNamespace>
+    <AssemblyName>TestingSystem.Client.Desktop.BL</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,34 +31,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\clients\client-desktop\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\clients\client-desktop\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\BaseViewModel.cs" />
-    <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
-    <Compile Include="Infrastructure\Helpers\Bindable.cs" />
-    <Compile Include="Infrastructure\Helpers\RelayCommand.cs" />
+    <Compile Include="Infrastructure\Validators\StringValidator.cs" />
+    <Compile Include="Infrastructure\ViewModels\AuthenticationLoginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL.csproj">
+      <Project>{4FE70A80-3F4E-4837-A922-C94238A79F15}</Project>
+      <Name>Client.Desktop.BL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
