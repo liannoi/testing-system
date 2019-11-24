@@ -66,10 +66,15 @@
     <Compile Include="DataServices\BaseDatabaseDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

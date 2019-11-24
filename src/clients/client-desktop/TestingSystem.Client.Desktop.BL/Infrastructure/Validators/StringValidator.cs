@@ -13,12 +13,17 @@
 
         public bool IsValid(string str)
         {
-            return !string.IsNullOrEmpty(str) && str.Length <= maxLength && str.Length >= minLength;
+            return IsValid(str, minLength, maxLength);
         }
 
         public static bool IsValid(string str, int minLength, int maxLength)
         {
-            return !string.IsNullOrEmpty(str) && str.Length <= maxLength && str.Length >= minLength;
+            if (str == null)
+            {
+                return false;
+            }
+
+            return str.Length <= maxLength && str.Length >= minLength;
         }
     }
 }

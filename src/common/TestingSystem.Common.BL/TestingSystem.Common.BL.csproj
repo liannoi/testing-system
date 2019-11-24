@@ -78,10 +78,13 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestingSystem.Common.DAL\TestingSystem.Common.DAL.csproj">
-      <Project>{F82BBDC7-B2D1-4B29-AD47-1D28C24B210F}</Project>
+      <Project>{f82bbdc7-b2d1-4b29-ad47-1d28c24b210f}</Project>
       <Name>TestingSystem.Common.DAL</Name>
     </ProjectReference>
   </ItemGroup>

@@ -47,8 +47,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL.csproj">
-      <Project>{4FE70A80-3F4E-4837-A922-C94238A79F15}</Project>
+    <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
+      <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
       <Name>Client.Desktop.BL</Name>
     </ProjectReference>
   </ItemGroup>

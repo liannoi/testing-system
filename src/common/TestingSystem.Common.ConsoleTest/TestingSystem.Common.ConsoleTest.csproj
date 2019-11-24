@@ -64,6 +64,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestingSystem.Common.BL\TestingSystem.Common.BL.csproj">
       <Project>{5010A608-B20D-48EB-A41A-59D25E682DB5}</Project>
       <Name>TestingSystem.Common.BL</Name>
