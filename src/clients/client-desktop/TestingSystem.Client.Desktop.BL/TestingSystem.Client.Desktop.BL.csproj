@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DFBE6634-0482-4323-A4ED-0DD03EFF6CF2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestingSystem.Client.Desktop.BL</RootNamespace>
+    <AssemblyName>TestingSystem.Client.Desktop.BL</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.4.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessServices\Authentication\AuthenticationRole.cs" />
+    <Compile Include="BusinessServices\Authentication\AuthenticationService.cs" />
+    <Compile Include="BusinessServices\Authentication\IAuthenticationService.cs" />
+    <Compile Include="BusinessServices\Authentication\InvalidAuthenticationException.cs" />
+    <Compile Include="BusinessServices\Authentication\NoPermissionException.cs" />
+    <Compile Include="Helpers\DataTools.cs" />
+    <Compile Include="Infrastructure\Container\ContainerConfig.cs" />
+    <Compile Include="Infrastructure\Container\ContainerModule.cs" />
+    <Compile Include="Infrastructure\Validators\ILoginValidator.cs" />
+    <Compile Include="Infrastructure\Validators\IPasswordValidator.cs" />
+    <Compile Include="Infrastructure\Validators\IStringValidatorParameter.cs" />
+    <Compile Include="Infrastructure\Validators\LoginValidator.cs" />
+    <Compile Include="Infrastructure\Validators\PasswordValidator.cs" />
+    <Compile Include="Infrastructure\Validators\StringValidatorParameter.cs" />
+    <Compile Include="Infrastructure\ViewModels\AuthenticationLoginViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\common\TestingSystem.Common.BL\TestingSystem.Common.BL.csproj">
+      <Project>{5010A608-B20D-48EB-A41A-59D25E682DB5}</Project>
+      <Name>TestingSystem.Common.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
+      <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
+      <Name>Client.Desktop.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7D828668-D7E8-4C82-A9A1-89D7AE8CFBA3}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
