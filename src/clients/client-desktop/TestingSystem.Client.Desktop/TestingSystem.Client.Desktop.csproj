@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BF7E7D53-6777-4D34-B1DA-20973E91591C}</ProjectGuid>
+    <ProjectGuid>{D8C4CFCB-52AD-4324-8B5A-A76EB079F51C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>TestingSystem.Client.Desktop.UI</RootNamespace>
     <AssemblyName>TestingSystem.Client.Desktop.UI</AssemblyName>
@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.4.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -58,9 +61,6 @@
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.3\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -90,10 +90,28 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Windows\Authentication\LoginWindow.xaml.cs">
+    <Compile Include="BL\BusinessServices\Authentication\AuthenticationRole.cs" />
+    <Compile Include="BL\BusinessServices\Authentication\AuthenticationService.cs" />
+    <Compile Include="BL\BusinessServices\Authentication\IAuthenticationService.cs" />
+    <Compile Include="BL\BusinessServices\Authentication\InvalidAuthenticationException.cs" />
+    <Compile Include="BL\BusinessServices\Authentication\NoPermissionException.cs" />
+    <Compile Include="BL\BusinessServices\Tests\ITestsService.cs" />
+    <Compile Include="BL\BusinessServices\Tests\TestsService.cs" />
+    <Compile Include="BL\Helpers\DataTools.cs" />
+    <Compile Include="BL\Infrastructure\Container\ContainerConfig.cs" />
+    <Compile Include="BL\Infrastructure\Container\ContainerModule.cs" />
+    <Compile Include="BL\Infrastructure\Validators\ILoginValidator.cs" />
+    <Compile Include="BL\Infrastructure\Validators\IPasswordValidator.cs" />
+    <Compile Include="BL\Infrastructure\Validators\IStringValidatorParameter.cs" />
+    <Compile Include="BL\Infrastructure\Validators\LoginValidator.cs" />
+    <Compile Include="BL\Infrastructure\Validators\PasswordValidator.cs" />
+    <Compile Include="BL\Infrastructure\Validators\StringValidatorParameter.cs" />
+    <Compile Include="BL\Infrastructure\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
+    <Compile Include="BL\Infrastructure\ViewModels\Student\StudentDashboardViewModel.cs" />
+    <Compile Include="UI\Windows\Authentication\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Student\StudentDashboard.xaml.cs">
+    <Compile Include="UI\Windows\Student\StudentDashboard.xaml.cs">
       <DependentUpon>StudentDashboard.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -125,27 +143,31 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Windows\Authentication\LoginWindow.xaml">
+    <Page Include="UI\Windows\Authentication\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Student\StudentDashboard.xaml">
+    <Page Include="UI\Windows\Student\StudentDashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Windows\Administrator\" />
-    <Folder Include="Windows\Teacher\" />
+    <Folder Include="UI\Windows\Administrator\" />
+    <Folder Include="UI\Windows\Teacher\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\common\TestingSystem.Common.BL\TestingSystem.Common.BL.csproj">
+      <Project>{5010A608-B20D-48EB-A41A-59D25E682DB5}</Project>
+      <Name>TestingSystem.Common.BL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
       <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
       <Name>Client.Desktop.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestingSystem.Client.Desktop.BL\TestingSystem.Client.Desktop.BL.csproj">
-      <Project>{dfbe6634-0482-4323-a4ed-0dd03eff6cf2}</Project>
-      <Name>TestingSystem.Client.Desktop.BL</Name>
+    <ProjectReference Include="..\..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7D828668-D7E8-4C82-A9A1-89D7AE8CFBA3}</Project>
+      <Name>Multilayer.DataServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
