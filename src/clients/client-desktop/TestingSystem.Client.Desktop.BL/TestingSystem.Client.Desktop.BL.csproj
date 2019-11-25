@@ -50,6 +50,7 @@
     <Compile Include="BusinessServices\Authentication\IAuthenticationService.cs" />
     <Compile Include="BusinessServices\Authentication\InvalidAuthenticationException.cs" />
     <Compile Include="BusinessServices\Authentication\NoPermissionException.cs" />
+    <Compile Include="BusinessServices\Tests\TestsService.cs" />
     <Compile Include="Helpers\DataTools.cs" />
     <Compile Include="Infrastructure\Container\ContainerConfig.cs" />
     <Compile Include="Infrastructure\Container\ContainerModule.cs" />
