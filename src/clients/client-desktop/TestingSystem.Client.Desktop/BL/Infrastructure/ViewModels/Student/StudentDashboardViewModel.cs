@@ -45,6 +45,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student
             tests = businessLogicContainer.Container.Resolve<IBusinessService<TestBusinessObject>>();
             studentsTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
             testsService = new TestsService(tests, studentsTests);
+            Tests = testsService.Tests(User);
         }
     }
 }

@@ -2,11 +2,14 @@
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Events;
 using Multilayer.BusinessServices;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.Authentication;
 using TestingSystem.Client.Desktop.BL.Infrastructure.Validators;
+using TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student;
+using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.Infrastructure;
 
@@ -107,14 +110,32 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             {
                 case AuthenticationRole.Student:
                     {
-                        //OpenStudentDashboard(user);
+                        OpenStudentDashboard(user);
                         break;
                     }
                 case AuthenticationRole.Teacher:
-                    break;
+                    {
+                        throw new NotSupportedException("This method is not implemented.");
+                    }
                 case AuthenticationRole.Administrator:
-                    break;
+                    {
+                        throw new NotSupportedException("This method is not implemented.");
+                    }
             }
+        }
+
+        private void OpenStudentDashboard(UserBusinessObject user)
+        {
+            StudentDashboardViewModel studentDashboardViewModel = new StudentDashboardViewModel
+            {
+                User = user
+            };
+            StudentDashboard studentDashboard = new StudentDashboard
+            {
+                DataContext = studentDashboardViewModel
+            };
+            studentDashboard.Show();
+            Application.Current.MainWindow.Close();
         }
 
         private async Task<UserBusinessObject> TryFindUserAsync()
