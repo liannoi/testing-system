@@ -72,11 +72,10 @@
       <Name>Client.Desktop.BL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
-      <Project>{7D828668-D7E8-4C82-A9A1-89D7AE8CFBA3}</Project>
+      <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
       <Name>Multilayer.DataServices</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
