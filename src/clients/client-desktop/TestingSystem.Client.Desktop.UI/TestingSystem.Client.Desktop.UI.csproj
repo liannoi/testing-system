@@ -81,6 +81,9 @@
     <Compile Include="Windows\Authentication\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Student\StudentDashboard.xaml.cs">
+      <DependentUpon>StudentDashboard.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -114,10 +117,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\Student\StudentDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Windows\Administrator\" />
-    <Folder Include="Windows\Student\" />
     <Folder Include="Windows\Teacher\" />
   </ItemGroup>
   <ItemGroup>

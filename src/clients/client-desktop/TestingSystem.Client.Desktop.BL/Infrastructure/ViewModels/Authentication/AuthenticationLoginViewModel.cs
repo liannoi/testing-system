@@ -10,7 +10,7 @@ using TestingSystem.Client.Desktop.BL.Infrastructure.Validators;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.Infrastructure;
 
-namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels
+namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authentication
 {
     public sealed class AuthenticationLoginViewModel : BaseViewModel
     {

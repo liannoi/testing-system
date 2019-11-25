@@ -59,7 +59,7 @@
     <Compile Include="Infrastructure\Validators\LoginValidator.cs" />
     <Compile Include="Infrastructure\Validators\PasswordValidator.cs" />
     <Compile Include="Infrastructure\Validators\StringValidatorParameter.cs" />
-    <Compile Include="Infrastructure\ViewModels\AuthenticationLoginViewModel.cs" />
+    <Compile Include="Infrastructure\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\ViewModels\Administrator\" />
+    <Folder Include="Infrastructure\ViewModels\Student\" />
+    <Folder Include="Infrastructure\ViewModels\Teacher\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

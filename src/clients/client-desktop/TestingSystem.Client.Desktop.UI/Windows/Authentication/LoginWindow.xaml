@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:behaviors="clr-namespace:Client.Desktop.BL.Infrastructure.Behaviors;assembly=Client.Desktop.BL"
-        xmlns:vm="clr-namespace:TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels;assembly=TestingSystem.Client.Desktop.BL"
+        xmlns:vm="clr-namespace:TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authentication;assembly=TestingSystem.Client.Desktop.BL"
         mc:Ignorable="d"
         Title="Login - Testing System"
         Height="720"
