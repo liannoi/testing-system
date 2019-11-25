@@ -1,4 +1,5 @@
 ﻿using Multilayer.BusinessServices;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TestingSystem.Client.Desktop.BL.Helpers;
@@ -21,15 +22,15 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Authentication
             this.usersRolesBusinessService = usersRolesBusinessService;
         }
 
-        public async Task<bool> HavePermissonAsync(UserBusinessObject user)
+        public async Task HavePermissonAsync(UserBusinessObject user)
         {
             if (user == null)
             {
-                return false;
+                throw new ArgumentNullException();
             }
-            return await Task.Factory.StartNew(() =>
+            await Task.Factory.StartNew(() =>
             {
-                return usersRolesBusinessService.Find(e => e.UserId == user.UserId && e.RoleId == RoleId).FirstOrDefault() == null ? throw new NoPermissionException() : true;
+                return usersRolesBusinessService.Find(e => e.UserId == user.UserId && e.RoleId == RoleId).FirstOrDefault() ?? throw new NoPermissionException();
             });
         }
 

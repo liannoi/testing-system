@@ -2,7 +2,6 @@
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Events;
 using Multilayer.BusinessServices;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -61,26 +60,28 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels
         {
             NotifyOnUIBusy("Sign in. Login to the system. Search for matches with the entered data in the database");
             UpdateSearchData();
-            UserBusinessObject find = await TryFindUserAsync();
-            await CheckUserPermission(find);
-            NotifyOnUIUnfrozen();
-            ClearFields();
-        }
+            UserBusinessObject find;
 
-        private async Task<UserBusinessObject> TryFindUserAsync()
-        {
-            UserBusinessObject result;
             try
             {
-                result = await authenticationService.SignInAsync();
+                find = await TryFindUserAsync();
             }
-            catch (InvalidAuthenticationException e)
+            catch (InvalidAuthenticationException)
             {
-                MessageBox.Show(e.Message);
-                NotifyOnUIUnfrozen(e);
-                return null;
+                return;
             }
-            return result;
+
+            try
+            {
+                await CheckUserPermission(find);
+            }
+            catch (NoPermissionException)
+            {
+                return;
+            }
+
+            NotifyOnUIUnfrozen();
+            ClearFields();
         }
 
         #region Events
@@ -101,6 +102,20 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels
 
         #region Helpers
 
+        private async Task<UserBusinessObject> TryFindUserAsync()
+        {
+            try
+            {
+                return await authenticationService.SignInAsync();
+            }
+            catch (InvalidAuthenticationException e)
+            {
+                MessageBox.Show(e.Message);
+                NotifyOnUIUnfrozen(e);
+                throw;
+            }
+        }
+
         private async Task CheckUserPermission(UserBusinessObject find)
         {
             try
@@ -111,7 +126,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels
             {
                 MessageBox.Show(e.Message);
                 NotifyOnUIUnfrozen(e);
-                return;
+                throw;
             }
         }
 
