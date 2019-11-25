@@ -67,6 +67,31 @@ namespace Client.Desktop.BL.Infrastructure
             UIUnfrozen?.Invoke(this, e);
         }
 
+        protected void NotifyOnUIBusy(string action)
+        {
+            OnUIBusy(new UIBusyEventArgs
+            {
+                Action = action
+            });
+        }
+
+        protected void NotifyOnUIUnfrozen()
+        {
+            OnUIUnfrozen(new UIUnfrozenEventArgs
+            {
+                IsSuccess = true
+            });
+        }
+
+        protected void NotifyOnUIUnfrozen(Exception e)
+        {
+            OnUIUnfrozen(new UIUnfrozenEventArgs
+            {
+                FailureMessage = e.Message,
+                IsSuccess = false
+            });
+        }
+
         // TODO: Describe non-statistical methods that would show download windows, hiding them. Also, you need to describe static methods for displaying messages for the client ("Are you sure ...?").
 
         private ICommand SaveCommand(ICommand command, string propertyName)

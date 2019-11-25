@@ -2,6 +2,7 @@
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Events;
 using Multilayer.BusinessServices;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -58,7 +59,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels
 
         private async Task SignInAsync()
         {
-            NotifyOnUIBusy();
+            NotifyOnUIBusy("Sign in. Login to the system. Search for matches with the entered data in the database");
             UpdateSearchData();
             UserBusinessObject find = await TryFindUserAsync();
             await CheckUserPermission(find);
@@ -144,45 +145,11 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels
             Login = string.Empty;
         }
 
-        private void NotifyOnUIUnfrozen()
-        {
-            OnUIUnfrozen(new UIUnfrozenEventArgs
-            {
-                IsSuccess = true
-            });
-        }
-
-        private void NotifyOnUIUnfrozen(InvalidAuthenticationException e)
-        {
-            OnUIUnfrozen(new UIUnfrozenEventArgs
-            {
-                FailureMessage = e.Message,
-                IsSuccess = false
-            });
-        }
-
-        private void NotifyOnUIUnfrozen(NoPermissionException e)
-        {
-            OnUIUnfrozen(new UIUnfrozenEventArgs
-            {
-                FailureMessage = e.Message,
-                IsSuccess = false
-            });
-        }
-
         private void UpdateSearchData()
         {
             authenticationService.Password = Password;
             authenticationService.Login = Login;
             authenticationService.RoleId = (int)AuthenticationRole + 1;
-        }
-
-        private void NotifyOnUIBusy()
-        {
-            OnUIBusy(new UIBusyEventArgs
-            {
-                Action = "Sign in. Login to the system. Search for matches with the entered data in the database"
-            });
         }
 
         #endregion
