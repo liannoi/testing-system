@@ -10,6 +10,6 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Authentication
         int RoleId { get; set; }
 
         Task<UserBusinessObject> SignInAsync();
-        Task HavePermissonAsync(UserBusinessObject user);
+        Task<UserRoleBusinessObject> HavePermissonAsync(UserBusinessObject user);
     }
 }

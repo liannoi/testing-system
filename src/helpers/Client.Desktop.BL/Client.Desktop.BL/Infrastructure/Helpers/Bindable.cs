@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Client.Desktop.BL.Infrastructure.Helpers
 {
-    public class Bindable : INotifyPropertyChanged
+    public class Bindable : INotifyPropertyChanged, IBindable
     {
         private readonly ConcurrentDictionary<string, object> properties;
 

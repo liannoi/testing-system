@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Authentication
+﻿namespace TestingSystem.Client.Desktop.BL.BusinessServices.Authentication
 {
     public enum AuthenticationRole
     {

@@ -23,7 +23,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.Container
             Inject(builder, typeof(StringValidatorParameter), typeof(IStringValidatorParameter));
         }
 
-        private void Inject(ContainerBuilder builder,Type registerType, Type asType, string parameterName, IStringValidatorParameter parameter)
+        private void Inject(ContainerBuilder builder, Type registerType, Type asType, string parameterName, IStringValidatorParameter parameter)
         {
             builder.RegisterType(registerType)
                 .As(asType)

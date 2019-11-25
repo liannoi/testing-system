@@ -4,7 +4,7 @@ using System.Windows.Interactivity;
 
 namespace Client.Desktop.BL.Infrastructure.Behaviors
 {
-    public class PasswordBehavior : Behavior<PasswordBox>
+    public class PasswordBehavior : Behavior<PasswordBox>, IPasswordBehavior
     {
         private bool skipUpdate;
 

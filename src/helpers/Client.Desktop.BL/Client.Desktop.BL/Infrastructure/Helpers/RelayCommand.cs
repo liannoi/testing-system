@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Client.Desktop.BL.Infrastructure.Helpers
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand : ICommand, IRelayCommand
     {
         private readonly Action<object> action;
         private readonly Func<object, bool> func;

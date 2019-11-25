@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace Client.Desktop.BL.Infrastructure.Events
 {

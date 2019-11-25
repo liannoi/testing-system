@@ -5,12 +5,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Client.Desktop.BL.Infrastructure
 {
-    public class BaseViewModel : Bindable, IDisposable, INotifyUIBusy, INotifyUIUnfrozen
+    public class BaseViewModel : Bindable, IDisposable, INotifyUIBusy, INotifyUIUnfrozen, IBaseViewModel
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly ConcurrentDictionary<string, ICommand> cachedCommands;
@@ -34,6 +33,7 @@ namespace Client.Desktop.BL.Infrastructure
         public void Dispose()
         {
             Dispose(true);
+            cancellationTokenSource.Dispose();
             GC.SuppressFinalize(this);
         }
 

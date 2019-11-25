@@ -1,7 +1,5 @@
 ﻿<Application x:Class="TestingSystem.Client.Desktop.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="Windows/Student/StudentDashboard.xaml">
-    <Application.Resources>
-    </Application.Resources>
+             StartupUri="Windows/Authentication/LoginWindow.xaml">
 </Application>

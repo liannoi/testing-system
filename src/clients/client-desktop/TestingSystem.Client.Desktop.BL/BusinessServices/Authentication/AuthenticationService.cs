@@ -22,13 +22,13 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Authentication
             this.usersRolesBusinessService = usersRolesBusinessService;
         }
 
-        public async Task HavePermissonAsync(UserBusinessObject user)
+        public async Task<UserRoleBusinessObject> HavePermissonAsync(UserBusinessObject user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException();
             }
-            await Task.Factory.StartNew(() =>
+            return await Task.Factory.StartNew(() =>
             {
                 return usersRolesBusinessService.Find(e => e.UserId == user.UserId && e.RoleId == RoleId).FirstOrDefault() ?? throw new NoPermissionException();
             });

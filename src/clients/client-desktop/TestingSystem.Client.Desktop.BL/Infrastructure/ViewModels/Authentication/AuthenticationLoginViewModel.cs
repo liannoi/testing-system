@@ -61,7 +61,6 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             NotifyOnUIBusy("Sign in. Login to the system. Search for matches with the entered data in the database");
             UpdateSearchData();
             UserBusinessObject find;
-
             try
             {
                 find = await TryFindUserAsync();
@@ -70,18 +69,18 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             {
                 return;
             }
-
+            UserRoleBusinessObject userRole;
             try
             {
-                await CheckUserPermission(find);
+                userRole = await CheckUserPermission(find);
             }
             catch (NoPermissionException)
             {
                 return;
             }
-
             NotifyOnUIUnfrozen();
             ClearFields();
+            OpenSuggestDashboard(find, (AuthenticationRole)userRole.RoleId);
         }
 
         #region Events
@@ -102,6 +101,22 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
 
         #region Helpers
 
+        private void OpenSuggestDashboard(UserBusinessObject user, AuthenticationRole role)
+        {
+            switch (role)
+            {
+                case AuthenticationRole.Student:
+                    {
+                        //OpenStudentDashboard(user);
+                        break;
+                    }
+                case AuthenticationRole.Teacher:
+                    break;
+                case AuthenticationRole.Administrator:
+                    break;
+            }
+        }
+
         private async Task<UserBusinessObject> TryFindUserAsync()
         {
             try
@@ -116,11 +131,11 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             }
         }
 
-        private async Task CheckUserPermission(UserBusinessObject find)
+        private async Task<UserRoleBusinessObject> CheckUserPermission(UserBusinessObject find)
         {
             try
             {
-                await authenticationService.HavePermissonAsync(find);
+                return await authenticationService.HavePermissonAsync(find);
             }
             catch (NoPermissionException e)
             {
@@ -129,6 +144,28 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
                 throw;
             }
         }
+
+        private void AllowUseComponents()
+        {
+            CanUseComponents = true;
+        }
+
+        private void ClearFields()
+        {
+            Password = string.Empty;
+            Login = string.Empty;
+        }
+
+        private void UpdateSearchData()
+        {
+            authenticationService.Password = Password;
+            authenticationService.Login = Login;
+            authenticationService.RoleId = (int)AuthenticationRole + 1;
+        }
+
+        #endregion
+
+        #region Initializers
 
         private void InitializeValidators()
         {
@@ -143,28 +180,10 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             authenticationService = new AuthenticationService(users, usersRoles);
         }
 
-        private void AllowUseComponents()
-        {
-            CanUseComponents = true;
-        }
-
         private void InitializeContainers()
         {
             businessLogicContainer = new ContainerConfig();
             clientContainer = new Container.ContainerConfig();
-        }
-
-        private void ClearFields()
-        {
-            Password = string.Empty;
-            Login = string.Empty;
-        }
-
-        private void UpdateSearchData()
-        {
-            authenticationService.Password = Password;
-            authenticationService.Login = Login;
-            authenticationService.RoleId = (int)AuthenticationRole + 1;
         }
 
         #endregion
