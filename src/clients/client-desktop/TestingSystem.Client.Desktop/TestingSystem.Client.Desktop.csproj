@@ -128,20 +128,6 @@
     <Folder Include="UI\Windows\Teacher\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\common\TestingSystem.Common.BL\TestingSystem.Common.BL.csproj">
-      <Project>{5010A608-B20D-48EB-A41A-59D25E682DB5}</Project>
-      <Name>TestingSystem.Common.BL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
-      <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
-      <Name>Client.Desktop.BL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
-      <Project>{7D828668-D7E8-4C82-A9A1-89D7AE8CFBA3}</Project>
-      <Name>Multilayer.DataServices</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Autofac">
       <Version>4.9.4</Version>
     </PackageReference>
@@ -151,6 +137,20 @@
     <PackageReference Include="System.Windows.Interactivity.WPF">
       <Version>2.0.20525</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\common\TestingSystem.Common.BL\TestingSystem.Common.BL.csproj">
+      <Project>{5010a608-b20d-48eb-a41a-59d25e682db5}</Project>
+      <Name>TestingSystem.Common.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
+      <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
+      <Name>Client.Desktop.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
