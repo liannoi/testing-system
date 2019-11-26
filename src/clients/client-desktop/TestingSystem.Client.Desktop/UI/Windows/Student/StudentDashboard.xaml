@@ -41,7 +41,7 @@
                     VerticalAlignment="Center"
                     Height="16"
                     Width="122">
-            <TextBlock Text="Nehemie"
+            <TextBlock Text="{Binding Path=User.LastName}"
                        Margin="0,0,4,0" />
             <TextBlock Text="Kerbey"
                        Margin="0,0,4,0" />

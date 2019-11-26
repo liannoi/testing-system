@@ -80,7 +80,7 @@
                     Grid.ColumnSpan="2"
                     Height="23"
                     Width="350"
-                    SelectedIndex="{Binding Path=AuthenticationRole}"
+                    SelectedIndex="{Binding Path=AuthorizationRole}"
                     IsEnabled="{Binding Path=CanUseComponents}">
             <TabControl.Resources>
                 <Style TargetType="TabPanel">

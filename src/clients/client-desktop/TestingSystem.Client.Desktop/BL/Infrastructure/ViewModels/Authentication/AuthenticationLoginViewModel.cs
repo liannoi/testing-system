@@ -152,7 +152,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
 
         private async Task<UserRoleBusinessObject> Authorization(UserBusinessObject findUser)
         {
-            authorizationService.AuthorizationRole = AuthorizationRole + 2;
+            authorizationService.AuthorizationRole = AuthorizationRole + 1;
             authorizationService.User = findUser;
             try
             {
@@ -184,10 +184,8 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             {
                 return await authenticationService.SignInAsync();
             }
-            catch (InvalidAuthenticationException e)
+            catch (InvalidAuthenticationException)
             {
-                MessageBox.Show(e.Message);
-                NotifyOnUIUnfrozen(e);
                 throw;
             }
         }

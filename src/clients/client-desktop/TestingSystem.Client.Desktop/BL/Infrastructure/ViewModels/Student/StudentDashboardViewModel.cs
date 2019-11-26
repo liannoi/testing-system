@@ -15,6 +15,12 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student
         private IBusinessService<TestBusinessObject> tests;
         private IBusinessService<StudentTestBusinessObject> studentsTests;
 
+        public UserBusinessObject User
+        {
+            get => Get<UserBusinessObject>();
+            set => Set(value);
+        }
+
         public IEnumerable<TestBusinessObject> Tests
         {
             get => Get<IEnumerable<TestBusinessObject>>();
@@ -23,9 +29,10 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student
 
         public StudentDashboardViewModel(UserBusinessObject user)
         {
+            User = user;
             InitializeContainers();
             ResolveContainers();
-            testsService = new TestsService(tests, studentsTests, user);
+            testsService = new TestsService(tests, studentsTests, User);
             Tests = testsService.Tests;
         }
 
