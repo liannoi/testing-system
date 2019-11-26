@@ -5,6 +5,6 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Tests
 {
     public interface ITestsService
     {
-        IEnumerable<TestBusinessObject> Tests(UserBusinessObject user);
+        IEnumerable<TestBusinessObject> Tests { get; }
     }
 }

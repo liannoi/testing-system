@@ -1,10 +1,10 @@
 ﻿using Client.Desktop.BL.Infrastructure.Events;
-using Client.Desktop.BL.Infrastructure.Events.Interfaces;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Client.Desktop.BL.Infrastructure
@@ -90,6 +90,12 @@ namespace Client.Desktop.BL.Infrastructure
                 FailureMessage = e.Message,
                 IsSuccess = false
             });
+        }
+
+        protected void DefaultProcessException(Exception e)
+        {
+            MessageBox.Show(e.Message);
+            NotifyOnUIUnfrozen(e);
         }
 
         // TODO: Describe non-statistical methods that would show download windows, hiding them. Also, you need to describe static methods for displaying messages for the client ("Are you sure ...?").

@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.Authentication;
+using TestingSystem.Client.Desktop.BL.BusinessServices.Authorization;
+using TestingSystem.Client.Desktop.BL.BusinessServices.Windows;
 using TestingSystem.Client.Desktop.BL.Infrastructure.Validators;
 using TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student;
+using TestingSystem.Client.Desktop.UI.BL.BusinessServices.Authorization;
 using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.Infrastructure;
@@ -17,13 +20,35 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
 {
     public sealed class AuthenticationLoginViewModel : BaseViewModel
     {
+        #region Fields
+
+        #region Containers
+
         private ContainerConfig businessLogicContainer;
         private Container.ContainerConfig clientContainer;
+
+        #endregion
+
+        #region Services
+
         private IAuthenticationService authenticationService;
+        private IAuthorizationService authorizationService;
         private IBusinessService<UserBusinessObject> users;
         private IBusinessService<UserRoleBusinessObject> usersRoles;
+        private IWindowsManagementService windowManager;
+
+        #endregion
+
+        #region Validators
+
         private ILoginValidator loginValidator;
         private IPasswordValidator passwordValidator;
+
+        #endregion
+
+        #endregion
+
+        #region Properties
 
         public string Login
         {
@@ -37,9 +62,9 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             set => Set(value);
         }
 
-        public AuthenticationRole AuthenticationRole
+        public AuthorizationRole AuthorizationRole
         {
-            get => Get<AuthenticationRole>();
+            get => Get<AuthorizationRole>();
             set => Set(value);
         }
 
@@ -49,7 +74,15 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             set => Set(value);
         }
 
+        #endregion
+
+        #region Commands
+
         public ICommand SignInCommand => MakeCommand(async a => await SignInAsync(), c => passwordValidator.IsValid(Password) && loginValidator.IsValid(Login));
+
+        #endregion
+
+        #region Constructors
 
         public AuthenticationLoginViewModel()
         {
@@ -59,32 +92,38 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             AllowUseComponents();
         }
 
+        #endregion
+
+        #region Commands implementation
+
         private async Task SignInAsync()
         {
-            NotifyOnUIBusy("Sign in. Login to the system. Search for matches with the entered data in the database");
-            UpdateSearchData();
-            UserBusinessObject find;
+            UserBusinessObject findUser;
             try
             {
-                find = await TryFindUserAsync();
+                findUser = await Authentication();
             }
-            catch (InvalidAuthenticationException)
+            catch (InvalidAuthenticationException e)
             {
+                DefaultProcessException(e);
                 return;
             }
             UserRoleBusinessObject userRole;
             try
             {
-                userRole = await CheckUserPermission(find);
+                userRole = await Authorization(findUser);
             }
-            catch (NoPermissionException)
+            catch (InvalidAuthorizationException e)
             {
+                DefaultProcessException(e);
                 return;
             }
             NotifyOnUIUnfrozen();
             ClearFields();
-            OpenSuggestDashboard(find, (AuthenticationRole)userRole.RoleId);
+            OpenSuggestWindow(findUser, userRole);
         }
+
+        #endregion
 
         #region Events
 
@@ -104,38 +143,39 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
 
         #region Helpers
 
-        private void OpenSuggestDashboard(UserBusinessObject user, AuthenticationRole role)
+        private void OpenSuggestWindow(UserBusinessObject findUser, UserRoleBusinessObject userRole)
         {
-            switch (role)
+            windowManager.User = findUser;
+            windowManager.Role = (AuthorizationRole)userRole.RoleId;
+            windowManager.OpenSuggestWindow();
+        }
+
+        private async Task<UserRoleBusinessObject> Authorization(UserBusinessObject findUser)
+        {
+            authorizationService.AuthorizationRole = AuthorizationRole + 2;
+            authorizationService.User = findUser;
+            try
             {
-                case AuthenticationRole.Student:
-                    {
-                        OpenStudentDashboard(user);
-                        break;
-                    }
-                case AuthenticationRole.Teacher:
-                    {
-                        throw new NotSupportedException("This method is not implemented.");
-                    }
-                case AuthenticationRole.Administrator:
-                    {
-                        throw new NotSupportedException("This method is not implemented.");
-                    }
+                return await authorizationService.CheckUserPermission();
+            }
+            catch (InvalidAuthorizationException)
+            {
+                throw;
             }
         }
 
-        private void OpenStudentDashboard(UserBusinessObject user)
+        private async Task<UserBusinessObject> Authentication()
         {
-            StudentDashboardViewModel studentDashboardViewModel = new StudentDashboardViewModel
+            NotifyOnUIBusy("Sign in. Login to the system. Search for matches with the entered data in the database");
+            UpdateSearchData();
+            try
             {
-                User = user
-            };
-            StudentDashboard studentDashboard = new StudentDashboard
+                return await TryFindUserAsync();
+            }
+            catch (InvalidAuthenticationException)
             {
-                DataContext = studentDashboardViewModel
-            };
-            studentDashboard.Show();
-            Application.Current.MainWindow.Close();
+                throw;
+            }
         }
 
         private async Task<UserBusinessObject> TryFindUserAsync()
@@ -151,21 +191,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
                 throw;
             }
         }
-
-        private async Task<UserRoleBusinessObject> CheckUserPermission(UserBusinessObject find)
-        {
-            try
-            {
-                return await authenticationService.HavePermissonAsync(find);
-            }
-            catch (NoPermissionException e)
-            {
-                MessageBox.Show(e.Message);
-                NotifyOnUIUnfrozen(e);
-                throw;
-            }
-        }
-
+        
         private void AllowUseComponents()
         {
             CanUseComponents = true;
@@ -181,7 +207,6 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
         {
             authenticationService.Password = Password;
             authenticationService.Login = Login;
-            authenticationService.RoleId = (int)AuthenticationRole + 1;
         }
 
         #endregion
@@ -198,7 +223,12 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
         {
             users = businessLogicContainer.Container.Resolve<IBusinessService<UserBusinessObject>>();
             usersRoles = businessLogicContainer.Container.Resolve<IBusinessService<UserRoleBusinessObject>>();
-            authenticationService = new AuthenticationService(users, usersRoles);
+            authenticationService = new AuthenticationService(users);
+            authorizationService = new AuthorizationService
+            {
+                UsersRolesBusinessService = usersRoles
+            };
+            windowManager = new WindowsManagementService();
         }
 
         private void InitializeContainers()

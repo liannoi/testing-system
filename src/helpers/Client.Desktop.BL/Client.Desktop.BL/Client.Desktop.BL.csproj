@@ -54,8 +54,8 @@
     <Compile Include="Infrastructure\BaseViewModel.cs" />
     <Compile Include="Infrastructure\Behaviors\IPasswordBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
-    <Compile Include="Infrastructure\Events\Interfaces\INotifyUIBusy.cs" />
-    <Compile Include="Infrastructure\Events\Interfaces\INotifyUIUnfrozen.cs" />
+    <Compile Include="Infrastructure\Events\INotifyUIBusy.cs" />
+    <Compile Include="Infrastructure\Events\INotifyUIUnfrozen.cs" />
     <Compile Include="Infrastructure\Events\UIBusy.cs" />
     <Compile Include="Infrastructure\Events\UIUnfrozen.cs" />
     <Compile Include="Infrastructure\Helpers\Bindable.cs" />

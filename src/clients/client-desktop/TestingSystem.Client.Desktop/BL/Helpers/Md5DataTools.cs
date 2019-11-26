@@ -3,7 +3,7 @@ using System.Text;
 
 namespace TestingSystem.Client.Desktop.BL.Helpers
 {
-    public static class DataTools
+    public static class Md5DataTools
     {
         public static string ToMd5Hash(string input)
         {

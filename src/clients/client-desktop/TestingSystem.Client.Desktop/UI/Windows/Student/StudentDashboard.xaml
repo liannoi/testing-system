@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student"
         mc:Ignorable="d"
         Title="Welcome (Student) - Testing System"
         Height="720"
@@ -80,7 +79,14 @@
         <ListView Grid.Column="3"
                   Grid.ColumnSpan="2"
                   Grid.Row="1"
-                  Grid.RowSpan="4" />
+                  Grid.RowSpan="4"
+                  ItemsSource="{Binding Tests}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Title}" Header="Title" Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
         <DockPanel Grid.Column="0"
                    Grid.ColumnSpan="5"

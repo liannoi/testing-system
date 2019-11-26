@@ -15,23 +15,18 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student
         private IBusinessService<TestBusinessObject> tests;
         private IBusinessService<StudentTestBusinessObject> studentsTests;
 
-        public UserBusinessObject User
-        {
-            get => Get<UserBusinessObject>();
-            set => Set(value);
-        }
-
         public IEnumerable<TestBusinessObject> Tests
         {
             get => Get<IEnumerable<TestBusinessObject>>();
             set => Set(value);
         }
 
-        public StudentDashboardViewModel()
+        public StudentDashboardViewModel(UserBusinessObject user)
         {
             InitializeContainers();
-            InitializeServices();
-            Tests = testsService.Tests(User);
+            ResolveContainers();
+            testsService = new TestsService(tests, studentsTests, user);
+            Tests = testsService.Tests;
         }
 
         private void InitializeContainers()
@@ -40,12 +35,10 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student
             clientContainer = new Container.ContainerConfig();
         }
 
-        private void InitializeServices()
+        private void ResolveContainers()
         {
             tests = businessLogicContainer.Container.Resolve<IBusinessService<TestBusinessObject>>();
             studentsTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
-            testsService = new TestsService(tests, studentsTests);
-            Tests = testsService.Tests(User);
         }
     }
 }

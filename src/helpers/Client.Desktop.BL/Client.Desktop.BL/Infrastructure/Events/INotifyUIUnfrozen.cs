@@ -1,4 +1,4 @@
-﻿namespace Client.Desktop.BL.Infrastructure.Events.Interfaces
+﻿namespace Client.Desktop.BL.Infrastructure.Events
 {
     public interface INotifyUIUnfrozen
     {
