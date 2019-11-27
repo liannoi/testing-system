@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dp="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:hp="clr-namespace:Client.Desktop.BL.Infrastructure.Helpers;assembly=Client.Desktop.BL"
         mc:Ignorable="d"
-        Title="TEST NAME - Testing System"
+        Title="{Binding Test.Title}"
         Height="600"
+        MinHeight="426"
         Width="800"
+        MinWidth="377"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
     <Grid>
@@ -40,13 +43,14 @@
         <TextBox IsReadOnly="True"
                  Grid.Column="1"
                  Grid.Row="1"
-                 Height="30"
+                 Height="Auto"
                  HorizontalContentAlignment="Center"
                  HorizontalAlignment="Left"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto"
-                 Width="650" />
+                 Width="Auto"
+                 Text="{Binding Test.Description}" />
         <TextBlock Text="Start"
                    Grid.Column="1"
                    Grid.Row="3"
@@ -57,7 +61,7 @@
         <dp:DateTimePicker Grid.Column="1"
                            Grid.Row="4"
                            IsReadOnly="True"
-                           Value="12.03.2002 15:00:00"
+                           Value="{Binding TestDetails.Start}"
                            TextAlignment="Left"
                            HorizontalContentAlignment="Center"
                            HorizontalAlignment="Left"
@@ -73,7 +77,7 @@
         <dp:DateTimePicker Grid.Column="1"
                            Grid.Row="7"
                            IsReadOnly="True"
-                           Value="12.03.2002 15:00:00"
+                           Value="{Binding TestDetails.End}"
                            TextAlignment="Left"
                            HorizontalContentAlignment="Center"
                            HorizontalAlignment="Left"
@@ -86,13 +90,12 @@
                    HorizontalAlignment="Left"
                    Height="20"
                    Margin="4,0,0,0" />
-        <TextBlock Text="YES"
+        <TextBlock Text="{hp:SwitchBinding TestDetails.IsPassed, Yes, No}"
                    Grid.Column="1"
                    Grid.Row="9"
-                   VerticalAlignment="Bottom"
-                   HorizontalAlignment="Right"
                    Height="20"
-                   Margin="4,0,4,0" />
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center" />
         <TextBlock Text="Allowed to pass"
                    Grid.Column="1"
                    Grid.Row="10"
@@ -100,11 +103,11 @@
                    HorizontalAlignment="Left"
                    Height="20"
                    Margin="4,0,0,0" />
-        <TextBlock Text="{Binding TestDetails.AllowToPass}"
+        <TextBlock Text="{hp:SwitchBindingExtension TestDetails.AllowToPass, Yes, No}"
                    Grid.Column="1"
                    Grid.Row="10"
                    HorizontalAlignment="Right"
-                   Margin="0,23,4,0" />
+                   VerticalAlignment="Center" />
         <Button Content="Start"
                 Grid.Column="1"
                 Grid.Row="11"
