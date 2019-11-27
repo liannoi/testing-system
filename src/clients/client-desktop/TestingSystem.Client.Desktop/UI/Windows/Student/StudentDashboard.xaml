@@ -62,7 +62,7 @@
                        TextAlignment="Center"
                        FontWeight="Medium"
                        Margin="0,0,40,0" />
-            <TextBlock Text="{Binding Path=AverageGrade}"
+            <TextBlock Text="{Binding Path=AverageGrade, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center" />
         </StackPanel>
         <TextBlock Text="Tests"
@@ -143,7 +143,7 @@
                                Margin="10,0,0,0" />
                 <StatusBarItem Content="{Binding Path=User.GroupName}"
                                Foreground="White"
-                               FontWeight="Heavy"
+                               FontWeight="Thin"
                                HorizontalAlignment="Right"
                                Margin="0,0,25,0" />
             </StatusBar>
