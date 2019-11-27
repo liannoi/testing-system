@@ -109,12 +109,12 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center" />
         <Button Content="Start"
+                Command="{Binding StartTestCommand}"
                 Grid.Column="1"
                 Grid.Row="11"
                 Width="120"
                 Height="27"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                IsEnabled="{Binding TestDetails.AllowToPass}" />
+                VerticalAlignment="Bottom" />
     </Grid>
 </Window>

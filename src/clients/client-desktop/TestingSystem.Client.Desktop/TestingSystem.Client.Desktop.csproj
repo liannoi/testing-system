@@ -95,6 +95,9 @@
     <Compile Include="UI\Windows\Student\StudentDashboard.xaml.cs">
       <DependentUpon>StudentDashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Windows\Student\StudentPassTestWindow.xaml.cs">
+      <DependentUpon>StudentPassTestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Windows\Student\StudentTestDetailsWindow.xaml.cs">
       <DependentUpon>StudentTestDetailsWindow.xaml</DependentUpon>
     </Compile>
@@ -131,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Windows\Student\StudentDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\Student\StudentPassTestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
