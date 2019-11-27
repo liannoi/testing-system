@@ -23,13 +23,7 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Tests
             }
         }
 
-        public double AverageGrade
-        {
-            get
-            {
-                return StudentTests().Select(e => e.PCA / 100 * 12).Average() ?? 0;
-            }
-        }
+        public double AverageGrade => StudentTests().Select(e => e.PCA / 100 * 12).Average() ?? 0;
 
         private IEnumerable<StudentTestBusinessObject> TestsByUser
         {

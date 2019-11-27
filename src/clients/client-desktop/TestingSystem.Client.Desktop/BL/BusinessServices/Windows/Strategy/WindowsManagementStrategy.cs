@@ -8,7 +8,7 @@ namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.Strategy
         where TWindow : Window
     {
         private readonly TViewModel viewModel;
-        private TWindow window;
+        private readonly TWindow window;
 
         public WindowsManagementStrategy(TViewModel viewModel, TWindow window)
         {

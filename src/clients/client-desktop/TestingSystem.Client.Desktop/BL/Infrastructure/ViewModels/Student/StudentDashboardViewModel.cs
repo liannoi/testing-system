@@ -3,10 +3,7 @@ using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using TestingSystem.Client.Desktop.BL.BusinessServices.Tests;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole;
 using TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.TestDetails;
 using TestingSystem.Common.BL.BusinessObjects;
 
