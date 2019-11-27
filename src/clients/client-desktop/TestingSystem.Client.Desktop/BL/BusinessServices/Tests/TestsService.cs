@@ -16,15 +16,30 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Tests
         {
             get
             {
+                foreach (StudentTestBusinessObject test in TestsByUser)
+                {
+                    yield return testsBusinessService.Find(e => e.TestId == test.TestId).Where(e => e.IsRemoved == false).FirstOrDefault();
+                }
+            }
+        }
+
+        public double AverageGrade
+        {
+            get
+            {
+                return StudentTests().Select(e => e.PCA / 100 * 12).Average() ?? 0;
+            }
+        }
+
+        private IEnumerable<StudentTestBusinessObject> TestsByUser
+        {
+            get
+            {
                 if (user == null)
                 {
                     throw new ArgumentNullException();
                 }
-                IEnumerable<StudentTestBusinessObject> testsByUser = studentsTestsBusinessService.Find(e => e.UserId == user.UserId);
-                foreach (StudentTestBusinessObject test in testsByUser)
-                {
-                    yield return testsBusinessService.Find(e => e.TestId == test.TestId).FirstOrDefault();
-                }
+                yield return StudentTests().Where(e => e.IsRemoved == false).FirstOrDefault();
             }
         }
 
@@ -33,6 +48,11 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Tests
             this.testsBusinessService = testsBusinessService;
             this.studentsTestsBusinessService = studentsTestsBusinessService;
             this.user = user;
+        }
+
+        private IEnumerable<StudentTestBusinessObject> StudentTests()
+        {
+            return studentsTestsBusinessService.Find(e => e.UserId == user.UserId).Where(e => e.IsRemoved == false);
         }
     }
 }

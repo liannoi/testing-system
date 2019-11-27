@@ -6,5 +6,6 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Tests
     public interface ITestsService
     {
         IEnumerable<TestBusinessObject> Tests { get; }
+        double AverageGrade { get; }
     }
 }
