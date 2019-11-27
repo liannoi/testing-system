@@ -5,9 +5,9 @@ using TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.Strategy;
 using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
 {
-    public class WindowsManagementService : IWindowsManagementService
+    public class SuggestedRoleWindowManagementService : ISuggestedRoleWindowManagementService
     {
         private IWindowsManagementStrategy strategy;
 
@@ -20,8 +20,11 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows
             {
                 case AuthorizationRole.Student:
                     {
-                        strategy = new WindowsManagementStrategy<StudentDashboardViewModel, StudentDashboard>(new StudentDashboardViewModel(User), new StudentDashboard());
+                        strategy = new WindowsManagementStrategy<StudentDashboardViewModel, StudentDashboard>(
+                            new StudentDashboardViewModel(User),
+                            new StudentDashboard());
                         strategy.Open();
+                        strategy.CloseParent();
                         break;
                     }
                 case AuthorizationRole.Teacher:

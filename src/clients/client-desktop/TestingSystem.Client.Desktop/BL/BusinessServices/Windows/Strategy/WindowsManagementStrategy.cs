@@ -18,9 +18,24 @@ namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.Strategy
 
         public void Open()
         {
-            window.DataContext = viewModel;
+            DataContext();
             window.Show();
+        }
+
+        public void OpenDialog()
+        {
+            DataContext();
+            window.ShowDialog();
+        }
+
+        public void CloseParent()
+        {
             Application.Current.MainWindow.Close();
+        }
+
+        private void DataContext()
+        {
+            window.DataContext = viewModel;
         }
     }
 }

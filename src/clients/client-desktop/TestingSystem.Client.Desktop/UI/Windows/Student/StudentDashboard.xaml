@@ -81,7 +81,7 @@
                   SelectedItem="{Binding SelectedTest, Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <ei:CallMethodAction MethodName="DoubleClickMethod"
+                    <ei:CallMethodAction MethodName="ShowTestDetails"
                                          TargetObject="{Binding}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.Authentication;
 using TestingSystem.Client.Desktop.BL.BusinessServices.Authorization;
 using TestingSystem.Client.Desktop.BL.BusinessServices.Windows;
+using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole;
 using TestingSystem.Client.Desktop.BL.Infrastructure.Validators;
 using TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student;
 using TestingSystem.Client.Desktop.UI.BL.BusinessServices.Authorization;
@@ -35,7 +36,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
         private IAuthorizationService authorizationService;
         private IBusinessService<UserBusinessObject> users;
         private IBusinessService<UserRoleBusinessObject> usersRoles;
-        private IWindowsManagementService windowManager;
+        private ISuggestedRoleWindowManagementService windowManager;
 
         #endregion
 
@@ -226,7 +227,7 @@ namespace TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authenticati
             {
                 UsersRolesBusinessService = usersRoles
             };
-            windowManager = new WindowsManagementService();
+            windowManager = new SuggestedRoleWindowManagementService();
         }
 
         private void InitializeContainers()
