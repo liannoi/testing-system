@@ -4,8 +4,88 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="StudentPassTestWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="TEST NAME"
+        Height="600"
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip">
+    <Grid Margin="1,0,-1,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBox IsReadOnly="True"
+                 Grid.Column="1"
+                 Grid.ColumnSpan="2"
+                 Grid.Row="1"
+                 Height="Auto"
+                 HorizontalContentAlignment="Center"
+                 HorizontalAlignment="Left"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"
+                 Width="Auto" />
+        <TextBlock Height="Auto"
+                   Width="Auto"
+                   Grid.Column="3"
+                   Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{} {0} / {1}">
+                    <Binding Path="RemainQuestions.Current" />
+                    <Binding Path="RemainQuestions.All" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <ListView Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Grid.Row="4"
+                  Grid.RowSpan="5">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Is Correct">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="True" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Question" Width="Auto" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Grid.Column="1"
+                Grid.Row="11"
+                Width="110"
+                Height="27"
+                Content="End"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left" />
+        <Button Grid.Column="2"
+                Grid.Row="11"
+                Width="110"
+                Height="27"
+                Content="Respond"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right" />
     </Grid>
 </Window>
