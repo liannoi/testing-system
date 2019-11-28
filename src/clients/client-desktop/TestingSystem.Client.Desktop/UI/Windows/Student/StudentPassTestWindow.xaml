@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="TEST NAME"
+        Title="{Binding Test.Title}"
         Height="600"
         Width="800"
         WindowStartupLocation="CenterScreen"
@@ -33,16 +33,17 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBox IsReadOnly="True"
+                 Text="{Binding CurrentQuestion.Question}"
                  Grid.Column="1"
                  Grid.ColumnSpan="2"
                  Grid.Row="1"
-                 Height="Auto"
                  HorizontalContentAlignment="Center"
                  HorizontalAlignment="Left"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto"
-                 Width="Auto" />
+                 Width="Auto"
+                 Height="Auto" />
         <TextBlock Height="Auto"
                    Width="Auto"
                    Grid.Column="3"
@@ -56,20 +57,34 @@
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
+        <TextBlock Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="3"
+                   VerticalAlignment="Bottom"
+                   Margin="4,0,0,7">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{} In this question, total {0} correct answer(-s)">
+                    <Binding Path="SuitableAnswersCount" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
         <ListView Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Grid.Row="4"
-                  Grid.RowSpan="5">
+                  Grid.RowSpan="5"
+                  ItemsSource="{Binding Answers}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Is Correct">
+                    <GridViewColumn Header="Is Correct" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="True" />
+                                <CheckBox IsChecked="{Binding IsChecked}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Question" Width="Auto" />
+                    <GridViewColumn Header="Answer"
+                                    Width="Auto"
+                                    DisplayMemberBinding="{Binding Text}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -86,6 +101,7 @@
                 Height="27"
                 Content="Respond"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Right" />
+                HorizontalAlignment="Right"
+                Command="{Binding RespondCommand}" />
     </Grid>
 </Window>

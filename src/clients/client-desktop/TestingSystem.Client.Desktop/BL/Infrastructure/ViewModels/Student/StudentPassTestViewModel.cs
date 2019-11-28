@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.Infrastructure.Container;
 using TestingSystem.Client.Desktop.UI.BL.BusinessServices.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
@@ -47,9 +49,21 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
             set => Set(value);
         }
 
-        public IEnumerable<QuestionBusinessObject> Questions
+        public TestBusinessObject Test
         {
-            get => Get<IEnumerable<QuestionBusinessObject>>();
+            get => Get<TestBusinessObject>();
+            set => Set(value);
+        }
+
+        public int SuitableAnswersCount
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        public IEnumerable<AnswerBusinessObject> Answers
+        {
+            get => Get<IEnumerable<AnswerBusinessObject>>();
             set => Set(value);
         }
 
@@ -57,7 +71,7 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
 
         #region Commands
 
-
+        public ICommand RespondCommand => MakeCommand(a => Respond());
 
         #endregion
 
@@ -65,20 +79,28 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
 
         public StudentPassTestViewModel(TestBusinessObject test)
         {
+            Test = test;
             InitializeContainers();
             ResolveContainers();
-            passingTestService = new PassingTestService(questions, answers)
-            {
-                Test = test
-            };
+            InitializeServices();
             InitializeProperties();
+            UpdateQuestion();
+            PropertyChanged += StudentPassTestViewModel_PropertyChanged;
         }
 
         #endregion
 
         #region Commands implementation
 
-
+        private void Respond()
+        {
+            if (passingTestService.CheckAnswers(Answers.ToList()))
+            {
+                MessageBox.Show("The answers to the question are given correctly.");
+                return;
+            }
+            MessageBox.Show("The answers to the question are given incorrectly.");
+        }
 
         #endregion
 
@@ -98,12 +120,42 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
 
         private void InitializeProperties()
         {
-            Questions = passingTestService.Questions;
             RemainQuestions = new RemainQuestionsBusinessObject
             {
-                All = passingTestService.QuestionsCount,
-                Current = 1
+                All = passingTestService.QuestionsCount
             };
+        }
+
+        private void InitializeServices()
+        {
+            passingTestService = new PassingTestService(questions, answers)
+            {
+                Test = Test
+            };
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private void UpdateQuestion()
+        {
+            CurrentQuestion = passingTestService.YieldQuestions.FirstOrDefault();
+            passingTestService.CurrentQuestion = CurrentQuestion;
+            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
+            Answers = passingTestService.Answers;
+        }
+
+        #endregion
+
+        #region Debug
+
+        private void StudentPassTestViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName=="Answer")
+            {
+                MessageBox.Show("123");
+            }
         }
 
         #endregion
