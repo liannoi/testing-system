@@ -1,12 +1,24 @@
 ﻿using Client.Desktop.BL.Infrastructure;
 using System;
 using System.Windows.Input;
+using TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
 {
     public class StudentTestDetailsViewModel : BaseViewModel
     {
+        #region Fields
+
+        #region Services
+
+        // TODO: Replace by interface.
+        private PassingTestWindowManagementService windowManager;
+
+        #endregion
+
+        #endregion
+
         #region Properties
 
         public TestBusinessObject Test
@@ -35,6 +47,10 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
         {
             Test = test;
             TestDetails = testDetails;
+            windowManager = new PassingTestWindowManagementService()
+            {
+                Test = Test
+            };
         }
 
         #endregion
@@ -43,7 +59,7 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
 
         private void StartTest()
         {
-            throw new NotImplementedException();
+            windowManager.OpenWindow();
         }
 
         #endregion
