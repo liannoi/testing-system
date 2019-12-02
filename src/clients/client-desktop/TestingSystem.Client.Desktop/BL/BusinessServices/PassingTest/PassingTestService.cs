@@ -39,10 +39,9 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
         public IEnumerable<AnswerBusinessObject> SuitableAnswers =>
             GetAnswers(e => e.IsRemoved == false && e.IsSuitable);
 
-        public IEnumerable<AnswerBusinessObject> Answers => GetAnswers();
+        public IEnumerable<AnswerBusinessObject> Answers => GetAnswers(e => e.IsRemoved == false);
 
-        public IEnumerable<QuestionBusinessObject> Questions =>
-            questions.Find(e => e.TestId == Test.TestId).Where(e => e.IsRemoved == false);
+        public IEnumerable<QuestionBusinessObject> Questions => GetQuestions(e => e.IsRemoved == false && e.TestId == 7);
 
         #endregion
 
@@ -60,9 +59,15 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
             return answers.Find(e => e.QuestionId == CurrentQuestion.QuestionId).Where(predicate);
         }
 
-        private IEnumerable<AnswerBusinessObject> GetAnswers()
+        private IEnumerable<QuestionBusinessObject> GetQuestions(Func<QuestionBusinessObject, bool> predicate)
         {
-            return GetAnswers(e => e.IsRemoved == false);
+            IEnumerable<AnswerBusinessObject> selectedAnswers = answers.Select();
+            return questions
+                .Find(e => e.TestId == Test.TestId)
+                .Join(selectedAnswers, c => c.QuestionId, a => a.QuestionId, (c, a) => c)
+                .Where(predicate)
+                .GroupBy(e=>e.QuestionId)
+                .Select(e=>e.First());
         }
 
         #endregion

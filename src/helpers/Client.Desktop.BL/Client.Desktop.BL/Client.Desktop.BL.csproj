@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\BaseViewModel.cs" />
+    <Compile Include="Infrastructure\Helpers\Deeper.cs" />
     <Compile Include="Infrastructure\Helpers\Md5DataTools.cs" />
     <Compile Include="Infrastructure\Helpers\SwitchBindingExtension.cs" />
     <Compile Include="Infrastructure\Events\INotifyUIBusy.cs" />

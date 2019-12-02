@@ -63,6 +63,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BL\BusinessServices\PassingTest\PassingTestService.cs" />
+    <Compile Include="BL\BusinessServices\PassingTest\TestQuestionsOverException.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\IPassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\PassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="BL\BusinessServices\Windows\TestDetails\TestDetailsWindowManagementService.cs" />
     <Compile Include="BL\Container\ContainerConfig.cs" />
     <Compile Include="BL\Container\ContainerModule.cs" />
-    <Compile Include="BL\Converters\RemainQuestionsConverter.cs" />
     <Compile Include="BL\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
     <Compile Include="BL\ViewModels\Student\StudentDashboardViewModel.cs" />
     <Compile Include="BL\ViewModels\Student\StudentPassTestViewModel.cs" />
@@ -87,6 +87,9 @@
     </Compile>
     <Compile Include="UI\Windows\Student\StudentTestDetailsWindow.xaml.cs">
       <DependentUpon>StudentTestDetailsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\Student\StudentTestEndWindow.xaml.cs">
+      <DependentUpon>StudentTestEndWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Windows\Student\StudentTestDetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\Student\StudentTestEndWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

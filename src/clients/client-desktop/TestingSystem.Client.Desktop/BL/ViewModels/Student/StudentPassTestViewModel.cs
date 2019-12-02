@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using Client.Desktop.BL.Infrastructure;
+using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
@@ -39,11 +41,11 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         /// Если ответы на вопрос, все правильные - +1.
         /// Если хотя бы один ошибочный, то -1.
         /// 
-        /// По окончанию вопросов, считаеться количество единиц и составляеться пропорция.
+        /// По окончанию вопросов, посчитать количество единиц и составить пропорцию.
         /// 
         /// Например, 7 вопросов,
         /// все правильные - 7 очков - 100 %
-        /// 2 очка  - ?
+        ///                  2 очка  - ?
         /// 2 * 100 = 200 / 7 = 28.5 (%)
         /// 
         /// 7 очков - 12 балов
@@ -53,8 +55,17 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         private void Respond()
         {
             countCorrectAnswers = passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
-            RemainQuestions.Current += 1;
-            UpdateQuestion(RemainQuestions.Current);
+            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
+            tmp.Current += 1;
+            RemainQuestions = tmp;
+            try
+            {
+                UpdateQuestion(RemainQuestions.Current);
+            }
+            catch (TestQuestionsOverException e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         #endregion
@@ -64,14 +75,19 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         private void InitializeTest()
         {
             UpdateQuestion();
-            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
-            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
+            UpdateAnswers();
         }
 
         private void UpdateQuestion(int skipCount = 0)
         {
-            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(skipCount).FirstOrDefault();
+            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(--skipCount).FirstOrDefault() ?? throw new TestQuestionsOverException();
             CurrentQuestion = passingTestService.CurrentQuestion;
+            UpdateAnswers();
+        }
+
+        private void UpdateAnswers()
+        {
+            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
             Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
         }
 
@@ -136,17 +152,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public int CountCorrectAnswers
-        {
-            get
-            {
-                if (countCorrectAnswers > 0)
-                {
-                    return 0;
-                }
-                return countCorrectAnswers;
-            }
-        }
+        public int CountCorrectAnswers => (countCorrectAnswers > 0) ? 0 : countCorrectAnswers;
 
         public float Grade => CountCorrectAnswers * 12 / RemainQuestions.All;
 

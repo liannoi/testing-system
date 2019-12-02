@@ -3,16 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:conv="clr-namespace:TestingSystem.Client.Desktop.BL.Converters"
         mc:Ignorable="d"
         Title="{Binding Test.Title}"
         Height="720"
+        MinHeight="390"
         Width="1280"
+        MinWidth="315"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
-    <Window.Resources>
-        <conv:RemainQuestionsConverter x:Key="remainQuestions" />
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -53,12 +51,9 @@
                    Grid.Row="1"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center">
-            <TextBlock.Text>
-                <MultiBinding Converter="{StaticResource remainQuestions}">
-                    <Binding Path="Current" ElementName="RemainQuestions.Current" />
-                    <Binding Path="All" ElementName="RemainQuestions.All" />
-                </MultiBinding>
-            </TextBlock.Text>
+            <Run Text="{Binding RemainQuestions.Current, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Run Text="/" />
+            <Run Text="{Binding RemainQuestions.All}" />
         </TextBlock>
         <TextBlock Grid.Column="1"
                    Grid.ColumnSpan="2"
@@ -67,7 +62,7 @@
                    Margin="4,0,0,7">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{} In this question, total {0} correct answer(-s)">
-                    <Binding Path="SuitableAnswersCount" />
+                    <Binding Path="SuitableAnswersCount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
