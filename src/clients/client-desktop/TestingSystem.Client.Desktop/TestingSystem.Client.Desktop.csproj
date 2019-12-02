@@ -88,9 +88,6 @@
     <Compile Include="UI\Windows\Student\StudentTestDetailsWindow.xaml.cs">
       <DependentUpon>StudentTestDetailsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Windows\Student\StudentTestEndWindow.xaml.cs">
-      <DependentUpon>StudentTestEndWindow.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -132,10 +129,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Windows\Student\StudentTestDetailsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Windows\Student\StudentTestEndWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

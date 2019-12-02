@@ -97,7 +97,6 @@
     <Compile Include="BusinessServices\BaseBusinessService.cs" />
     <Compile Include="BusinessServices\Tests\ITestsService.cs" />
     <Compile Include="BusinessServices\Tests\TestsService.cs" />
-    <Compile Include="Infrastructure\Behaviors\IPasswordBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
     <Compile Include="Infrastructure\Container\ContainerConfig.cs" />
     <Compile Include="Infrastructure\Container\ContainerModule.cs" />
