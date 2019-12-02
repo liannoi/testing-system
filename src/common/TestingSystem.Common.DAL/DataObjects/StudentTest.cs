@@ -1,12 +1,11 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace TestingSystem.Common.DAL.DataObjects
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class StudentTest
+    public class StudentTest
     {
-        [Key]
-        public int RecordId { get; set; }
+        [Key] public int RecordId { get; set; }
 
         public int UserId { get; set; }
 

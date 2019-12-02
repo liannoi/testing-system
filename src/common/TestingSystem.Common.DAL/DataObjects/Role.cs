@@ -1,11 +1,12 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
 namespace TestingSystem.Common.DAL.DataObjects
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class Role
+    public class Role
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Role()
         {
             UserRoles = new HashSet<UserRole>();
@@ -13,13 +14,11 @@ namespace TestingSystem.Common.DAL.DataObjects
 
         public int RoleId { get; set; }
 
-        [Required]
-        [StringLength(128)]
-        public string Name { get; set; }
+        [Required] [StringLength(128)] public string Name { get; set; }
 
         public bool IsRemoved { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

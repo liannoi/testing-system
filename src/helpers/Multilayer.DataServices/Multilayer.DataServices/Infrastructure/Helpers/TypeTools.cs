@@ -1,8 +1,8 @@
-﻿using Multilayer.Infrastructure.Keys;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Reflection;
+using Multilayer.Infrastructure.Keys;
 
 namespace Multilayer.Infrastructure.Helpers
 {
@@ -15,7 +15,7 @@ namespace Multilayer.Infrastructure.Helpers
 
         public TEntity AddOrUpdate(IDbSet<TEntity> entities, TEntity entity, bool isRemoved)
         {
-            TEntity find = Find(entities, entity);
+            var find = Find(entities, entity);
             GetProperty("IsRemoved").SetValue(find, isRemoved);
             entities.AddOrUpdate(find);
             return Find(entities, entity);
@@ -23,7 +23,7 @@ namespace Multilayer.Infrastructure.Helpers
 
         public TEntity Find(IDbSet<TEntity> entities, TEntity entity)
         {
-            return (SecondKeyAttribute == null)
+            return SecondKeyAttribute == null
                 ? entities.Find(EntityKeyValue(FirstKeyAttribute, entity))
                 : entities.Find(EntityKeyValue(FirstKeyAttribute, entity), EntityKeyValue(SecondKeyAttribute, entity));
         }

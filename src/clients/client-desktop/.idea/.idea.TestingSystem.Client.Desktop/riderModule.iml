@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../../../common/TestingSystem.Common.BL" />
+    <content url="file://$MODULE_DIR$/../../../../common/TestingSystem.Common.DAL" />
+    <content url="file://$MODULE_DIR$/../../../../helpers/Client.Desktop.BL/Client.Desktop.BL" />
+    <content url="file://$MODULE_DIR$/../../../../helpers/Multilayer.DataServices/Multilayer.DataServices" />
+    <content url="file://$MODULE_DIR$/../.." />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

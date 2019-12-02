@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -35,43 +36,77 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.9.4.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
+      <HintPath>..\..\clients\client-desktop\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+      <HintPath>..\..\clients\client-desktop\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AutoMapper.Extensions.ExpressionMapping, Version=3.0.3.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.Extensions.ExpressionMapping.3.0.3\lib\net461\AutoMapper.Extensions.ExpressionMapping.dll</HintPath>
+      <HintPath>..\..\clients\client-desktop\packages\AutoMapper.Extensions.ExpressionMapping.3.0.3\lib\net461\AutoMapper.Extensions.ExpressionMapping.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\clients\client-desktop\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\clients\client-desktop\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\clients\client-desktop\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\clients\client-desktop\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessObjects\AnswerBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupTestBusinessObject.cs" />
+    <Compile Include="BusinessObjects\NonEntities\RemainQuestionsBusinessObject.cs" />
     <Compile Include="BusinessObjects\QuestionBusinessObject.cs" />
     <Compile Include="BusinessObjects\RoleBusinessObject.cs" />
     <Compile Include="BusinessObjects\StudentTestBusinessObject.cs" />
     <Compile Include="BusinessObjects\TestBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserRoleBusinessObject.cs" />
+    <Compile Include="BusinessServices\Authentication\AuthenticationService.cs" />
+    <Compile Include="BusinessServices\Authentication\IAuthenticationService.cs" />
+    <Compile Include="BusinessServices\Authentication\InvalidAuthenticationException.cs" />
+    <Compile Include="BusinessServices\Authentication\InvalidAuthorizationException.cs" />
+    <Compile Include="BusinessServices\Authorization\AuthorizationRole.cs" />
+    <Compile Include="BusinessServices\Authorization\AuthorizationService.cs" />
+    <Compile Include="BusinessServices\Authorization\IAuthorizationService.cs" />
     <Compile Include="BusinessServices\BaseBusinessService.cs" />
-    <Compile Include="Infrastructure\ContainerConfig.cs" />
-    <Compile Include="Infrastructure\ContainerModule.cs" />
+    <Compile Include="BusinessServices\Tests\ITestsService.cs" />
+    <Compile Include="BusinessServices\Tests\TestsService.cs" />
+    <Compile Include="Infrastructure\Behaviors\IPasswordBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
+    <Compile Include="Infrastructure\Container\ContainerConfig.cs" />
+    <Compile Include="Infrastructure\Container\ContainerModule.cs" />
+    <Compile Include="Infrastructure\Validators\ILoginValidator.cs" />
+    <Compile Include="Infrastructure\Validators\IPasswordValidator.cs" />
+    <Compile Include="Infrastructure\Validators\IStringValidatorParameter.cs" />
+    <Compile Include="Infrastructure\Validators\LoginValidator.cs" />
+    <Compile Include="Infrastructure\Validators\PasswordValidator.cs" />
+    <Compile Include="Infrastructure\Validators\StringValidatorParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +114,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
+      <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
+      <Name>Client.Desktop.BL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
       <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
       <Name>Multilayer.DataServices</Name>
@@ -88,13 +127,8 @@
       <Name>TestingSystem.Common.DAL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
-  </Target>
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <Import Project="..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
 </Project>
