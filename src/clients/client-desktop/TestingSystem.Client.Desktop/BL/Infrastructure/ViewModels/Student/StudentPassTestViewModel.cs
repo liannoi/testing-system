@@ -2,6 +2,7 @@
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -61,9 +62,9 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
             set => Set(value);
         }
 
-        public IEnumerable<AnswerBusinessObject> Answers
+        public ObservableCollection<AnswerBusinessObject> Answers
         {
-            get => Get<IEnumerable<AnswerBusinessObject>>();
+            get => Get<ObservableCollection<AnswerBusinessObject>>();
             set => Set(value);
         }
 
@@ -85,7 +86,6 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
             InitializeServices();
             InitializeProperties();
             UpdateQuestion();
-            PropertyChanged += StudentPassTestViewModel_PropertyChanged;
         }
 
         #endregion
@@ -94,7 +94,7 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
 
         private void Respond()
         {
-            if (passingTestService.CheckAnswers(Answers.ToList()))
+            if (passingTestService.CheckAnswers(Answers))
             {
                 MessageBox.Show("The answers to the question are given correctly.");
                 return;
@@ -143,19 +143,7 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
             CurrentQuestion = passingTestService.YieldQuestions.FirstOrDefault();
             passingTestService.CurrentQuestion = CurrentQuestion;
             SuitableAnswersCount = passingTestService.SuitableAnswersCount;
-            Answers = passingTestService.Answers;
-        }
-
-        #endregion
-
-        #region Debug
-
-        private void StudentPassTestViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName=="Answer")
-            {
-                MessageBox.Show("123");
-            }
+            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers.Cast<AnswerBusinessObject>());
         }
 
         #endregion

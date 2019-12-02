@@ -72,6 +72,7 @@
     <Compile Include="BL\BusinessServices\PassingTest\PassingTestService.cs" />
     <Compile Include="BL\BusinessServices\Tests\ITestsService.cs" />
     <Compile Include="BL\BusinessServices\Tests\TestsService.cs" />
+    <Compile Include="BL\BusinessServices\Windows\PassingTest\IPassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\PassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\Strategy\IWindowsManagementStrategy.cs" />
     <Compile Include="BL\BusinessServices\Windows\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />

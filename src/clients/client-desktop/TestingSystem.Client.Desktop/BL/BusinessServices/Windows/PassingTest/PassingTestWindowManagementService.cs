@@ -5,8 +5,7 @@ using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.PassingTest
 {
-    // TODO: Make interface.
-    public class PassingTestWindowManagementService
+    public class PassingTestWindowManagementService : IPassingTestWindowManagementService
     {
         private IWindowsManagementStrategy strategy;
 

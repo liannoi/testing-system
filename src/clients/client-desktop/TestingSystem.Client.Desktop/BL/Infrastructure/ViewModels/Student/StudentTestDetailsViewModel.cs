@@ -11,9 +11,8 @@ namespace TestingSystem.Client.Desktop.UI.BL.Infrastructure.ViewModels.Student
         #region Fields
 
         #region Services
-
-        // TODO: Replace by interface.
-        private PassingTestWindowManagementService windowManager;
+        
+        private IPassingTestWindowManagementService windowManager;
 
         #endregion
 

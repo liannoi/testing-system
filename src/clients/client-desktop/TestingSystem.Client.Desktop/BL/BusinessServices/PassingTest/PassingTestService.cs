@@ -41,13 +41,14 @@ namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.PassingTest
 
         public bool CheckAnswers(IEnumerable<AnswerBusinessObject> answers)
         {
-            foreach (AnswerBusinessObject answer in answers)
+            foreach (AnswerBusinessObject answer in answers.ToList())
             {
-                if (!answer.IsChecked)
+                if (answer.IsSuitable && !answer.IsChecked)
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
