@@ -1,9 +1,9 @@
 ﻿using System;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Authorization;
-using TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Student;
-using TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.Strategy;
+using Client.Desktop.BL.Infrastructure.Windows;
+using TestingSystem.Client.Desktop.BL.ViewModels.Student;
 using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;
+using TestingSystem.Common.BL.BusinessServices.Authorization;
 
 namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
 {
@@ -19,22 +19,22 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
             switch (Role)
             {
                 case AuthorizationRole.Student:
-                    {
-                        strategy = new WindowsManagementStrategy<StudentDashboardViewModel, StudentDashboard>(
-                            new StudentDashboardViewModel(User),
-                            new StudentDashboard());
-                        strategy.Open();
-                        strategy.CloseParent();
-                        break;
-                    }
+                {
+                    strategy = new WindowsManagementStrategy<StudentDashboardViewModel, StudentDashboard>(
+                        new StudentDashboardViewModel(User),
+                        new StudentDashboard());
+                    strategy.Open();
+                    strategy.CloseParent();
+                    break;
+                }
                 case AuthorizationRole.Teacher:
-                    {
-                        throw new NotSupportedException("This method isn't implemented.");
-                    }
+                {
+                    throw new NotSupportedException("This method isn't implemented.");
+                }
                 case AuthorizationRole.Administrator:
-                    {
-                        throw new NotSupportedException("This method isn't implemented.");
-                    }
+                {
+                    throw new NotSupportedException("This method isn't implemented.");
+                }
             }
         }
     }

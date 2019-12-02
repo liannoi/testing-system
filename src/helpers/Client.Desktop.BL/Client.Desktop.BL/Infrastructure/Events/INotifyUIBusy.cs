@@ -1,7 +1,8 @@
 ﻿namespace Client.Desktop.BL.Infrastructure.Events
 {
-    public interface INotifyUIBusy
+    public interface INotifyUiBusy
     {
-        event UIBusyEventHandler UIBusy;
+        // ReSharper disable once EventNeverSubscribedTo.Global
+        event UiBusyEventHandler UiBusy;
     }
 }

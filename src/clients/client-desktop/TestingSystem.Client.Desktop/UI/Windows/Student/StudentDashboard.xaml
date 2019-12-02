@@ -101,35 +101,35 @@
                   DockPanel.Dock="Top">
                 <MenuItem Header="Student">
                     <MenuItem Header="Calendar"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                     <MenuItem Header="Grades"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="Security..."
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                     <MenuItem Header="Sign out"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="Close"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                 </MenuItem>
                 <MenuItem Header="Tests">
                     <MenuItem Header="Refresh"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="Request attempt..."
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                 </MenuItem>
                 <MenuItem Header="Tools">
                     <MenuItem Header="Options..."
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Documentation"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="About Testing System"
-                          IsEnabled="False" />
+                              IsEnabled="False" />
                 </MenuItem>
             </Menu>
 

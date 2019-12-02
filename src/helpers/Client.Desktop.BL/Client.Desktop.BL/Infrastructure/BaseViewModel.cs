@@ -1,23 +1,18 @@
-﻿using Client.Desktop.BL.Infrastructure.Events;
-using Client.Desktop.BL.Infrastructure.Helpers;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using Client.Desktop.BL.Infrastructure.Events;
+using Client.Desktop.BL.Infrastructure.Helpers;
 
 namespace Client.Desktop.BL.Infrastructure
 {
-    public class BaseViewModel : Bindable, IDisposable, INotifyUIBusy, INotifyUIUnfrozen, IBaseViewModel
+    public class BaseViewModel : Bindable, IDisposable, INotifyUiBusy, INotifyUiUnfrozen
     {
-        private readonly CancellationTokenSource cancellationTokenSource;
         private readonly ConcurrentDictionary<string, ICommand> cachedCommands;
-
-        public event UIBusyEventHandler UIBusy;
-        public event UIUnfrozenEventHandler UIUnfrozen;
-
-        public CancellationToken CancellationToken => cancellationTokenSource?.Token ?? CancellationToken.None;
+        private readonly CancellationTokenSource cancellationTokenSource;
 
         public BaseViewModel()
         {
@@ -25,16 +20,21 @@ namespace Client.Desktop.BL.Infrastructure
             cachedCommands = new ConcurrentDictionary<string, ICommand>();
         }
 
-        ~BaseViewModel()
-        {
-            Dispose(false);
-        }
+        public CancellationToken CancellationToken => cancellationTokenSource?.Token ?? CancellationToken.None;
 
         public void Dispose()
         {
             Dispose(true);
             cancellationTokenSource.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public event UiBusyEventHandler UiBusy;
+        public event UiUnfrozenEventHandler UiUnfrozen;
+
+        ~BaseViewModel()
+        {
+            Dispose(false);
         }
 
         public void CancelRequests()
@@ -47,7 +47,8 @@ namespace Client.Desktop.BL.Infrastructure
             return GetCommand(propertyName) ?? SaveCommand(new RelayCommand(commandAction), propertyName);
         }
 
-        protected ICommand MakeCommand(Action<object> commandAction, Func<object, bool> func, [CallerMemberName] string propertyName = null)
+        protected ICommand MakeCommand(Action<object> commandAction, Func<object, bool> func,
+            [CallerMemberName] string propertyName = null)
         {
             return GetCommand(propertyName) ?? SaveCommand(new RelayCommand(commandAction, func), propertyName);
         }
@@ -57,35 +58,35 @@ namespace Client.Desktop.BL.Infrastructure
             CancelRequests();
         }
 
-        protected virtual void OnUIBusy(UIBusyEventArgs e)
+        protected virtual void OnUiBusy(UiBusyEventArgs e)
         {
-            UIBusy?.Invoke(this, e);
+            UiBusy?.Invoke(this, e);
         }
 
-        protected virtual void OnUIUnfrozen(UIUnfrozenEventArgs e)
+        protected virtual void OnUiUnfrozen(UiUnfrozenEventArgs e)
         {
-            UIUnfrozen?.Invoke(this, e);
+            UiUnfrozen?.Invoke(this, e);
         }
 
-        protected void NotifyOnUIBusy(string action)
+        protected void NotifyOnUiBusy(string action)
         {
-            OnUIBusy(new UIBusyEventArgs
+            OnUiBusy(new UiBusyEventArgs
             {
                 Action = action
             });
         }
 
-        protected void NotifyOnUIUnfrozen()
+        protected void NotifyOnUiUnfrozen()
         {
-            OnUIUnfrozen(new UIUnfrozenEventArgs
+            OnUiUnfrozen(new UiUnfrozenEventArgs
             {
                 IsSuccess = true
             });
         }
 
-        protected void NotifyOnUIUnfrozen(Exception e)
+        protected void NotifyOnUiUnfrozen(Exception e)
         {
-            OnUIUnfrozen(new UIUnfrozenEventArgs
+            OnUiUnfrozen(new UiUnfrozenEventArgs
             {
                 FailureMessage = e.Message,
                 IsSuccess = false
@@ -95,34 +96,25 @@ namespace Client.Desktop.BL.Infrastructure
         protected void DefaultProcessException(Exception e)
         {
             MessageBox.Show(e.Message);
-            NotifyOnUIUnfrozen(e);
+            NotifyOnUiUnfrozen(e);
         }
 
         // TODO: Describe non-statistical methods that would show download windows, hiding them. Also, you need to describe static methods for displaying messages for the client ("Are you sure ...?").
 
         private ICommand SaveCommand(ICommand command, string propertyName)
         {
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
+            if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException(nameof(propertyName));
 
-            if (!cachedCommands.ContainsKey(propertyName))
-            {
-                cachedCommands.TryAdd(propertyName, command);
-            }
+            if (!cachedCommands.ContainsKey(propertyName)) cachedCommands.TryAdd(propertyName, command);
 
             return command;
         }
 
         private ICommand GetCommand(string propertyName)
         {
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
+            if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException(nameof(propertyName));
 
-            return cachedCommands.TryGetValue(propertyName, out ICommand cachedCommand) ? cachedCommand : null;
+            return cachedCommands.TryGetValue(propertyName, out var cachedCommand) ? cachedCommand : null;
         }
     }
 }

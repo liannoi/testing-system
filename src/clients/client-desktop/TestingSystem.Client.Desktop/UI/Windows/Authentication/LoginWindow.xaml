@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:vm="clr-namespace:TestingSystem.Client.Desktop.BL.Infrastructure.ViewModels.Authentication"
-        xmlns:behaviors="clr-namespace:Client.Desktop.BL.Infrastructure.Behaviors;assembly=Client.Desktop.BL"
+        xmlns:authentication="clr-namespace:TestingSystem.Client.Desktop.BL.ViewModels.Authentication"
+        xmlns:behaviors="clr-namespace:TestingSystem.Common.BL.Infrastructure.Behaviors;assembly=TestingSystem.Common.BL"
         mc:Ignorable="d"
         Title="Login - Testing System"
         Height="720"
@@ -15,7 +15,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
     <Window.DataContext>
-        <vm:AuthenticationLoginViewModel />
+        <authentication:AuthenticationLoginViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -64,7 +64,8 @@
                      Height="35"
                      VerticalContentAlignment="Center">
             <i:Interaction.Behaviors>
-                <behaviors:PasswordBehavior Password="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <behaviors:PasswordBehavior
+                    Password="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
         </PasswordBox>
         <Button Content="Sign in"

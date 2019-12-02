@@ -1,8 +1,8 @@
+using System.Data.Entity;
+
 namespace TestingSystem.Common.DAL.DataObjects
 {
-    using System.Data.Entity;
-
-    public partial class EntitiesContext : DbContext
+    public class EntitiesContext : DbContext
     {
         public EntitiesContext() : base("name=EntitiesContext")
         {

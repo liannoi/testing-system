@@ -1,15 +1,22 @@
-﻿using Multilayer.BusinessServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.PassingTest
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
 {
     public class PassingTestService
     {
-        private IBusinessService<QuestionBusinessObject> questions;
-        private IBusinessService<AnswerBusinessObject> answers;
+        private readonly IBusinessService<AnswerBusinessObject> answers;
+        private readonly IBusinessService<QuestionBusinessObject> questions;
+
+        public PassingTestService(IBusinessService<QuestionBusinessObject> questions,
+            IBusinessService<AnswerBusinessObject> answers)
+        {
+            this.questions = questions;
+            this.answers = answers;
+        }
 
         public TestBusinessObject Test { get; set; }
 
@@ -19,37 +26,24 @@ namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.PassingTest
 
         public int SuitableAnswersCount => SuitableAnswers.Count();
 
-        public IEnumerable<AnswerBusinessObject> SuitableAnswers => GetAnswers(e => e.IsRemoved == false && e.IsSuitable == true);
+        public IEnumerable<AnswerBusinessObject> SuitableAnswers =>
+            GetAnswers(e => e.IsRemoved == false && e.IsSuitable);
 
         public IEnumerable<AnswerBusinessObject> Answers => GetAnswers();
 
         public IEnumerable<QuestionBusinessObject> YieldQuestions
         {
-            get
-            {
-                yield return Questions.FirstOrDefault();
-            }
+            get { yield return Questions.FirstOrDefault(); }
         }
 
-        private IEnumerable<QuestionBusinessObject> Questions => questions.Find(e => e.TestId == Test.TestId).Where(e => e.IsRemoved == false);
+        private IEnumerable<QuestionBusinessObject> Questions =>
+            questions.Find(e => e.TestId == Test.TestId).Where(e => e.IsRemoved == false);
 
-        public PassingTestService(IBusinessService<QuestionBusinessObject> questions, IBusinessService<AnswerBusinessObject> answers)
-        {
-            this.questions = questions;
-            this.answers = answers;
-        }
-
+        // ReSharper disable once MemberCanBeMadeStatic.Global
+        // ReSharper disable once ParameterHidesMember
         public bool CheckAnswers(IEnumerable<AnswerBusinessObject> answers)
         {
-            foreach (AnswerBusinessObject answer in answers.ToList())
-            {
-                if (answer.IsSuitable && !answer.IsChecked)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return answers.ToList().All(answer => !answer.IsSuitable || answer.IsChecked);
         }
 
         private IEnumerable<AnswerBusinessObject> GetAnswers(Func<AnswerBusinessObject, bool> predicate)

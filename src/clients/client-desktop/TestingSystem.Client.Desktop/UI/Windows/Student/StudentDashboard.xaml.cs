@@ -3,7 +3,7 @@
 namespace TestingSystem.Client.Desktop.UI.Windows.Student
 {
     /// <summary>
-    /// Interaction logic for StudentDashboard.xaml
+    ///     Interaction logic for StudentDashboard.xaml
     /// </summary>
     public partial class StudentDashboard : Window
     {

@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Client.Desktop.BL.Infrastructure.Helpers
 {
-    public class RelayCommand : ICommand, IRelayCommand
+    public class RelayCommand : ICommand
     {
         private readonly Action<object> action;
         private readonly Func<object, bool> func;
@@ -31,15 +31,8 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
 
         public event EventHandler CanExecuteChanged
         {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
     }
 }

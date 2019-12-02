@@ -1,7 +1,8 @@
 ﻿namespace Client.Desktop.BL.Infrastructure.Events
 {
-    public interface INotifyUIUnfrozen
+    public interface INotifyUiUnfrozen
     {
-        event UIUnfrozenEventHandler UIUnfrozen;
+        // ReSharper disable once EventNeverSubscribedTo.Global
+        event UiUnfrozenEventHandler UiUnfrozen;
     }
 }

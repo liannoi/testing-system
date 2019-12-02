@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D8C4CFCB-52AD-4324-8B5A-A76EB079F51C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TestingSystem.Client.Desktop.UI</RootNamespace>
-    <AssemblyName>TestingSystem.Client.Desktop.UI</AssemblyName>
+    <RootNamespace>TestingSystem.Client.Desktop</RootNamespace>
+    <AssemblyName>TestingSystem.Client.Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,37 +62,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BL\BusinessServices\Authentication\IAuthenticationService.cs" />
-    <Compile Include="BL\BusinessServices\Authorization\AuthorizationRole.cs" />
-    <Compile Include="BL\BusinessServices\Authentication\AuthenticationService.cs" />
-    <Compile Include="BL\BusinessServices\Authentication\InvalidAuthenticationException.cs" />
-    <Compile Include="BL\BusinessServices\Authentication\InvalidAuthorizationException.cs" />
-    <Compile Include="BL\BusinessServices\Authorization\AuthorizationService.cs" />
-    <Compile Include="BL\BusinessServices\Authorization\IAuthorizationService.cs" />
     <Compile Include="BL\BusinessServices\PassingTest\PassingTestService.cs" />
-    <Compile Include="BL\BusinessServices\Tests\ITestsService.cs" />
-    <Compile Include="BL\BusinessServices\Tests\TestsService.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\IPassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\PassingTestWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\Strategy\IWindowsManagementStrategy.cs" />
     <Compile Include="BL\BusinessServices\Windows\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\Strategy\WindowsManagementStrategy.cs" />
+    <Compile Include="BL\BusinessServices\Windows\SuggestedRole\SuggestedRoleWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\TestDetails\ITestDetailsWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\TestDetails\TestDetailsWindowManagementService.cs" />
-    <Compile Include="BL\Helpers\Md5DataTools.cs" />
-    <Compile Include="BL\BusinessServices\Windows\SuggestedRole\SuggestedRoleWindowManagementService.cs" />
-    <Compile Include="BL\Infrastructure\Container\ContainerConfig.cs" />
-    <Compile Include="BL\Infrastructure\Container\ContainerModule.cs" />
-    <Compile Include="BL\Infrastructure\Validators\ILoginValidator.cs" />
-    <Compile Include="BL\Infrastructure\Validators\IPasswordValidator.cs" />
-    <Compile Include="BL\Infrastructure\Validators\IStringValidatorParameter.cs" />
-    <Compile Include="BL\Infrastructure\Validators\LoginValidator.cs" />
-    <Compile Include="BL\Infrastructure\Validators\PasswordValidator.cs" />
-    <Compile Include="BL\Infrastructure\Validators\StringValidatorParameter.cs" />
-    <Compile Include="BL\Infrastructure\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
-    <Compile Include="BL\Infrastructure\ViewModels\Student\StudentDashboardViewModel.cs" />
-    <Compile Include="BL\Infrastructure\ViewModels\Student\StudentPassTestViewModel.cs" />
-    <Compile Include="BL\Infrastructure\ViewModels\Student\StudentTestDetailsViewModel.cs" />
+    <Compile Include="BL\Container\ContainerConfig.cs" />
+    <Compile Include="BL\Container\ContainerModule.cs" />
+    <Compile Include="BL\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
+    <Compile Include="BL\ViewModels\Student\StudentDashboardViewModel.cs" />
+    <Compile Include="BL\ViewModels\Student\StudentPassTestViewModel.cs" />
+    <Compile Include="BL\ViewModels\Student\StudentTestDetailsViewModel.cs" />
     <Compile Include="UI\Windows\Authentication\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>

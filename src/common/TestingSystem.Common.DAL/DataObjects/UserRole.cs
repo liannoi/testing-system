@@ -1,9 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TestingSystem.Common.DAL.DataObjects
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    public partial class UserRole
+    public class UserRole
     {
         [Key]
         [Column(Order = 0)]

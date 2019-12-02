@@ -4,61 +4,44 @@ using System.Runtime.CompilerServices;
 
 namespace Client.Desktop.BL.Infrastructure.Helpers
 {
-    public class Bindable : INotifyPropertyChanged, IBindable
+    public class Bindable : INotifyPropertyChanged
     {
         private readonly ConcurrentDictionary<string, object> properties;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected bool CallPropertyChangeEvent { get; set; } = true;
-
-        public Bindable()
+        protected Bindable()
         {
             properties = new ConcurrentDictionary<string, object>();
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public bool CallPropertyChangeEvent { get; } = true;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected T Get<T>(T defValue = default(T), [CallerMemberName] string name = null)
+        public T Get<T>(T defValue = default(T), [CallerMemberName] string name = null)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return defValue;
-            }
+            if (string.IsNullOrEmpty(name)) return defValue;
 
-            if (properties.TryGetValue(name, out object value))
-            {
-                return (T)value;
-            }
+            if (properties.TryGetValue(name, out var value)) return (T) value;
 
             properties.AddOrUpdate(name, defValue, (s, o) => defValue);
             return defValue;
         }
 
-        protected bool Set(object value, [CallerMemberName] string name = null)
+        public void Set(object value, [CallerMemberName] string name = null)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return false;
-            }
+            if (string.IsNullOrEmpty(name)) return;
 
-            bool isExists = properties.TryGetValue(name, out object getValue);
-            if (isExists && Equals(value, getValue))
-            {
-                return false;
-            }
+            var isExists = properties.TryGetValue(name, out var getValue);
+            if (isExists && Equals(value, getValue)) return;
 
             properties.AddOrUpdate(name, value, (s, o) => value);
 
-            if (CallPropertyChangeEvent)
-            {
-                OnPropertyChanged(name);
-            }
-
-            return true;
+            if (CallPropertyChangeEvent) OnPropertyChanged(name);
         }
     }
 }

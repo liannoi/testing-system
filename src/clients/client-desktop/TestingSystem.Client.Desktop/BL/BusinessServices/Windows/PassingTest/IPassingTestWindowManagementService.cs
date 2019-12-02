@@ -1,6 +1,6 @@
 ﻿using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.UI.BL.BusinessServices.Windows.PassingTest
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.PassingTest
 {
     public interface IPassingTestWindowManagementService
     {

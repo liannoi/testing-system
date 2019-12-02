@@ -6,18 +6,8 @@ using System.Windows.Markup;
 
 namespace Client.Desktop.BL.Infrastructure.Helpers
 {
-    public class SwitchBindingExtension : Binding, ISwitchBindingExtension
+    public class SwitchBindingExtension : Binding
     {
-        public SwitchBindingExtension()
-        {
-            Initialize();
-        }
-
-        public SwitchBindingExtension(string path) : base(path)
-        {
-            Initialize();
-        }
-
         public SwitchBindingExtension(string path, object valueIfTrue, object valueIfFalse) : base(path)
         {
             Initialize();
@@ -25,18 +15,18 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
             ValueIfFalse = valueIfFalse;
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        [ConstructorArgument("valueIfTrue")] public object ValueIfTrue { get; set; }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        [ConstructorArgument("valueIfFalse")] public object ValueIfFalse { get; set; }
+
         private void Initialize()
         {
             ValueIfTrue = DoNothing;
             ValueIfFalse = DoNothing;
             Converter = new SwitchConverter(this);
         }
-
-        [ConstructorArgument("valueIfTrue")]
-        public object ValueIfTrue { get; set; }
-
-        [ConstructorArgument("valueIfFalse")]
-        public object ValueIfFalse { get; set; }
 
         private class SwitchConverter : IValueConverter
         {
@@ -53,7 +43,7 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
             {
                 try
                 {
-                    bool b = System.Convert.ToBoolean(value);
+                    var b = System.Convert.ToBoolean(value);
                     return b ? switchExtension.ValueIfTrue : switchExtension.ValueIfFalse;
                 }
                 catch

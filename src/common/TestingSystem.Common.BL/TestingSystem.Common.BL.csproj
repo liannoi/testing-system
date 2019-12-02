@@ -55,15 +55,26 @@
       <HintPath>..\..\clients\client-desktop\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\clients\client-desktop\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\clients\client-desktop\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessObjects\AnswerBusinessObject.cs" />
@@ -76,9 +87,26 @@
     <Compile Include="BusinessObjects\TestBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserBusinessObject.cs" />
     <Compile Include="BusinessObjects\UserRoleBusinessObject.cs" />
+    <Compile Include="BusinessServices\Authentication\AuthenticationService.cs" />
+    <Compile Include="BusinessServices\Authentication\IAuthenticationService.cs" />
+    <Compile Include="BusinessServices\Authentication\InvalidAuthenticationException.cs" />
+    <Compile Include="BusinessServices\Authentication\InvalidAuthorizationException.cs" />
+    <Compile Include="BusinessServices\Authorization\AuthorizationRole.cs" />
+    <Compile Include="BusinessServices\Authorization\AuthorizationService.cs" />
+    <Compile Include="BusinessServices\Authorization\IAuthorizationService.cs" />
     <Compile Include="BusinessServices\BaseBusinessService.cs" />
-    <Compile Include="Infrastructure\ContainerConfig.cs" />
-    <Compile Include="Infrastructure\ContainerModule.cs" />
+    <Compile Include="BusinessServices\Tests\ITestsService.cs" />
+    <Compile Include="BusinessServices\Tests\TestsService.cs" />
+    <Compile Include="Infrastructure\Behaviors\IPasswordBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
+    <Compile Include="Infrastructure\Container\ContainerConfig.cs" />
+    <Compile Include="Infrastructure\Container\ContainerModule.cs" />
+    <Compile Include="Infrastructure\Validators\ILoginValidator.cs" />
+    <Compile Include="Infrastructure\Validators\IPasswordValidator.cs" />
+    <Compile Include="Infrastructure\Validators\IStringValidatorParameter.cs" />
+    <Compile Include="Infrastructure\Validators\LoginValidator.cs" />
+    <Compile Include="Infrastructure\Validators\PasswordValidator.cs" />
+    <Compile Include="Infrastructure\Validators\StringValidatorParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +114,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\helpers\Client.Desktop.BL\Client.Desktop.BL\Client.Desktop.BL.csproj">
+      <Project>{4fe70a80-3f4e-4837-a922-c94238a79f15}</Project>
+      <Name>Client.Desktop.BL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\helpers\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
       <Project>{7d828668-d7e8-4c82-a9a1-89d7ae8cfba3}</Project>
       <Name>Multilayer.DataServices</Name>
@@ -95,6 +127,7 @@
       <Name>TestingSystem.Common.DAL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
   <Import Project="..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />

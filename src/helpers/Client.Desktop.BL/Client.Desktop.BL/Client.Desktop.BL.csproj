@@ -52,23 +52,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\BaseViewModel.cs" />
-    <Compile Include="Infrastructure\Behaviors\IPasswordBehavior.cs" />
-    <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
-    <Compile Include="Infrastructure\Helpers\ISwitchBindingExtension.cs" />
+    <Compile Include="Infrastructure\Helpers\Md5DataTools.cs" />
     <Compile Include="Infrastructure\Helpers\SwitchBindingExtension.cs" />
     <Compile Include="Infrastructure\Events\INotifyUIBusy.cs" />
     <Compile Include="Infrastructure\Events\INotifyUIUnfrozen.cs" />
     <Compile Include="Infrastructure\Events\UIBusy.cs" />
     <Compile Include="Infrastructure\Events\UIUnfrozen.cs" />
     <Compile Include="Infrastructure\Helpers\Bindable.cs" />
-    <Compile Include="Infrastructure\Helpers\IBindable.cs" />
-    <Compile Include="Infrastructure\Helpers\IRelayCommand.cs" />
     <Compile Include="Infrastructure\Helpers\RelayCommand.cs" />
-    <Compile Include="Infrastructure\IBaseViewModel.cs" />
+    <Compile Include="Infrastructure\Windows\IWindowsManagementStrategy.cs" />
+    <Compile Include="Infrastructure\Windows\WindowsManagementStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Multilayer.DataServices\Multilayer.DataServices\Multilayer.DataServices.csproj">
+      <Project>{7D828668-D7E8-4C82-A9A1-89D7AE8CFBA3}</Project>
+      <Name>Multilayer.DataServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

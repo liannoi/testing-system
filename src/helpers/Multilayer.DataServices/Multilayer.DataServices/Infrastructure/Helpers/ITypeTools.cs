@@ -1,6 +1,6 @@
-﻿using Multilayer.Infrastructure.Keys;
-using System;
+﻿using System;
 using System.Data.Entity;
+using Multilayer.Infrastructure.Keys;
 
 namespace Multilayer.Infrastructure.Helpers
 {
