@@ -1,15 +1,21 @@
-﻿using System;
+﻿using Multilayer.BusinessServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
 {
     public class PassingTestService
     {
+        #region Fields
+
         private readonly IBusinessService<AnswerBusinessObject> answers;
         private readonly IBusinessService<QuestionBusinessObject> questions;
+
+        #endregion
+
+        #region Constructors
 
         public PassingTestService(IBusinessService<QuestionBusinessObject> questions,
             IBusinessService<AnswerBusinessObject> answers)
@@ -18,11 +24,15 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
             this.answers = answers;
         }
 
+        #endregion
+
+        #region Properties
+
         public TestBusinessObject Test { get; set; }
 
-        public QuestionBusinessObject CurrentQuestion { get; set; }
-
         public int QuestionsCount => Questions.Count();
+
+        public QuestionBusinessObject CurrentQuestion { get; set; }
 
         public int SuitableAnswersCount => SuitableAnswers.Count();
 
@@ -31,13 +41,12 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
 
         public IEnumerable<AnswerBusinessObject> Answers => GetAnswers();
 
-        public IEnumerable<QuestionBusinessObject> YieldQuestions
-        {
-            get { yield return Questions.FirstOrDefault(); }
-        }
-
-        private IEnumerable<QuestionBusinessObject> Questions =>
+        public IEnumerable<QuestionBusinessObject> Questions =>
             questions.Find(e => e.TestId == Test.TestId).Where(e => e.IsRemoved == false);
+
+        #endregion
+
+        #region Methods
 
         // ReSharper disable once MemberCanBeMadeStatic.Global
         // ReSharper disable once ParameterHidesMember
@@ -55,5 +64,7 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
         {
             return GetAnswers(e => e.IsRemoved == false);
         }
+
+        #endregion
     }
 }

@@ -3,13 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="clr-namespace:TestingSystem.Client.Desktop.BL.Converters"
         mc:Ignorable="d"
         Title="{Binding Test.Title}"
-        Height="600"
-        Width="800"
+        Height="720"
+        Width="1280"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
-    <Grid Margin="1,0,-1,0">
+    <Window.Resources>
+        <conv:RemainQuestionsConverter x:Key="remainQuestions" />
+    </Window.Resources>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -29,7 +33,6 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="4*" />
             <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBox IsReadOnly="True"
@@ -51,9 +54,9 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center">
             <TextBlock.Text>
-                <MultiBinding StringFormat="{} {0} / {1}">
-                    <Binding Path="RemainQuestions.Current" />
-                    <Binding Path="RemainQuestions.All" />
+                <MultiBinding Converter="{StaticResource remainQuestions}">
+                    <Binding Path="Current" ElementName="RemainQuestions.Current" />
+                    <Binding Path="All" ElementName="RemainQuestions.All" />
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>

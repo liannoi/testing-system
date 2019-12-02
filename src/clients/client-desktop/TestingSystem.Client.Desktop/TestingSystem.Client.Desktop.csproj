@@ -71,6 +71,7 @@
     <Compile Include="BL\BusinessServices\Windows\TestDetails\TestDetailsWindowManagementService.cs" />
     <Compile Include="BL\Container\ContainerConfig.cs" />
     <Compile Include="BL\Container\ContainerModule.cs" />
+    <Compile Include="BL\Converters\RemainQuestionsConverter.cs" />
     <Compile Include="BL\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
     <Compile Include="BL\ViewModels\Student\StudentDashboardViewModel.cs" />
     <Compile Include="BL\ViewModels\Student\StudentPassTestViewModel.cs" />

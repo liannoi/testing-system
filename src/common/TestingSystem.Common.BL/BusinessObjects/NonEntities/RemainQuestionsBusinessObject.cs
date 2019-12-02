@@ -2,7 +2,7 @@
 {
     public class RemainQuestionsBusinessObject
     {
-        public int Current { get; set; } = 1;
+        public int Current { get; set; }
         public int All { get; set; }
     }
 }

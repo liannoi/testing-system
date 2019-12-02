@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using Autofac;
+﻿using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
@@ -23,7 +22,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             ResolveContainers();
             InitializeServices();
             InitializeProperties();
-            UpdateQuestion();
+            InitializeTest();
         }
 
         #endregion
@@ -36,26 +35,43 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         #region Commands implementation
 
+        /// <summary>
+        /// Если ответы на вопрос, все правильные - +1.
+        /// Если хотя бы один ошибочный, то -1.
+        /// 
+        /// По окончанию вопросов, считаеться количество единиц и составляеться пропорция.
+        /// 
+        /// Например, 7 вопросов,
+        /// все правильные - 7 очков - 100 %
+        /// 2 очка  - ?
+        /// 2 * 100 = 200 / 7 = 28.5 (%)
+        /// 
+        /// 7 очков - 12 балов
+        /// 2 очка  - ? балов
+        /// 2 * 12 = 24 / 7 = 3.42 (б)
+        /// </summary>
         private void Respond()
         {
-            if (passingTestService.CheckAnswers(Answers))
-            {
-                MessageBox.Show("The answers to the question are given correctly.");
-                return;
-            }
-
-            MessageBox.Show("The answers to the question are given incorrectly.");
+            countCorrectAnswers = passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
+            RemainQuestions.Current += 1;
+            UpdateQuestion(RemainQuestions.Current);
         }
 
         #endregion
 
         #region Helpers
 
-        private void UpdateQuestion()
+        private void InitializeTest()
         {
-            CurrentQuestion = passingTestService.YieldQuestions.FirstOrDefault();
-            passingTestService.CurrentQuestion = CurrentQuestion;
+            UpdateQuestion();
             SuitableAnswersCount = passingTestService.SuitableAnswersCount;
+            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
+        }
+
+        private void UpdateQuestion(int skipCount = 0)
+        {
+            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(skipCount).FirstOrDefault();
+            CurrentQuestion = passingTestService.CurrentQuestion;
             Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
         }
 
@@ -77,6 +93,12 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         private IBusinessService<QuestionBusinessObject> questions;
         private IBusinessService<AnswerBusinessObject> answers;
+
+        #endregion
+
+        #region Helpers
+
+        private int countCorrectAnswers;
 
         #endregion
 
@@ -114,6 +136,20 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
+        public int CountCorrectAnswers
+        {
+            get
+            {
+                if (countCorrectAnswers > 0)
+                {
+                    return 0;
+                }
+                return countCorrectAnswers;
+            }
+        }
+
+        public float Grade => CountCorrectAnswers * 12 / RemainQuestions.All;
+
         #endregion
 
         #region Initializers and resolves
@@ -134,7 +170,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         {
             RemainQuestions = new RemainQuestionsBusinessObject
             {
-                All = passingTestService.QuestionsCount
+                All = passingTestService.QuestionsCount,
+                Current = 1
             };
         }
 
