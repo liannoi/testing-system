@@ -62,18 +62,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BL\BusinessServices\PassingTest\IPassingTestService.cs" />
-    <Compile Include="BL\BusinessServices\PassingTest\PassingTestService.cs" />
-    <Compile Include="BL\BusinessServices\PassingTest\TestQuestionsOverException.cs" />
-    <Compile Include="BL\BusinessServices\Windows\BaseWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\EndPassingTest\EndPassingTestWindowManagement.cs" />
-    <Compile Include="BL\BusinessServices\Windows\EndPassingTest\IEndPassingTestWindowManagement.cs" />
-    <Compile Include="BL\BusinessServices\Windows\PassingTest\IPassingTestWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\PassingTest\PassingTestWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\SuggestedRole\SuggestedRoleWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\TestDetails\ITestDetailsWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\TestDetails\TestDetailsWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\BaseWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\EndPassingTest\EndPassingTestWindowManagement.cs" />
+    <Compile Include="BL\WindowManagementServices\EndPassingTest\IEndPassingTestWindowManagement.cs" />
+    <Compile Include="BL\WindowManagementServices\PassingTest\IPassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\PassingTest\PassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\SuggestedRole\SuggestedRoleWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\TestDetails\ITestDetailsWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagementServices\TestDetails\TestDetailsWindowManagementService.cs" />
     <Compile Include="BL\Container\ContainerConfig.cs" />
     <Compile Include="BL\Container\ContainerModule.cs" />
     <Compile Include="BL\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />

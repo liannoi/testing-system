@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Common.BL.BusinessServices.Tests
+namespace TestingSystem.Client.Desktop.BL.WindowManagementServices.TestDetails
 {
-    public interface ITestsService
+    public interface ITestDetailsWindowManagementService
     {
-        IEnumerable<TestBusinessObject> Tests { get; }
-        double AverageGrade { get; }
+        TestBusinessObject Test { get; set; }
+        StudentTestBusinessObject TestDetails { get; set; }
+
+        void OpenWindow();
     }
 }

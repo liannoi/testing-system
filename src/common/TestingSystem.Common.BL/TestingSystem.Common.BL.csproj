@@ -96,7 +96,9 @@
     <Compile Include="BusinessServices\Authorization\AuthorizationService.cs" />
     <Compile Include="BusinessServices\Authorization\IAuthorizationService.cs" />
     <Compile Include="BusinessServices\BaseBusinessService.cs" />
-    <Compile Include="BusinessServices\Tests\ITestsService.cs" />
+    <Compile Include="BusinessServices\Tests\Answers\AnswersService.cs" />
+    <Compile Include="BusinessServices\Tests\Questions\QuestionsService.cs" />
+    <Compile Include="BusinessServices\Tests\TestQuestionsOverException.cs" />
     <Compile Include="BusinessServices\Tests\TestsService.cs" />
     <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
     <Compile Include="Infrastructure\Container\ContainerConfig.cs" />
@@ -127,7 +129,10 @@
       <Name>TestingSystem.Common.DAL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BusinessServices\Tests\Facade\" />
+    <Folder Include="BusinessServices\Tests\Tests\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
   <Import Project="..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\..\clients\client-desktop\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />

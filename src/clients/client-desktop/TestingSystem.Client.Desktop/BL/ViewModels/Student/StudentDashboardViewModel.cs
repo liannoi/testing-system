@@ -17,7 +17,7 @@ using System.Linq;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.TestDetails;
+using TestingSystem.Client.Desktop.BL.WindowManagementServices.TestDetails;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Tests;
 using TestingSystem.Common.BL.Infrastructure.Container;

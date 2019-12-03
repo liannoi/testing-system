@@ -14,12 +14,11 @@
 
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.TestDetails
+namespace TestingSystem.Client.Desktop.BL.WindowManagementServices.PassingTest
 {
-    public interface ITestDetailsWindowManagementService
+    public interface IPassingTestWindowManagementService
     {
         TestBusinessObject Test { get; set; }
-        StudentTestBusinessObject TestDetails { get; set; }
 
         void OpenWindow();
     }

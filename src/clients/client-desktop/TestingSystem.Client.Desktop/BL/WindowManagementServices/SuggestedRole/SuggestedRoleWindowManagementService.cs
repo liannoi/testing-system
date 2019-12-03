@@ -19,7 +19,7 @@ using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Authorization;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
+namespace TestingSystem.Client.Desktop.BL.WindowManagementServices.SuggestedRole
 {
     public class SuggestedRoleWindowManagementService : BaseWindowManagementService,
         ISuggestedRoleWindowManagementService

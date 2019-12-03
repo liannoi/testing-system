@@ -18,7 +18,7 @@ using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Events;
 using Multilayer.BusinessServices;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole;
+using TestingSystem.Client.Desktop.BL.WindowManagementServices.SuggestedRole;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Authentication;
 using TestingSystem.Common.BL.BusinessServices.Authorization;

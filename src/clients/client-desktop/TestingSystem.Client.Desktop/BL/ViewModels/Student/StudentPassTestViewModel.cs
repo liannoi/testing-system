@@ -12,30 +12,86 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.EndPassingTest;
+using TestingSystem.Client.Desktop.BL.WindowManagementServices.EndPassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
+using TestingSystem.Common.BL.BusinessServices.Tests;
 using TestingSystem.Common.BL.Infrastructure.Container;
 
 namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentPassTestViewModel : BaseViewModel
     {
-        private IBusinessService<AnswerBusinessObject> answers;
+        private TestsService testsService;
+        private ContainerConfig container;
 
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
-        private int countCorrectAnswers;
-        private IPassingTestService passingTestService;
+        public RemainQuestionsBusinessObject RemainQuestions
+        {
+            get => Get<RemainQuestionsBusinessObject>();
+            set => Set(value);
+        }
+
+        public StudentPassTestViewModel()
+        {
+            container = new ContainerConfig();
+            testsService = new TestsService(container);
+        }
+
+        public ICommand RespondCommand => MakeCommand(a => Respond());
+
+        private void Respond()
+        {
+            testsService.IncreaseIfCorrect(Answers);
+            RemainQuestions = testsService.UpdateCounter(RemainQuestions);
+            try
+            {
+                testsService.UpdateQuestion(RemainQuestions);
+
+
+
+
+                CurrentQuestion = testsService.CurrentQuestion;
+
+                UpdateQuestion(RemainQuestions.Current);
+            }
+            catch (TestQuestionsOverException)
+            {
+                ProcessTestEnd();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
         private IBusinessService<QuestionBusinessObject> questions;
+        private IBusinessService<AnswerBusinessObject> answers;
+        private IBusinessService<StudentTestBusinessObject> studentTests;
         private IEndPassingTestWindowManagement windowManagement;
 
         public StudentPassTestViewModel(TestBusinessObject test)
@@ -48,13 +104,9 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             InitializeTest();
         }
 
-        public ICommand RespondCommand => MakeCommand(a => Respond());
 
-        public RemainQuestionsBusinessObject RemainQuestions
-        {
-            get => Get<RemainQuestionsBusinessObject>();
-            set => Set(value);
-        }
+
+
 
         public QuestionBusinessObject CurrentQuestion
         {
@@ -80,8 +132,6 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public int CountCorrectAnswers => countCorrectAnswers > 0 ? 0 : countCorrectAnswers;
-
         /// <summary>
         ///     Если ответы на вопрос, все правильные - +1.
         ///     Если хотя бы один ошибочный, то -1.
@@ -94,48 +144,28 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         ///     2 очка  - ? балов
         ///     2 * 12 = 24 / 7 = 3.42 (б)
         /// </summary>
-        private void Respond()
-        {
-            countCorrectAnswers =
-                passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
-            var tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
-            tmp.Current += 1;
-            RemainQuestions = tmp;
-            try
-            {
-                UpdateQuestion(RemainQuestions.Current);
-            }
-            catch (TestQuestionsOverException e)
-            {
-                ProcessTestEnd();
-            }
-        }
+
 
         private void UpdateQuestion(int skipCount = 0)
         {
-            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(--skipCount).FirstOrDefault() ??
+            testsService.CurrentQuestion = testsService.Questions.Skip(--skipCount).FirstOrDefault() ??
                                                  throw new TestQuestionsOverException();
-            CurrentQuestion = passingTestService.CurrentQuestion;
+            CurrentQuestion = testsService.CurrentQuestion;
             UpdateAnswers();
         }
 
         private void UpdateAnswers()
         {
-            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
-            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
+            SuitableAnswersCount = testsService.SuitableAnswers.Count();
+            Answers = new ObservableCollection<AnswerBusinessObject>(testsService.Answers);
         }
 
         private void ProcessTestEnd()
         {
-            windowManagement = new EndPassingTestWindowManagement
-            {
-                PassingTestResult = new PassingTestResultBusinessObject
-                {
-                    MaxGrade = 12,
-                    CountQuestions = passingTestService.QuestionsCount,
-                    CountCorrentAnswered = CountCorrectAnswers
-                }
-            };
+            // TODO: Return to this, again.
+            windowManagement = new EndPassingTestWindowManagement();
+
+            windowManagement.OpenWindow();
         }
 
         private void InitializeTest()
@@ -154,20 +184,21 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         {
             questions = businessLogicContainer.Container.Resolve<IBusinessService<QuestionBusinessObject>>();
             answers = businessLogicContainer.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
+            studentTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
         }
 
         private void InitializeProperties()
         {
             RemainQuestions = new RemainQuestionsBusinessObject
             {
-                All = passingTestService.QuestionsCount,
+                All = testsService.Questions.Count(),
                 Current = 1
             };
         }
 
         private void InitializeServices()
         {
-            passingTestService = new PassingTestService(questions, answers)
+            testsService = new TestsService(tests)
             {
                 Test = Test
             };
