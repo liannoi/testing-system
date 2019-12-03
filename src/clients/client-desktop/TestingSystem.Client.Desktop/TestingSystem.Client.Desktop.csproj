@@ -76,6 +76,7 @@
     <Compile Include="BL\ViewModels\Student\StudentDashboardViewModel.cs" />
     <Compile Include="BL\ViewModels\Student\StudentPassTestViewModel.cs" />
     <Compile Include="BL\ViewModels\Student\StudentTestDetailsViewModel.cs" />
+    <Compile Include="BL\ViewModels\Student\StudentTestPassEndViewModel.cs" />
     <Compile Include="UI\Windows\Authentication\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -87,6 +88,9 @@
     </Compile>
     <Compile Include="UI\Windows\Student\StudentTestDetailsWindow.xaml.cs">
       <DependentUpon>StudentTestDetailsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\Student\StudentTestPassEndWindow.xaml.cs">
+      <DependentUpon>StudentTestPassEndWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Windows\Student\StudentTestDetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\Student\StudentTestPassEndWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
