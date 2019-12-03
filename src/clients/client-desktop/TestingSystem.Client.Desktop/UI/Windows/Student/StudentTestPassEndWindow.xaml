@@ -1,0 +1,67 @@
+﻿<Window x:Class="TestingSystem.Client.Desktop.UI.Windows.Student.StudentTestPassEndWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="StudentTestPassEndWindow"
+        Height="600"
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="You have successfully passed the test"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="5"
+                   Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center" />
+        <Button Content="OK"
+                Grid.Column="4"
+                Grid.Row="5"
+                Width="100"
+                Height="27" />
+        <StackPanel Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="2"
+                    Grid.RowSpan="2"
+                    Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Grade"
+                           Width="120"
+                           Height="20" />
+                <TextBox Width="40"
+                         Height="30"
+                         IsReadOnly="True" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,30,0,0">
+                <TextBlock Text="Сorrect answers (%)"
+                           Width="120"
+                           Height="20" />
+                <TextBox Width="40"
+                         Height="30"
+                         IsReadOnly="True" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
