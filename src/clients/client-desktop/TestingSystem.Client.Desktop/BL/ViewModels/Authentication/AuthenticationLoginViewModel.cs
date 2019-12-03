@@ -29,7 +29,16 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
 {
     public sealed class AuthenticationLoginViewModel : BaseViewModel
     {
-        #region Constructors
+        private IAuthenticationService authenticationService;
+        private IAuthorizationService authorizationService;
+
+        private ContainerConfig businessLogicContainer;
+        private Container.ContainerConfig clientContainer;
+        private ILoginValidator loginValidator;
+        private IPasswordValidator passwordValidator;
+        private IBusinessService<UserBusinessObject> users;
+        private IBusinessService<UserRoleBusinessObject> usersRoles;
+        private ISuggestedRoleWindowManagementService windowManager;
 
         public AuthenticationLoginViewModel()
         {
@@ -39,16 +48,44 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
             AllowUseComponents();
         }
 
-        #endregion
-
-        #region Commands
-
         public ICommand SignInCommand => MakeCommand(async a => await SignInAsync(),
             c => passwordValidator.IsValid(Password) && loginValidator.IsValid(Login));
 
-        #endregion
+        public string Login
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
 
-        #region Commands implementation
+        public string Password
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        public AuthorizationRole AuthorizationRole
+        {
+            get => Get<AuthorizationRole>();
+            set => Set(value);
+        }
+
+        public bool CanUseComponents
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        protected override void OnUiBusy(UiBusyEventArgs e)
+        {
+            CanUseComponents = false;
+            base.OnUiBusy(e);
+        }
+
+        protected override void OnUiUnfrozen(UiUnfrozenEventArgs e)
+        {
+            AllowUseComponents();
+            base.OnUiUnfrozen(e);
+        }
 
         private async Task SignInAsync()
         {
@@ -78,82 +115,6 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
             ClearFields();
             OpenSuggestWindow(findUser, userRole);
         }
-
-        #endregion
-
-        #region Events
-
-        protected override void OnUiBusy(UiBusyEventArgs e)
-        {
-            CanUseComponents = false;
-            base.OnUiBusy(e);
-        }
-
-        protected override void OnUiUnfrozen(UiUnfrozenEventArgs e)
-        {
-            AllowUseComponents();
-            base.OnUiUnfrozen(e);
-        }
-
-        #endregion
-
-        #region Fields
-
-        #region Containers
-
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
-
-        #endregion
-
-        #region Services
-
-        private IAuthenticationService authenticationService;
-        private IAuthorizationService authorizationService;
-        private IBusinessService<UserBusinessObject> users;
-        private IBusinessService<UserRoleBusinessObject> usersRoles;
-        private ISuggestedRoleWindowManagementService windowManager;
-
-        #endregion
-
-        #region Validators
-
-        private ILoginValidator loginValidator;
-        private IPasswordValidator passwordValidator;
-
-        #endregion
-
-        #endregion
-
-        #region Properties
-
-        public string Login
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        public string Password
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        public AuthorizationRole AuthorizationRole
-        {
-            get => Get<AuthorizationRole>();
-            set => Set(value);
-        }
-
-        public bool CanUseComponents
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        #endregion
-
-        #region Helpers
 
         private void OpenSuggestWindow(UserBusinessObject findUser, UserRoleBusinessObject userRole)
         {
@@ -198,10 +159,6 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
             authenticationService.Login = Login;
         }
 
-        #endregion
-
-        #region Initializers
-
         private void InitializeValidators()
         {
             loginValidator = clientContainer.Container.Resolve<ILoginValidator>();
@@ -225,7 +182,5 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
             businessLogicContainer = new ContainerConfig();
             clientContainer = new Container.ContainerConfig();
         }
-
-        #endregion
     }
 }

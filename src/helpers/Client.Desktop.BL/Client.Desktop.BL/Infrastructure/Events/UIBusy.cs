@@ -18,7 +18,6 @@ namespace Client.Desktop.BL.Infrastructure.Events
 {
     public class UiBusyEventArgs : EventArgs
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Action { get; set; }
     }
 

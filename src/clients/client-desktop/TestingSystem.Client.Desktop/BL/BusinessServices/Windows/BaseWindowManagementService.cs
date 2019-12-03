@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Client.Desktop.BL.Infrastructure.Events
+using Client.Desktop.BL.Infrastructure.Windows;
+
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows
 {
-    public interface INotifyUiUnfrozen
+    public abstract class BaseWindowManagementService
     {
-        event UiUnfrozenEventHandler UiUnfrozen;
+        protected IWindowsManagementStrategy Strategy;
     }
 }

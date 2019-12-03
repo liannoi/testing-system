@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest;
+using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.EndPassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 using TestingSystem.Common.BL.Infrastructure.Container;
@@ -29,7 +29,14 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentPassTestViewModel : BaseViewModel
     {
-        #region Constructors
+        private IBusinessService<AnswerBusinessObject> answers;
+
+        private ContainerConfig businessLogicContainer;
+        private Container.ContainerConfig clientContainer;
+        private int countCorrectAnswers;
+        private IPassingTestService passingTestService;
+        private IBusinessService<QuestionBusinessObject> questions;
+        private IEndPassingTestWindowManagement windowManagement;
 
         public StudentPassTestViewModel(TestBusinessObject test)
         {
@@ -41,100 +48,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             InitializeTest();
         }
 
-        #endregion
-
-        #region Commands
-
         public ICommand RespondCommand => MakeCommand(a => Respond());
-
-        #endregion
-
-        #region Commands implementation
-
-        /// <summary>
-        /// Если ответы на вопрос, все правильные - +1.
-        /// Если хотя бы один ошибочный, то -1.
-        /// 
-        /// По окончанию вопросов, посчитать количество единиц и составить пропорцию.
-        /// 
-        /// Например, 7 вопросов,
-        /// все правильные - 7 очков - 100 %
-        ///                  2 очка  - ?
-        /// 2 * 100 = 200 / 7 = 28.5 (%)
-        /// 
-        /// 7 очков - 12 балов
-        /// 2 очка  - ? балов
-        /// 2 * 12 = 24 / 7 = 3.42 (б)
-        /// </summary>
-        private void Respond()
-        {
-            countCorrectAnswers = passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
-            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
-            tmp.Current += 1;
-            RemainQuestions = tmp;
-            try
-            {
-                UpdateQuestion(RemainQuestions.Current);
-            }
-            catch (TestQuestionsOverException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        #endregion
-
-        #region Helpers
-
-        private void InitializeTest()
-        {
-            UpdateQuestion();
-            UpdateAnswers();
-        }
-
-        private void UpdateQuestion(int skipCount = 0)
-        {
-            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(--skipCount).FirstOrDefault() ?? throw new TestQuestionsOverException();
-            CurrentQuestion = passingTestService.CurrentQuestion;
-            UpdateAnswers();
-        }
-
-        private void UpdateAnswers()
-        {
-            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
-            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
-        }
-
-        #endregion
-
-        #region Fields
-
-        #region Containers
-
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
-
-        #endregion
-
-        #region Services
-
-        // TODO: Replace by interface.
-        private PassingTestService passingTestService;
-
-        private IBusinessService<QuestionBusinessObject> questions;
-        private IBusinessService<AnswerBusinessObject> answers;
-
-        #endregion
-
-        #region Helpers
-
-        private int countCorrectAnswers;
-
-        #endregion
-
-        #endregion
-
-        #region Properties
 
         public RemainQuestionsBusinessObject RemainQuestions
         {
@@ -166,13 +80,69 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public int CountCorrectAnswers => (countCorrectAnswers > 0) ? 0 : countCorrectAnswers;
+        public int CountCorrectAnswers => countCorrectAnswers > 0 ? 0 : countCorrectAnswers;
 
-        public float Grade => CountCorrectAnswers * 12 / RemainQuestions.All;
+        /// <summary>
+        ///     Если ответы на вопрос, все правильные - +1.
+        ///     Если хотя бы один ошибочный, то -1.
+        ///     По окончанию вопросов, посчитать количество единиц и составить пропорцию.
+        ///     Например, 7 вопросов,
+        ///     все правильные - 7 очков - 100 %
+        ///     2 очка  - ?
+        ///     2 * 100 = 200 / 7 = 28.5 (%)
+        ///     7 очков - 12 балов
+        ///     2 очка  - ? балов
+        ///     2 * 12 = 24 / 7 = 3.42 (б)
+        /// </summary>
+        private void Respond()
+        {
+            countCorrectAnswers =
+                passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
+            var tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
+            tmp.Current += 1;
+            RemainQuestions = tmp;
+            try
+            {
+                UpdateQuestion(RemainQuestions.Current);
+            }
+            catch (TestQuestionsOverException e)
+            {
+                ProcessTestEnd();
+            }
+        }
 
-        #endregion
+        private void UpdateQuestion(int skipCount = 0)
+        {
+            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(--skipCount).FirstOrDefault() ??
+                                                 throw new TestQuestionsOverException();
+            CurrentQuestion = passingTestService.CurrentQuestion;
+            UpdateAnswers();
+        }
 
-        #region Initializers and resolves
+        private void UpdateAnswers()
+        {
+            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
+            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
+        }
+
+        private void ProcessTestEnd()
+        {
+            windowManagement = new EndPassingTestWindowManagement
+            {
+                PassingTestResult = new PassingTestResultBusinessObject
+                {
+                    MaxGrade = 12,
+                    CountQuestions = passingTestService.QuestionsCount,
+                    CountCorrentAnswered = CountCorrectAnswers
+                }
+            };
+        }
+
+        private void InitializeTest()
+        {
+            UpdateQuestion();
+            UpdateAnswers();
+        }
 
         private void InitializeContainers()
         {
@@ -202,7 +172,5 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
                 Test = Test
             };
         }
-
-        #endregion
     }
 }

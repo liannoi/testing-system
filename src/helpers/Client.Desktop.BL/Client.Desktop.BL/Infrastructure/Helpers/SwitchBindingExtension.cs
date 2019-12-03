@@ -29,10 +29,7 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
             ValueIfFalse = valueIfFalse;
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
         [ConstructorArgument("valueIfTrue")] public object ValueIfTrue { get; set; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
         [ConstructorArgument("valueIfFalse")] public object ValueIfFalse { get; set; }
 
         private void Initialize()
@@ -51,8 +48,6 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
                 this.switchExtension = switchExtension;
             }
 
-            #region IValueConverter Members
-
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
                 try
@@ -70,8 +65,6 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
             {
                 return DoNothing;
             }
-
-            #endregion
         }
     }
 }

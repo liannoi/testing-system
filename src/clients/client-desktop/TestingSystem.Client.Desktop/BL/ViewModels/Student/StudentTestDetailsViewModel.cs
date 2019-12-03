@@ -21,17 +21,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentTestDetailsViewModel : BaseViewModel
     {
-        #region Fields
-
-        #region Services
-
         private readonly IPassingTestWindowManagementService windowManager;
-
-        #endregion
-
-        #endregion
-
-        #region Constructors
 
         public StudentTestDetailsViewModel(TestBusinessObject test, StudentTestBusinessObject testDetails)
         {
@@ -43,24 +33,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             };
         }
 
-        #endregion
-
-        #region Commands
-
         public ICommand StartTestCommand => MakeCommand(a => StartTest(), c => TestDetails.AllowToPass);
-
-        #endregion
-
-        #region Commands implementation
-
-        private void StartTest()
-        {
-            windowManager.OpenWindow();
-        }
-
-        #endregion
-
-        #region Properties
 
         public TestBusinessObject Test
         {
@@ -74,6 +47,9 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        #endregion
+        private void StartTest()
+        {
+            windowManager.OpenWindow();
+        }
     }
 }

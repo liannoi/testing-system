@@ -25,7 +25,6 @@ namespace TestingSystem.Client.Desktop.BL.Container
 
         public IContainer Container { get; }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Local
         private IContainer Build()
         {
             var builder = new ContainerBuilder();

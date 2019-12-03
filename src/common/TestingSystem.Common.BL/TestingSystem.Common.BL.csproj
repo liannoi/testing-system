@@ -80,6 +80,7 @@
     <Compile Include="BusinessObjects\AnswerBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupTestBusinessObject.cs" />
+    <Compile Include="BusinessObjects\NonEntities\PassingTestResultBusinessObject.cs" />
     <Compile Include="BusinessObjects\NonEntities\RemainQuestionsBusinessObject.cs" />
     <Compile Include="BusinessObjects\QuestionBusinessObject.cs" />
     <Compile Include="BusinessObjects\RoleBusinessObject.cs" />

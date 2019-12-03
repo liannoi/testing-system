@@ -118,16 +118,13 @@ namespace Client.Desktop.BL.Infrastructure
         private ICommand SaveCommand(ICommand command, string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException(nameof(propertyName));
-
             if (!cachedCommands.ContainsKey(propertyName)) cachedCommands.TryAdd(propertyName, command);
-
             return command;
         }
 
         private ICommand GetCommand(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException(nameof(propertyName));
-
             return cachedCommands.TryGetValue(propertyName, out var cachedCommand) ? cachedCommand : null;
         }
     }

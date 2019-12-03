@@ -26,7 +26,12 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public sealed class StudentDashboardViewModel : BaseViewModel
     {
-        #region Constructors
+        private ContainerConfig businessLogicContainer;
+        private Container.ContainerConfig clientContainer;
+        private IBusinessService<StudentTestBusinessObject> studentsTests;
+        private IBusinessService<TestBusinessObject> tests;
+        private ITestsService testsService;
+        private ITestDetailsWindowManagementService windowManager;
 
         public StudentDashboardViewModel(UserBusinessObject user)
         {
@@ -36,43 +41,6 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             InitializeServices();
             InitializeProperties();
         }
-
-        #endregion
-
-        #region Helpers
-
-        public void ShowTestDetails()
-        {
-            if (SelectedTest == null) return;
-
-            windowManager.Test = SelectedTest;
-            windowManager.TestDetails = studentsTests.Find(e => e.TestId == SelectedTest.TestId).FirstOrDefault();
-            windowManager.OpenWindow();
-        }
-
-        #endregion
-
-        #region Fields
-
-        #region Containers
-
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
-
-        #endregion
-
-        #region Services
-
-        private ITestsService testsService;
-        private IBusinessService<TestBusinessObject> tests;
-        private IBusinessService<StudentTestBusinessObject> studentsTests;
-        private ITestDetailsWindowManagementService windowManager;
-
-        #endregion
-
-        #endregion
-
-        #region Properties
 
         public UserBusinessObject User
         {
@@ -98,9 +66,13 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        #endregion
-
-        #region Initializers and resolves
+        public void ShowTestDetails()
+        {
+            if (SelectedTest == null) return;
+            windowManager.Test = SelectedTest;
+            windowManager.TestDetails = studentsTests.Find(e => e.TestId == SelectedTest.TestId).FirstOrDefault();
+            windowManager.OpenWindow();
+        }
 
         private void InitializeProperties()
         {
@@ -125,7 +97,5 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             tests = businessLogicContainer.Container.Resolve<IBusinessService<TestBusinessObject>>();
             studentsTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
         }
-
-        #endregion
     }
 }

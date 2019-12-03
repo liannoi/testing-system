@@ -21,10 +21,9 @@ using TestingSystem.Common.BL.BusinessServices.Authorization;
 
 namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
 {
-    public class SuggestedRoleWindowManagementService : ISuggestedRoleWindowManagementService
+    public class SuggestedRoleWindowManagementService : BaseWindowManagementService,
+        ISuggestedRoleWindowManagementService
     {
-        private IWindowsManagementStrategy strategy;
-
         public UserBusinessObject User { get; set; }
         public AuthorizationRole Role { get; set; }
 
@@ -33,22 +32,18 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
             switch (Role)
             {
                 case AuthorizationRole.Student:
-                {
-                    strategy = new WindowsManagementStrategy<StudentDashboardViewModel, StudentDashboard>(
+                    Strategy = new WindowsManagementStrategy<StudentDashboardViewModel, StudentDashboard>(
                         new StudentDashboardViewModel(User),
                         new StudentDashboard());
-                    strategy.Open();
-                    strategy.CloseParent();
+                    Strategy.Open();
+                    Strategy.CloseParent();
                     break;
-                }
                 case AuthorizationRole.Teacher:
-                {
                     throw new NotSupportedException("This method isn't implemented.");
-                }
                 case AuthorizationRole.Administrator:
-                {
                     throw new NotSupportedException("This method isn't implemented.");
-                }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

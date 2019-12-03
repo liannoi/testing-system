@@ -62,8 +62,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BL\BusinessServices\PassingTest\IPassingTestService.cs" />
     <Compile Include="BL\BusinessServices\PassingTest\PassingTestService.cs" />
     <Compile Include="BL\BusinessServices\PassingTest\TestQuestionsOverException.cs" />
+    <Compile Include="BL\BusinessServices\Windows\BaseWindowManagementService.cs" />
+    <Compile Include="BL\BusinessServices\Windows\EndPassingTest\EndPassingTestWindowManagement.cs" />
+    <Compile Include="BL\BusinessServices\Windows\EndPassingTest\IEndPassingTestWindowManagement.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\IPassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\PassingTest\PassingTestWindowManagementService.cs" />
     <Compile Include="BL\BusinessServices\Windows\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />

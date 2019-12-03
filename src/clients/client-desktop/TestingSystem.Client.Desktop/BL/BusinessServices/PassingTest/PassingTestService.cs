@@ -12,24 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Multilayer.BusinessServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
 {
-    public class PassingTestService
+    public class PassingTestService : IPassingTestService
     {
-        #region Fields
-
         private readonly IBusinessService<AnswerBusinessObject> answers;
         private readonly IBusinessService<QuestionBusinessObject> questions;
-
-        #endregion
-
-        #region Constructors
 
         public PassingTestService(IBusinessService<QuestionBusinessObject> questions,
             IBusinessService<AnswerBusinessObject> answers)
@@ -38,16 +32,9 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
             this.answers = answers;
         }
 
-        #endregion
-
-        #region Properties
-
         public TestBusinessObject Test { get; set; }
-
         public int QuestionsCount => Questions.Count();
-
         public QuestionBusinessObject CurrentQuestion { get; set; }
-
         public int SuitableAnswersCount => SuitableAnswers.Count();
 
         public IEnumerable<AnswerBusinessObject> SuitableAnswers =>
@@ -55,14 +42,9 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
 
         public IEnumerable<AnswerBusinessObject> Answers => GetAnswers(e => e.IsRemoved == false);
 
-        public IEnumerable<QuestionBusinessObject> Questions => GetQuestions(e => e.IsRemoved == false && e.TestId == 7);
+        public IEnumerable<QuestionBusinessObject> Questions =>
+            GetQuestions(e => e.IsRemoved == false && e.TestId == 7);
 
-        #endregion
-
-        #region Methods
-
-        // ReSharper disable once MemberCanBeMadeStatic.Global
-        // ReSharper disable once ParameterHidesMember
         public bool CheckAnswers(IEnumerable<AnswerBusinessObject> answers)
         {
             return answers.ToList().All(answer => !answer.IsSuitable || answer.IsChecked);
@@ -75,15 +57,13 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
 
         private IEnumerable<QuestionBusinessObject> GetQuestions(Func<QuestionBusinessObject, bool> predicate)
         {
-            IEnumerable<AnswerBusinessObject> selectedAnswers = answers.Select();
+            var selectedAnswers = answers.Select();
             return questions
                 .Find(e => e.TestId == Test.TestId)
                 .Join(selectedAnswers, c => c.QuestionId, a => a.QuestionId, (c, a) => c)
                 .Where(predicate)
-                .GroupBy(e=>e.QuestionId)
-                .Select(e=>e.First());
+                .GroupBy(e => e.QuestionId)
+                .Select(e => e.First());
         }
-
-        #endregion
     }
 }

@@ -19,19 +19,17 @@ using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.PassingTest
 {
-    public class PassingTestWindowManagementService : IPassingTestWindowManagementService
+    public class PassingTestWindowManagementService : BaseWindowManagementService, IPassingTestWindowManagementService
     {
-        private IWindowsManagementStrategy strategy;
-
         public TestBusinessObject Test { get; set; }
 
         public void OpenWindow()
         {
-            strategy = new WindowsManagementStrategy<StudentPassTestViewModel, StudentPassTestWindow>(
+            Strategy = new WindowsManagementStrategy<StudentPassTestViewModel, StudentPassTestWindow>(
                 new StudentPassTestViewModel(Test),
                 new StudentPassTestWindow());
-            strategy.OpenDialog();
-            strategy.CloseParent();
+            Strategy.OpenDialog();
+            Strategy.CloseParent();
         }
     }
 }

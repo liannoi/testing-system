@@ -39,7 +39,6 @@ namespace TestingSystem.Client.Desktop.BL.Container
             Inject(builder, typeof(StringValidatorParameter), typeof(IStringValidatorParameter));
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Local
         private void Inject(ContainerBuilder builder, Type registerType, Type asType, string parameterName,
             IStringValidatorParameter parameter)
         {
@@ -48,7 +47,6 @@ namespace TestingSystem.Client.Desktop.BL.Container
                 .WithParameter(parameterName, parameter);
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Local
         private void Inject(ContainerBuilder builder, Type registerType, Type asType)
         {
             builder.RegisterType(registerType)

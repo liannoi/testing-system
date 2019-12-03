@@ -20,7 +20,7 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
 {
     public static class Md5DataTools
     {
-        public static string ToMd5Hash(string input)
+        public static string ToMd5(string input)
         {
             using (var mD5Hash = MD5.Create())
             {

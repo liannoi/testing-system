@@ -36,7 +36,7 @@ namespace TestingSystem.Common.BL.BusinessServices.Authentication
         {
             return await Task.Factory.StartNew(() =>
             {
-                Password = Md5DataTools.ToMd5Hash(Password);
+                Password = Md5DataTools.ToMd5(Password);
                 return usersBusinessService.Find(e => e.Password == Password && e.Login == Login).FirstOrDefault() ??
                        throw new InvalidAuthenticationException();
             });
