@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using TestingSystem.Common.BL.BusinessObjects;
+using System;
 
-namespace TestingSystem.Common.BL.BusinessServices.Tests
+namespace TestingSystem.Common.BL.BusinessObjects.NonEntities
 {
-    public interface ITestsService
+    public class TestAdvancedDetailsBusinessObject
     {
-        IEnumerable<TestBusinessObject> Tests { get; }
-        double AverageGrade { get; }
+        public DateTime DateStart { get; set; } = DateTime.Now;
+        public StudentTestBusinessObject TestDetails { get; set; }
+        public TestBusinessObject Test { get; set; }
     }
 }

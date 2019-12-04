@@ -29,7 +29,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         private readonly ContainerConfig container;
         private IBusinessService<StudentTestBusinessObject> studentsTests;
         private IBusinessService<TestBusinessObject> tests;
-        private ITestsService testsService;
+        private IStudentTestsService testsService;
         private ITestDetailsWindowManagementService windowManager;
 
         public StudentDashboardViewModel(UserBusinessObject user)
@@ -53,15 +53,15 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public TestBusinessObject SelectedTest
+        public StudentTestBusinessObject StudentTest
         {
-            get => Get<TestBusinessObject>();
+            get => Get<StudentTestBusinessObject>();
             set => Set(value);
         }
 
-        public IEnumerable<TestBusinessObject> Tests
+        public IEnumerable<StudentTestBusinessObject> Tests
         {
-            get => Get<IEnumerable<TestBusinessObject>>();
+            get => Get<IEnumerable<StudentTestBusinessObject>>();
             set => Set(value);
         }
 
@@ -73,7 +73,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         private void InitializeServices()
         {
-            testsService = new TestsService(tests, studentsTests, User);
+            testsService = new StudentTestsService(studentsTests, User);
             windowManager = new TestDetailsWindowManagementService();
         }
 
@@ -85,9 +85,10 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         public void ShowTestDetails()
         {
-            if (SelectedTest == null) return;
-            windowManager.Test = SelectedTest;
-            windowManager.TestDetails = studentsTests.Find(e => e.TestId == SelectedTest.TestId).FirstOrDefault();
+            var findRecord = studentsTests.Find(e => e.RecordId == StudentTest.RecordId).FirstOrDefault();
+            var findTest = tests.Find(e => e.TestId == findRecord.TestId).FirstOrDefault();
+            windowManager.Test = findTest;
+            windowManager.TestDetails = findRecord;
             windowManager.OpenWindow();
         }
     }

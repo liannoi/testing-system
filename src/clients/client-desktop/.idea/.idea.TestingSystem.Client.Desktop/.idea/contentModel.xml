@@ -88,6 +88,7 @@
         <e p="GroupTestBusinessObject.cs" t="Include" />
         <e p="NonEntities" t="Include">
           <e p="RemainQuestionsBusinessObject.cs" t="Include" />
+          <e p="TestAdvancedDetailsBusinessObject.cs" t="Include" />
         </e>
         <e p="QuestionBusinessObject.cs" t="Include" />
         <e p="RoleBusinessObject.cs" t="Include" />
@@ -110,13 +111,13 @@
         </e>
         <e p="BaseBusinessService.cs" t="Include" />
         <e p="Tests" t="Include">
-          <e p="ITestsService.cs" t="Include" />
+          <e p="IStudentTestsService.cs" t="Include" />
           <e p="Passing" t="Include">
             <e p="IPassingTestService.cs" t="Include" />
             <e p="PassingTestService.cs" t="Include" />
             <e p="TestQuestionsOverException.cs" t="Include" />
           </e>
-          <e p="TestsService.cs" t="Include" />
+          <e p="StudentTestsService.cs" t="Include" />
         </e>
       </e>
       <e p="Infrastructure" t="Include">

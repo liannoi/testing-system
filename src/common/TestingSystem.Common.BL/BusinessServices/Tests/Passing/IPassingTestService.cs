@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TestingSystem.Common.BL.BusinessObjects;
+using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
 namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
 {
@@ -11,8 +13,11 @@ namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
         int QuestionsCount { get; }
         IEnumerable<AnswerBusinessObject> SuitableAnswers { get; }
         int SuitableAnswersCount { get; }
-        TestBusinessObject Test { get; set; }
+        TestAdvancedDetailsBusinessObject TestDetailsBusinessObject { get; set; }
 
-        bool CheckAnswers(IEnumerable<AnswerBusinessObject> answers);
+        bool CheckAnswers(IEnumerable<AnswerBusinessObject> collection);
+        void ProcessEndTest();
+        IEnumerable<AnswerBusinessObject> SelectAnswers(Func<AnswerBusinessObject, bool> predicate);
+        IEnumerable<QuestionBusinessObject> SelectQuestions(Func<QuestionBusinessObject, bool> predicate);
     }
 }

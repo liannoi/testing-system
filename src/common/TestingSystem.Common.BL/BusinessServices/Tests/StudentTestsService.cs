@@ -20,44 +20,38 @@ using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Common.BL.BusinessServices.Tests
 {
-    public class TestsService : ITestsService
+    public class StudentTestsService : IStudentTestsService
     {
         private readonly IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService;
-        private readonly IBusinessService<TestBusinessObject> testsBusinessService;
         private readonly UserBusinessObject user;
 
-        public TestsService(IBusinessService<TestBusinessObject> testsBusinessService,
-            IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService, UserBusinessObject user)
+        public StudentTestsService(IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService,
+            UserBusinessObject user)
         {
-            this.testsBusinessService = testsBusinessService;
             this.studentsTestsBusinessService = studentsTestsBusinessService;
             this.user = user;
         }
 
-        private IEnumerable<StudentTestBusinessObject> TestsByUser
+        public IEnumerable<StudentTestBusinessObject> Tests
         {
             get
             {
                 if (user == null) throw new ArgumentNullException();
-                yield return StudentTests().Where(e => e.IsRemoved == false).FirstOrDefault();
+                yield return SelectStudentTests().FirstOrDefault();
             }
         }
 
-        public IEnumerable<TestBusinessObject> Tests
+        public float AverageGrade => Convert.ToSingle(SelectStudentTests().Average(e => e.PCA / 100 * 12));
+
+        private IEnumerable<StudentTestBusinessObject> SelectStudentTests(
+            Func<StudentTestBusinessObject, bool> predicate)
         {
-            get
-            {
-                foreach (var test in TestsByUser)
-                    yield return testsBusinessService.Find(e => e.TestId == test.TestId)
-                        .Where(e => e.IsRemoved == false).FirstOrDefault();
-            }
+            return studentsTestsBusinessService.Find(e => e.UserId == user.UserId).Where(predicate);
         }
 
-        public double AverageGrade => StudentTests().Select(e => e.PCA / 100 * 12).Average() ?? 0;
-
-        private IEnumerable<StudentTestBusinessObject> StudentTests()
+        private IEnumerable<StudentTestBusinessObject> SelectStudentTests()
         {
-            return studentsTestsBusinessService.Find(e => e.UserId == user.UserId).Where(e => e.IsRemoved == false);
+            return SelectStudentTests(e => e.IsRemoved == false);
         }
     }
 }

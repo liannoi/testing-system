@@ -29,7 +29,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             TestDetails = testDetails;
             windowManager = new PassingTestWindowManagementService
             {
-                Test = Test
+                Test = Test,
+                TestDetails = TestDetails
             };
         }
 

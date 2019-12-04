@@ -23,10 +23,12 @@ namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest
     {
         public TestBusinessObject Test { get; set; }
 
+        public StudentTestBusinessObject TestDetails { get; set; }
+
         public void OpenWindow()
         {
             Strategy = new WindowsManagementStrategy<StudentPassTestViewModel, StudentPassTestWindow>(
-                new StudentPassTestViewModel(Test),
+                new StudentPassTestViewModel(Test, TestDetails),
                 new StudentPassTestWindow());
             Strategy.OpenDialog();
             Strategy.CloseParent();

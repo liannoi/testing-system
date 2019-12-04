@@ -31,7 +31,6 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
     {
         private IAuthenticationService authenticationService;
         private IAuthorizationService authorizationService;
-
         private ContainerConfig businessLogicContainer;
         private Container.ContainerConfig clientContainer;
         private ILoginValidator loginValidator;

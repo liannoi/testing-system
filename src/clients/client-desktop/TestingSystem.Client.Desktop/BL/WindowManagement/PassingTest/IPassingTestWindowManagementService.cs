@@ -19,6 +19,7 @@ namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest
     public interface IPassingTestWindowManagementService
     {
         TestBusinessObject Test { get; set; }
+        StudentTestBusinessObject TestDetails { get; set; }
 
         void OpenWindow();
     }
