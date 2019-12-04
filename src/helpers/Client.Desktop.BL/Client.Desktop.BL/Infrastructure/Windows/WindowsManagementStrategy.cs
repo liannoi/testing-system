@@ -16,8 +16,7 @@ using System.Windows;
 
 namespace Client.Desktop.BL.Infrastructure.Windows
 {
-    public class WindowsManagementStrategy<TViewModel, TWindow> : IWindowsManagementStrategy
-        where TViewModel : BaseViewModel
+    public class WindowsManagementStrategy<TViewModel, TWindow> : IWindowsManagementStrategy where TViewModel : BaseViewModel
         where TWindow : Window
     {
         private readonly TViewModel viewModel;
@@ -28,6 +27,10 @@ namespace Client.Desktop.BL.Infrastructure.Windows
             this.viewModel = viewModel;
             this.window = window;
         }
+
+        public Application Current => Application.Current;
+
+        public WindowCollection Windows => Application.Current.Windows;
 
         public void Open()
         {
@@ -43,7 +46,13 @@ namespace Client.Desktop.BL.Infrastructure.Windows
 
         public void CloseParent()
         {
-            Application.Current.MainWindow?.Close();
+            Current.MainWindow?.Close();
+        }
+
+        public void CloseLatest()
+        {
+            CloseParent();
+            Windows[Windows.Count - 1].Close();
         }
 
         private void DataContext()

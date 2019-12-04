@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Windows.Input;
+using Autofac;
 using Client.Desktop.BL.Infrastructure;
+using System.Windows.Input;
+using TestingSystem.Client.Desktop.BL.Container;
 using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 
@@ -21,17 +23,17 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentTestDetailsViewModel : BaseViewModel
     {
+        private readonly ContainerConfig container;
         private readonly IPassingTestWindowManagementService windowManager;
 
         public StudentTestDetailsViewModel(TestBusinessObject test, StudentTestBusinessObject testDetails)
         {
             Test = test;
             TestDetails = testDetails;
-            windowManager = new PassingTestWindowManagementService
-            {
-                Test = Test,
-                TestDetails = TestDetails
-            };
+            container = new ContainerConfig();
+            windowManager = container.Container.Resolve<IPassingTestWindowManagementService>();
+            windowManager.Test = Test;
+            windowManager.TestDetails = TestDetails;
         }
 
         public ICommand StartTestCommand => MakeCommand(a => StartTest(), c => TestDetails.AllowToPass);

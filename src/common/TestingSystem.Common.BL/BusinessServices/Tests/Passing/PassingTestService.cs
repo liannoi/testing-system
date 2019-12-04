@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Multilayer.BusinessServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
@@ -61,7 +61,7 @@ namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
 
         public IEnumerable<QuestionBusinessObject> SelectQuestions(Func<QuestionBusinessObject, bool> predicate)
         {
-            var selectedAnswers = answers.Select();
+            IEnumerable<AnswerBusinessObject> selectedAnswers = answers.Select();
             return questions
                 .Find(e => e.TestId == TestDetailsBusinessObject.Test.TestId)
                 .Join(selectedAnswers, c => c.QuestionId, a => a.QuestionId, (c, a) => c)
@@ -72,8 +72,9 @@ namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
 
         public void ProcessEndTest()
         {
-            var @new = TestDetailsBusinessObject.TestDetails;
+            StudentTestBusinessObject @new = TestDetailsBusinessObject.TestDetails;
             @new.RecordId = -1;
+            @new.Start = TestDetailsBusinessObject.DateStart;
             @new.End = DateTime.Now;
             @new.PCA = 100;
             studentTests.Add(@new);

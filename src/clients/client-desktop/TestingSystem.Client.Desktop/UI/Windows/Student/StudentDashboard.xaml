@@ -65,7 +65,7 @@
                        Width="50">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{} {0:0.0}">
-                        <Binding Path="AverageGrade" UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="AverageGrade" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

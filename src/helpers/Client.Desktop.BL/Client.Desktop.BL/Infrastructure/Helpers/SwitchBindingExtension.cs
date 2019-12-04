@@ -52,7 +52,7 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
             {
                 try
                 {
-                    var b = System.Convert.ToBoolean(value);
+                    bool b = System.Convert.ToBoolean(value);
                     return b ? switchExtension.ValueIfTrue : switchExtension.ValueIfFalse;
                 }
                 catch

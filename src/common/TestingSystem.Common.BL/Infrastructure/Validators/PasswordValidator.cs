@@ -25,7 +25,11 @@ namespace TestingSystem.Common.BL.Infrastructure.Validators
 
         public bool IsValid(string str)
         {
-            if (str == null) return false;
+            if (str == null)
+            {
+                return false;
+            }
+
             return str.Length <= validatorParameter.MaxLength && str.Length >= validatorParameter.MinLength;
         }
     }

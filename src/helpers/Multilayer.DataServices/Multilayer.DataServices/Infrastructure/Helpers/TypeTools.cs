@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Multilayer.Infrastructure.Keys;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Reflection;
-using Multilayer.Infrastructure.Keys;
 
 namespace Multilayer.Infrastructure.Helpers
 {
@@ -29,7 +29,7 @@ namespace Multilayer.Infrastructure.Helpers
 
         public TEntity AddOrUpdate(IDbSet<TEntity> entities, TEntity entity, bool isRemoved)
         {
-            var find = Find(entities, entity);
+            TEntity find = Find(entities, entity);
             GetProperty("IsRemoved").SetValue(find, isRemoved);
             entities.AddOrUpdate(find);
             return Find(entities, entity);

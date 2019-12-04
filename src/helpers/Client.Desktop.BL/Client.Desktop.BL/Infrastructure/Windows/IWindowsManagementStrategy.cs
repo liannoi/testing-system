@@ -12,10 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Windows;
+
 namespace Client.Desktop.BL.Infrastructure.Windows
 {
     public interface IWindowsManagementStrategy
     {
+        Application Current { get; }
+        WindowCollection Windows { get; }
+
+        void CloseLatest();
         void CloseParent();
         void Open();
         void OpenDialog();

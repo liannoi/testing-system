@@ -23,9 +23,9 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
     {
         public static TIn Clone(TOut fromObject)
         {
-            using (var memoryStream = new MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                var binaryFormatter = new BinaryFormatter();
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(memoryStream, fromObject);
                 memoryStream.Seek(0, SeekOrigin.Begin);
                 return binaryFormatter.Deserialize(memoryStream) as TIn;

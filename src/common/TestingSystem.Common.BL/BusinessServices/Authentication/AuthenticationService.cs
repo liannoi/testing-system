@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Linq;
-using System.Threading.Tasks;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
+using System.Linq;
+using System.Threading.Tasks;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Common.BL.BusinessServices.Authentication

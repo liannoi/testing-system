@@ -16,7 +16,7 @@ namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End
                 new StudentEndPassTestViewModel(),
                 new StudentTestPassEndWindow());
             Strategy.OpenDialog();
-            Strategy.CloseParent();
+            Strategy.CloseLatest();
         }
     }
 }

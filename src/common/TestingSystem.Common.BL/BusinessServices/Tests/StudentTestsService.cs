@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Multilayer.BusinessServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Common.BL.BusinessServices.Tests
@@ -23,20 +23,23 @@ namespace TestingSystem.Common.BL.BusinessServices.Tests
     public class StudentTestsService : IStudentTestsService
     {
         private readonly IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService;
-        private readonly UserBusinessObject user;
 
-        public StudentTestsService(IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService,
-            UserBusinessObject user)
+        public StudentTestsService(IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService)
         {
             this.studentsTestsBusinessService = studentsTestsBusinessService;
-            this.user = user;
         }
+
+        public UserBusinessObject User { get; set; }
 
         public IEnumerable<StudentTestBusinessObject> Tests
         {
             get
             {
-                if (user == null) throw new ArgumentNullException();
+                if (User == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
                 yield return SelectStudentTests().FirstOrDefault();
             }
         }
@@ -46,7 +49,7 @@ namespace TestingSystem.Common.BL.BusinessServices.Tests
         private IEnumerable<StudentTestBusinessObject> SelectStudentTests(
             Func<StudentTestBusinessObject, bool> predicate)
         {
-            return studentsTestsBusinessService.Find(e => e.UserId == user.UserId).Where(predicate);
+            return studentsTestsBusinessService.Find(e => e.UserId == User.UserId).Where(predicate);
         }
 
         private IEnumerable<StudentTestBusinessObject> SelectStudentTests()

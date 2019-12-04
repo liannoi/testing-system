@@ -28,7 +28,7 @@ namespace TestingSystem.Common.BL.Infrastructure.Container
         // ReSharper disable once MemberCanBeMadeStatic.Local
         private IContainer Build()
         {
-            var builder = new ContainerBuilder();
+            ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterModule<ContainerModule>();
             return builder.Build();
         }

@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
@@ -30,19 +29,20 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentPassTestViewModel : BaseViewModel
     {
-        private readonly ContainerConfig container;
-        private IBusinessService<AnswerBusinessObject> answers;
+        private Container.ContainerConfig container;
+        private ContainerConfig businessLogicContainer;
         private int countCorrectAnswers;
-        private IPassingTestService passingTestService;
+        private IBusinessService<AnswerBusinessObject> answers;
         private IBusinessService<QuestionBusinessObject> questions;
         private IBusinessService<StudentTestBusinessObject> studentTests;
+        private IPassingTestService passingTestService;
         private IEndPassingTestWindowManagementService windowManager;
 
         public StudentPassTestViewModel(TestBusinessObject test, StudentTestBusinessObject testDetails)
         {
             Test = test;
             TestDetails = testDetails;
-            container = new ContainerConfig();
+            InitializeContainers();
             ResolveContainers();
             InitializeServices();
             InitializeProperties();
@@ -101,7 +101,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         {
             countCorrectAnswers =
                 passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
-            var tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
+            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
             tmp.Current += 1;
             RemainQuestions = tmp;
             try
@@ -111,9 +111,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             catch (TestQuestionsOverException)
             {
                 passingTestService.ProcessEndTest();
-                windowManager = new EndPassingTestWindowManagementService();
+                windowManager = container.Container.Resolve<IEndPassingTestWindowManagementService>();
                 windowManager.OpenWindow();
-                // TODO: Close safely applicaiton.
             }
         }
 
@@ -131,6 +130,12 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
         }
 
+        private void InitializeContainers()
+        {
+            container = new Container.ContainerConfig();
+            businessLogicContainer = new ContainerConfig();
+        }
+
         private void InitializeTest()
         {
             UpdateQuestion();
@@ -139,9 +144,9 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         private void ResolveContainers()
         {
-            questions = container.Container.Resolve<IBusinessService<QuestionBusinessObject>>();
-            answers = container.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
-            studentTests = container.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
+            questions = businessLogicContainer.Container.Resolve<IBusinessService<QuestionBusinessObject>>();
+            answers = businessLogicContainer.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
+            studentTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
         }
 
         private void InitializeProperties()
@@ -155,13 +160,11 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         private void InitializeServices()
         {
-            passingTestService = new PassingTestService(questions, answers, studentTests)
+            passingTestService = container.Container.Resolve<IPassingTestService>();
+            passingTestService.TestDetailsBusinessObject = new TestAdvancedDetailsBusinessObject
             {
-                TestDetailsBusinessObject = new TestAdvancedDetailsBusinessObject
-                {
-                    Test = Test,
-                    TestDetails = TestDetails
-                }
+                Test = Test,
+                TestDetails = TestDetails
             };
         }
     }

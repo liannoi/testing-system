@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System.Threading.Tasks;
-using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Common.BL.BusinessServices.Authorization
@@ -22,7 +21,6 @@ namespace TestingSystem.Common.BL.BusinessServices.Authorization
     {
         AuthorizationRole AuthorizationRole { get; set; }
         UserBusinessObject User { get; set; }
-        IBusinessService<UserRoleBusinessObject> UsersRolesBusinessService { get; set; }
 
         Task<UserRoleBusinessObject> CheckUserPermission();
     }

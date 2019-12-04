@@ -12,38 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Events;
-using Multilayer.BusinessServices;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using TestingSystem.Client.Desktop.BL.Container;
 using TestingSystem.Client.Desktop.BL.WindowManagement.SuggestedRole;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Authentication;
 using TestingSystem.Common.BL.BusinessServices.Authorization;
-using TestingSystem.Common.BL.Infrastructure.Container;
 using TestingSystem.Common.BL.Infrastructure.Validators;
 
 namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
 {
     public sealed class AuthenticationLoginViewModel : BaseViewModel
     {
+        private readonly ContainerConfig container;
         private IAuthenticationService authenticationService;
         private IAuthorizationService authorizationService;
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
         private ILoginValidator loginValidator;
         private IPasswordValidator passwordValidator;
-        private IBusinessService<UserBusinessObject> users;
-        private IBusinessService<UserRoleBusinessObject> usersRoles;
         private ISuggestedRoleWindowManagementService windowManager;
 
         public AuthenticationLoginViewModel()
         {
-            InitializeContainers();
-            InitializeServices();
-            InitializeValidators();
+            container = new ContainerConfig();
+            ResolveServices();
+            ResolveValidators();
             AllowUseComponents();
         }
 
@@ -118,7 +114,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
         private void OpenSuggestWindow(UserBusinessObject findUser, UserRoleBusinessObject userRole)
         {
             windowManager.User = findUser;
-            windowManager.Role = (AuthorizationRole) userRole.RoleId;
+            windowManager.Role = (AuthorizationRole)userRole.RoleId;
             windowManager.OpenSuggestWindow();
         }
 
@@ -158,28 +154,17 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
             authenticationService.Login = Login;
         }
 
-        private void InitializeValidators()
+        private void ResolveValidators()
         {
-            loginValidator = clientContainer.Container.Resolve<ILoginValidator>();
-            passwordValidator = clientContainer.Container.Resolve<IPasswordValidator>();
+            loginValidator = container.Container.Resolve<ILoginValidator>();
+            passwordValidator = container.Container.Resolve<IPasswordValidator>();
         }
 
-        private void InitializeServices()
+        private void ResolveServices()
         {
-            users = businessLogicContainer.Container.Resolve<IBusinessService<UserBusinessObject>>();
-            usersRoles = businessLogicContainer.Container.Resolve<IBusinessService<UserRoleBusinessObject>>();
-            authenticationService = new AuthenticationService(users);
-            authorizationService = new AuthorizationService
-            {
-                UsersRolesBusinessService = usersRoles
-            };
-            windowManager = new SuggestedRoleWindowManagementService();
-        }
-
-        private void InitializeContainers()
-        {
-            businessLogicContainer = new ContainerConfig();
-            clientContainer = new Container.ContainerConfig();
+            authenticationService = container.Container.Resolve<IAuthenticationService>();
+            authorizationService = container.Container.Resolve<IAuthorizationService>();
+            windowManager = container.Container.Resolve<ISuggestedRoleWindowManagementService>();
         }
     }
 }

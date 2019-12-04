@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Data.Entity;
 using Autofac;
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
@@ -22,6 +20,8 @@ using Multilayer.DataServices;
 using Multilayer.Infrastructure.Helpers;
 using Multilayer.Infrastructure.Initializers;
 using Multilayer.Infrastructure.Keys;
+using System;
+using System.Data.Entity;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.DAL.DataObjects;
 using TestingSystem.Common.DAL.DataServices;

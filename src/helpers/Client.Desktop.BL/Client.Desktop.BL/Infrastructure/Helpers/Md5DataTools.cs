@@ -22,10 +22,10 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
     {
         public static string ToMd5(string input)
         {
-            using (var mD5Hash = MD5.Create())
+            using (MD5 mD5Hash = MD5.Create())
             {
-                var result = string.Empty;
-                var data = mD5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+                string result = string.Empty;
+                byte[] data = mD5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
                 return data.Aggregate(result, (current, t) => current + t.ToString("x2"));
             }
         }

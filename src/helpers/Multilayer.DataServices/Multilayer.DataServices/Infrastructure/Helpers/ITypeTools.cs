@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Multilayer.Infrastructure.Keys;
 using System;
 using System.Data.Entity;
-using Multilayer.Infrastructure.Keys;
 
 namespace Multilayer.Infrastructure.Helpers
 {

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Linq;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
+using System.Collections.Generic;
+using System.Linq;
 using TestingSystem.Client.Desktop.BL.WindowManagement.TestDetails;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Tests;
@@ -26,16 +26,17 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public sealed class StudentDashboardViewModel : BaseViewModel
     {
-        private readonly ContainerConfig container;
-        private IBusinessService<StudentTestBusinessObject> studentsTests;
+        private Container.ContainerConfig container;
+        private ContainerConfig businessLogicContainer;
         private IBusinessService<TestBusinessObject> tests;
+        private IBusinessService<StudentTestBusinessObject> studentsTests;
         private IStudentTestsService testsService;
         private ITestDetailsWindowManagementService windowManager;
 
         public StudentDashboardViewModel(UserBusinessObject user)
         {
             User = user;
-            container = new ContainerConfig();
+            InitializeContainers();
             ResolveContainers();
             InitializeServices();
             InitializeProperties();
@@ -71,22 +72,29 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             AverageGrade = testsService.AverageGrade;
         }
 
+        private void InitializeContainers()
+        {
+            container = new Container.ContainerConfig();
+            businessLogicContainer = new ContainerConfig();
+        }
+
         private void InitializeServices()
         {
-            testsService = new StudentTestsService(studentsTests, User);
-            windowManager = new TestDetailsWindowManagementService();
+            testsService = container.Container.Resolve<IStudentTestsService>();
+            testsService.User = User;
+            windowManager = container.Container.Resolve<ITestDetailsWindowManagementService>();
         }
 
         private void ResolveContainers()
         {
-            tests = container.Container.Resolve<IBusinessService<TestBusinessObject>>();
-            studentsTests = container.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
+            tests = businessLogicContainer.Container.Resolve<IBusinessService<TestBusinessObject>>();
+            studentsTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
         }
 
         public void ShowTestDetails()
         {
-            var findRecord = studentsTests.Find(e => e.RecordId == StudentTest.RecordId).FirstOrDefault();
-            var findTest = tests.Find(e => e.TestId == findRecord.TestId).FirstOrDefault();
+            StudentTestBusinessObject findRecord = studentsTests.Find(e => e.RecordId == StudentTest.RecordId).FirstOrDefault();
+            TestBusinessObject findTest = tests.Find(e => e.TestId == findRecord.TestId).FirstOrDefault();
             windowManager.Test = findTest;
             windowManager.TestDetails = findRecord;
             windowManager.OpenWindow();
