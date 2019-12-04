@@ -62,14 +62,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BL\BusinessServices\PassingTest\PassingTestService.cs" />
-    <Compile Include="BL\BusinessServices\PassingTest\TestQuestionsOverException.cs" />
-    <Compile Include="BL\BusinessServices\Windows\PassingTest\IPassingTestWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\PassingTest\PassingTestWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\SuggestedRole\SuggestedRoleWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\TestDetails\ITestDetailsWindowManagementService.cs" />
-    <Compile Include="BL\BusinessServices\Windows\TestDetails\TestDetailsWindowManagementService.cs" />
+    <Compile Include="BL\ViewModels\Student\StudentEndPassTestViewModel.cs" />
+    <Compile Include="BL\WindowManagement\BaseWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\PassingTest\End\EndPassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\PassingTest\End\IEndPassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\PassingTest\IPassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\PassingTest\PassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\SuggestedRole\SuggestedRoleWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\TestDetails\ITestDetailsWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\TestDetails\TestDetailsWindowManagementService.cs" />
     <Compile Include="BL\Container\ContainerConfig.cs" />
     <Compile Include="BL\Container\ContainerModule.cs" />
     <Compile Include="BL\ViewModels\Authentication\AuthenticationLoginViewModel.cs" />
@@ -88,8 +90,8 @@
     <Compile Include="UI\Windows\Student\StudentTestDetailsWindow.xaml.cs">
       <DependentUpon>StudentTestDetailsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Windows\Student\StudentTestEndWindow.xaml.cs">
-      <DependentUpon>StudentTestEndWindow.xaml</DependentUpon>
+    <Compile Include="UI\Windows\Student\StudentTestPassEndWindow.xaml.cs">
+      <DependentUpon>StudentTestPassEndWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +137,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Windows\Student\StudentTestEndWindow.xaml">
+    <Page Include="UI\Windows\Student\StudentTestPassEndWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

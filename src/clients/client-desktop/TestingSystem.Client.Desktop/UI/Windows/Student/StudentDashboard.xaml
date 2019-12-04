@@ -10,7 +10,7 @@
         Height="720"
         MinHeight="625"
         Width="1280"
-        MinWidth="1063"
+        MinWidth="1070"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         WindowState="Maximized">
@@ -54,16 +54,21 @@
                     Grid.Column="1" Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Height="32"
-                    Width="136">
+                    Height="32">
             <TextBlock Text="Average personal grade"
                        TextWrapping="WrapWithOverflow"
                        Width="90"
                        TextAlignment="Center"
                        FontWeight="Medium"
-                       Margin="0,0,40,0" />
-            <TextBlock Text="{Binding Path=AverageGrade, UpdateSourceTrigger=PropertyChanged}"
-                       VerticalAlignment="Center" />
+                       Margin="0,0,20,0" />
+            <TextBlock VerticalAlignment="Center"
+                       Width="50">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{} {0:0.0}">
+                        <Binding Path="AverageGrade" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
         <TextBlock Text="Tests"
                    Grid.Column="3"
@@ -78,7 +83,7 @@
                   Grid.Row="1"
                   Grid.RowSpan="4"
                   ItemsSource="{Binding Tests}"
-                  SelectedItem="{Binding SelectedTest, Mode=TwoWay}">
+                  SelectedItem="{Binding StudentTest, Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <ei:CallMethodAction MethodName="ShowTestDetails"
@@ -87,7 +92,7 @@
             </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Title}"
+                    <GridViewColumn DisplayMemberBinding="{Binding TestName}"
                                     Header="Title"
                                     Width="Auto" />
                 </GridView>

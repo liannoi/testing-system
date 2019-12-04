@@ -11,7 +11,7 @@
         Height="720"
         MinHeight="602"
         Width="1280"
-        MinWidth="693"
+        MinWidth="715"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
     <Window.DataContext>

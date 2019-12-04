@@ -1,9 +1,23 @@
-﻿using System;
+﻿// Copyright 2019 Maksym Liannoi
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using AutoMapper;
+using Multilayer.DataServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using AutoMapper;
-using Multilayer.DataServices;
 
 namespace Multilayer.BusinessServices
 {
@@ -22,7 +36,7 @@ namespace Multilayer.BusinessServices
 
         public virtual BTEntity Add(BTEntity entity)
         {
-            var result = dataService.Add(mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Add(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
@@ -35,13 +49,13 @@ namespace Multilayer.BusinessServices
 
         public virtual BTEntity Remove(BTEntity entity)
         {
-            var result = dataService.Remove(mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Remove(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
         public virtual BTEntity Restore(BTEntity entity)
         {
-            var result = dataService.Restore(mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Restore(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
@@ -59,7 +73,7 @@ namespace Multilayer.BusinessServices
 
         public virtual BTEntity Update(BTEntity oldEntity, BTEntity entity)
         {
-            var result = dataService.Update(mapper.Map<TEntity>(oldEntity), mapper.Map<TEntity>(entity));
+            TEntity result = dataService.Update(mapper.Map<TEntity>(oldEntity), mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 

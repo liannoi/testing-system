@@ -1,25 +1,47 @@
-﻿using Autofac;
+﻿// Copyright 2019 Maksym Liannoi
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
-using TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest;
+using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
+using TestingSystem.Common.BL.BusinessServices.Tests.Passing;
 using TestingSystem.Common.BL.Infrastructure.Container;
 
 namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentPassTestViewModel : BaseViewModel
     {
-        #region Constructors
+        private Container.ContainerConfig container;
+        private ContainerConfig businessLogicContainer;
+        private int countCorrectAnswers;
+        private IBusinessService<AnswerBusinessObject> answers;
+        private IBusinessService<QuestionBusinessObject> questions;
+        private IBusinessService<StudentTestBusinessObject> studentTests;
+        private IPassingTestService passingTestService;
+        private IEndPassingTestWindowManagementService windowManager;
 
-        public StudentPassTestViewModel(TestBusinessObject test)
+        public StudentPassTestViewModel(TestBusinessObject test, StudentTestBusinessObject testDetails)
         {
             Test = test;
+            TestDetails = testDetails;
             InitializeContainers();
             ResolveContainers();
             InitializeServices();
@@ -27,100 +49,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             InitializeTest();
         }
 
-        #endregion
-
-        #region Commands
-
         public ICommand RespondCommand => MakeCommand(a => Respond());
-
-        #endregion
-
-        #region Commands implementation
-
-        /// <summary>
-        /// Если ответы на вопрос, все правильные - +1.
-        /// Если хотя бы один ошибочный, то -1.
-        /// 
-        /// По окончанию вопросов, посчитать количество единиц и составить пропорцию.
-        /// 
-        /// Например, 7 вопросов,
-        /// все правильные - 7 очков - 100 %
-        ///                  2 очка  - ?
-        /// 2 * 100 = 200 / 7 = 28.5 (%)
-        /// 
-        /// 7 очков - 12 балов
-        /// 2 очка  - ? балов
-        /// 2 * 12 = 24 / 7 = 3.42 (б)
-        /// </summary>
-        private void Respond()
-        {
-            countCorrectAnswers = passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
-            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
-            tmp.Current += 1;
-            RemainQuestions = tmp;
-            try
-            {
-                UpdateQuestion(RemainQuestions.Current);
-            }
-            catch (TestQuestionsOverException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        #endregion
-
-        #region Helpers
-
-        private void InitializeTest()
-        {
-            UpdateQuestion();
-            UpdateAnswers();
-        }
-
-        private void UpdateQuestion(int skipCount = 0)
-        {
-            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(--skipCount).FirstOrDefault() ?? throw new TestQuestionsOverException();
-            CurrentQuestion = passingTestService.CurrentQuestion;
-            UpdateAnswers();
-        }
-
-        private void UpdateAnswers()
-        {
-            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
-            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
-        }
-
-        #endregion
-
-        #region Fields
-
-        #region Containers
-
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
-
-        #endregion
-
-        #region Services
-
-        // TODO: Replace by interface.
-        private PassingTestService passingTestService;
-
-        private IBusinessService<QuestionBusinessObject> questions;
-        private IBusinessService<AnswerBusinessObject> answers;
-
-        #endregion
-
-        #region Helpers
-
-        private int countCorrectAnswers;
-
-        #endregion
-
-        #endregion
-
-        #region Properties
 
         public RemainQuestionsBusinessObject RemainQuestions
         {
@@ -140,6 +69,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
+        public StudentTestBusinessObject TestDetails { get; set; }
+
         public int SuitableAnswersCount
         {
             get => Get<int>();
@@ -152,24 +83,89 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public int CountCorrectAnswers => (countCorrectAnswers > 0) ? 0 : countCorrectAnswers;
+        
+        private void Respond()
+        {
+            PrepareQuestion();
+            try
+            {
+                UpdateQuestion(RemainQuestions.Current);
+            }
+            catch (TestQuestionsOverException)
+            {
+                ProcessEndTest();
+            }
+        }
 
-        public float Grade => CountCorrectAnswers * 12 / RemainQuestions.All;
+        private void ProcessEndTest()
+        {
+            // Если ответы на вопрос, все правильные - +1.
+            // Если хотя бы один ошибочный, то -1.
+            // По окончанию вопросов, посчитать количество единиц и составить пропорцию.
+            // Например, 7 вопросов,
+            // все правильные - 7 очков - 100 %
+            // 2 очка  - ?
+            // 2 * 100 = 200 / 7 = 28.5 (%)
+            // 7 очков - 12 балов
+            // 2 очка  - ? балов
+            // 2 * 12 = 24 / 7 = 3.42 (б).
+            passingTestService.TestDetailsBusinessObject.TestDetails.PCA = countCorrectAnswers * 100 / passingTestService.QuestionsCount;
 
-        #endregion
+            passingTestService.ProcessEndTest();
+            windowManager = container.Container.Resolve<IEndPassingTestWindowManagementService>();
+            windowManager.TestDetails = new TestAdvancedDetailsBusinessObject
+            {
+                TestDetails = TestDetails,
+                AmountQuestions = passingTestService.QuestionsCount,
+                CountCorrectAnswers = countCorrectAnswers,
+                MaxGrade = 12,
+                Test = Test
+            };
+            windowManager.OpenWindow();
+        }
 
-        #region Initializers and resolves
+        private void PrepareQuestion()
+        {
+            if(passingTestService.CheckAnswers(Answers))
+            {
+                ++countCorrectAnswers;
+            }
+            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
+            tmp.Current += 1;
+            RemainQuestions = tmp;
+        }
+
+        private void UpdateQuestion(int skipCount = 0)
+        {
+            passingTestService.CurrentQuestion = passingTestService.Questions.Skip(--skipCount).FirstOrDefault() ??
+                                                 throw new TestQuestionsOverException();
+            CurrentQuestion = passingTestService.CurrentQuestion;
+            UpdateAnswers();
+        }
+
+        private void UpdateAnswers()
+        {
+            SuitableAnswersCount = passingTestService.SuitableAnswersCount;
+            Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
+        }
 
         private void InitializeContainers()
         {
+            container = new Container.ContainerConfig();
             businessLogicContainer = new ContainerConfig();
-            clientContainer = new Container.ContainerConfig();
+        }
+
+        private void InitializeTest()
+        {
+            UpdateQuestion();
+            UpdateAnswers();
         }
 
         private void ResolveContainers()
         {
             questions = businessLogicContainer.Container.Resolve<IBusinessService<QuestionBusinessObject>>();
             answers = businessLogicContainer.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
+            studentTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
         }
 
         private void InitializeProperties()
@@ -183,12 +179,12 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         private void InitializeServices()
         {
-            passingTestService = new PassingTestService(questions, answers)
+            passingTestService = container.Container.Resolve<IPassingTestService>();
+            passingTestService.TestDetailsBusinessObject = new TestAdvancedDetailsBusinessObject
             {
-                Test = Test
+                Test = Test,
+                TestDetails = TestDetails
             };
         }
-
-        #endregion
     }
 }

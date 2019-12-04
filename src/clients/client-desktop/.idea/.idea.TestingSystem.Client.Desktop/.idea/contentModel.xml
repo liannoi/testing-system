@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\student.LAN\.Rider2019.2\system\extResources" t="IncludeRecursive" />
@@ -17,25 +17,6 @@
         <e p="App.xaml.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="BL" t="Include">
-          <e p="BusinessServices" t="Include">
-            <e p="PassingTest" t="Include">
-              <e p="PassingTestService.cs" t="Include" />
-            </e>
-            <e p="Windows" t="Include">
-              <e p="PassingTest" t="Include">
-                <e p="IPassingTestWindowManagementService.cs" t="Include" />
-                <e p="PassingTestWindowManagementService.cs" t="Include" />
-              </e>
-              <e p="SuggestedRole" t="Include">
-                <e p="ISuggestedRoleWindowManagementService.cs" t="Include" />
-                <e p="SuggestedRoleWindowManagementService.cs" t="Include" />
-              </e>
-              <e p="TestDetails" t="Include">
-                <e p="ITestDetailsWindowManagementService.cs" t="Include" />
-                <e p="TestDetailsWindowManagementService.cs" t="Include" />
-              </e>
-            </e>
-          </e>
           <e p="Container" t="Include">
             <e p="ContainerConfig.cs" t="Include" />
             <e p="ContainerModule.cs" t="Include" />
@@ -48,6 +29,21 @@
               <e p="StudentDashboardViewModel.cs" t="Include" />
               <e p="StudentPassTestViewModel.cs" t="Include" />
               <e p="StudentTestDetailsViewModel.cs" t="Include" />
+            </e>
+          </e>
+          <e p="WindowManagement" t="Include">
+            <e p="BaseWindowManagementService.cs" t="Include" />
+            <e p="PassingTest" t="Include">
+              <e p="IPassingTestWindowManagementService.cs" t="Include" />
+              <e p="PassingTestWindowManagementService.cs" t="Include" />
+            </e>
+            <e p="SuggestedRole" t="Include">
+              <e p="ISuggestedRoleWindowManagementService.cs" t="Include" />
+              <e p="SuggestedRoleWindowManagementService.cs" t="Include" />
+            </e>
+            <e p="TestDetails" t="Include">
+              <e p="ITestDetailsWindowManagementService.cs" t="Include" />
+              <e p="TestDetailsWindowManagementService.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -74,6 +70,8 @@
               <e p="StudentPassTestWindow.xaml.cs" t="Include" />
               <e p="StudentTestDetailsWindow.xaml" t="Include" />
               <e p="StudentTestDetailsWindow.xaml.cs" t="Include" />
+              <e p="StudentTestPassEndWindow.xaml" t="Include" />
+              <e p="StudentTestPassEndWindow.xaml.cs" t="Include" />
             </e>
             <e p="Teacher" t="Include" />
           </e>
@@ -90,6 +88,7 @@
         <e p="GroupTestBusinessObject.cs" t="Include" />
         <e p="NonEntities" t="Include">
           <e p="RemainQuestionsBusinessObject.cs" t="Include" />
+          <e p="TestAdvancedDetailsBusinessObject.cs" t="Include" />
         </e>
         <e p="QuestionBusinessObject.cs" t="Include" />
         <e p="RoleBusinessObject.cs" t="Include" />
@@ -112,13 +111,17 @@
         </e>
         <e p="BaseBusinessService.cs" t="Include" />
         <e p="Tests" t="Include">
-          <e p="ITestsService.cs" t="Include" />
-          <e p="TestsService.cs" t="Include" />
+          <e p="IStudentTestsService.cs" t="Include" />
+          <e p="Passing" t="Include">
+            <e p="IPassingTestService.cs" t="Include" />
+            <e p="PassingTestService.cs" t="Include" />
+            <e p="TestQuestionsOverException.cs" t="Include" />
+          </e>
+          <e p="StudentTestsService.cs" t="Include" />
         </e>
       </e>
       <e p="Infrastructure" t="Include">
         <e p="Behaviors" t="Include">
-          <e p="IPasswordBehavior.cs" t="Include" />
           <e p="PasswordBehavior.cs" t="Include" />
         </e>
         <e p="Container" t="Include">
@@ -181,6 +184,7 @@
         </e>
         <e p="Helpers" t="Include">
           <e p="Bindable.cs" t="Include" />
+          <e p="Deeper.cs" t="Include" />
           <e p="Md5DataTools.cs" t="Include" />
           <e p="RelayCommand.cs" t="Include" />
           <e p="SwitchBindingExtension.cs" t="Include" />
