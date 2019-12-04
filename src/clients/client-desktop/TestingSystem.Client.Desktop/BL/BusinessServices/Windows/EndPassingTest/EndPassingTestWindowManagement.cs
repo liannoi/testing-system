@@ -17,7 +17,7 @@ using TestingSystem.Client.Desktop.BL.ViewModels.Student;
 using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
-namespace TestingSystem.Client.Desktop.BL.WindowManagementServices.EndPassingTest
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.EndPassingTest
 {
     public class EndPassingTestWindowManagement : BaseWindowManagementService, IEndPassingTestWindowManagement
     {

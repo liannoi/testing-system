@@ -21,66 +21,66 @@ using Multilayer.DataServices;
 
 namespace Multilayer.BusinessServices
 {
-    public class BaseBusinessService<TEntity, TBEntity> : IBusinessService<TBEntity>
+    public class BaseBusinessService<TEntity, BTEntity> : IBusinessService<BTEntity>
         where TEntity : class, new()
-        where TBEntity : class, new()
+        where BTEntity : class, new()
     {
-        protected readonly IDataService<TEntity> DataService;
-        protected readonly IMapper Mapper;
+        protected readonly IDataService<TEntity> dataService;
+        protected readonly IMapper mapper;
 
         public BaseBusinessService(IDataService<TEntity> dataService, IMapper mapper)
         {
-            this.DataService = dataService;
-            this.Mapper = mapper;
+            this.dataService = dataService;
+            this.mapper = mapper;
         }
 
-        public virtual TBEntity Add(TBEntity entity)
+        public virtual BTEntity Add(BTEntity entity)
         {
-            var result = DataService.Add(Mapper.Map<TEntity>(entity));
+            var result = dataService.Add(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
-        public virtual IEnumerable<TBEntity> Find(Expression<Func<TBEntity, bool>> expression)
+        public virtual IEnumerable<BTEntity> Find(Expression<Func<BTEntity, bool>> expression)
         {
-            return DataService
-                .Find(Mapper.Map<Expression<Func<TEntity, bool>>>(expression))
-                .Select(s => Mapper.Map<TBEntity>(s));
+            return dataService
+                .Find(mapper.Map<Expression<Func<TEntity, bool>>>(expression))
+                .Select(s => mapper.Map<BTEntity>(s));
         }
 
-        public virtual TBEntity Remove(TBEntity entity)
+        public virtual BTEntity Remove(BTEntity entity)
         {
-            var result = DataService.Remove(Mapper.Map<TEntity>(entity));
+            var result = dataService.Remove(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
-        public virtual TBEntity Restore(TBEntity entity)
+        public virtual BTEntity Restore(BTEntity entity)
         {
-            var result = DataService.Restore(Mapper.Map<TEntity>(entity));
+            var result = dataService.Restore(mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
-        public virtual IEnumerable<TBEntity> Select()
+        public virtual IEnumerable<BTEntity> Select()
         {
-            return DataService
+            return dataService
                 .Select()
-                .Select(s => Mapper.Map<TBEntity>(s));
+                .Select(s => mapper.Map<BTEntity>(s));
         }
 
-        public virtual TBEntity Select(TBEntity entity)
+        public virtual BTEntity Select(BTEntity entity)
         {
-            return Mapper.Map<TBEntity>(DataService.Select(Mapper.Map<TEntity>(entity)));
+            return mapper.Map<BTEntity>(dataService.Select(mapper.Map<TEntity>(entity)));
         }
 
-        public virtual TBEntity Update(TBEntity oldEntity, TBEntity entity)
+        public virtual BTEntity Update(BTEntity oldEntity, BTEntity entity)
         {
-            var result = DataService.Update(Mapper.Map<TEntity>(oldEntity), Mapper.Map<TEntity>(entity));
+            var result = dataService.Update(mapper.Map<TEntity>(oldEntity), mapper.Map<TEntity>(entity));
             return AfterCrud(result);
         }
 
-        private TBEntity AfterCrud(TEntity current)
+        private BTEntity AfterCrud(TEntity current)
         {
-            DataService.Commit();
-            return Mapper.Map<TBEntity>(DataService.Select(current));
+            dataService.Commit();
+            return mapper.Map<BTEntity>(dataService.Select(current));
         }
     }
 }

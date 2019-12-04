@@ -12,105 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Client.Desktop.BL.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
-using TestingSystem.Common.BL.BusinessObjects.NonEntities;
-using TestingSystem.Common.BL.Infrastructure.Container;
 
 namespace TestingSystem.Common.BL.BusinessServices.Tests
 {
-    public class TestsService
+    public class TestsService : ITestsService
     {
-        public int CountCorrentAnswers { get; set; }
-        public QuestionBusinessObject CurrentQuestion { get; set; }
-        public TestBusinessObject Test { get; set; }
+        private readonly IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService;
+        private readonly IBusinessService<TestBusinessObject> testsBusinessService;
+        private readonly UserBusinessObject user;
 
-        public IEnumerable<QuestionBusinessObject> Questions => SelectQuestions(e => e.IsRemoved == false && e.TestId == 7);
-        
-
-        public bool IncreaseIfCorrect(IEnumerable<AnswerBusinessObject> answers)
+        public TestsService(IBusinessService<TestBusinessObject> testsBusinessService,
+            IBusinessService<StudentTestBusinessObject> studentsTestsBusinessService, UserBusinessObject user)
         {
-            bool result = CheckAnswers(answers);
-            _ = result ? ++CountCorrentAnswers : --CountCorrentAnswers;
-            return result;
+            this.testsBusinessService = testsBusinessService;
+            this.studentsTestsBusinessService = studentsTestsBusinessService;
+            this.user = user;
         }
 
-        public RemainQuestionsBusinessObject UpdateCounter(RemainQuestionsBusinessObject remainQuestions)
+        private IEnumerable<StudentTestBusinessObject> TestsByUser
         {
-            var clone = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(remainQuestions);
-            clone.Current += 1;
-            return clone;
+            get
+            {
+                if (user == null) throw new ArgumentNullException();
+                yield return StudentTests().Where(e => e.IsRemoved == false).FirstOrDefault();
+            }
         }
 
-        public void UpdateQuestion(RemainQuestionsBusinessObject remainQuestions)
+        public IEnumerable<TestBusinessObject> Tests
         {
-            CurrentQuestion = Questions.Skip(remainQuestions.Current).FirstOrDefault() ?? throw new TestQuestionsOverException();
+            get
+            {
+                foreach (var test in TestsByUser)
+                    yield return testsBusinessService.Find(e => e.TestId == test.TestId)
+                        .Where(e => e.IsRemoved == false).FirstOrDefault();
+            }
         }
 
-        public void UpdateAnswers()
+        public double AverageGrade => StudentTests().Select(e => e.PCA / 100 * 12).Average() ?? 0;
+
+        private IEnumerable<StudentTestBusinessObject> StudentTests()
         {
-
+            return studentsTestsBusinessService.Find(e => e.UserId == user.UserId).Where(e => e.IsRemoved == false);
         }
-
-        private IEnumerable<QuestionBusinessObject> SelectQuestion()
-
-
-
-
-
-        //#region Bad code
-
-        //private IEnumerable<StudentTestBusinessObject> TestsByUser
-        //{
-        //    get
-        //    {
-        //        if (user == null) throw new ArgumentNullException();
-        //        yield return StudentTests.Where(e => e.IsRemoved == false).FirstOrDefault();
-        //    }
-        //}
-        //private IEnumerable<StudentTestBusinessObject> StudentTests => SelectStudentTests(e => e.IsRemoved == false);
-        //public double AverageGrade => StudentTests.Select(e => e.PCA / 100 * 12).Average() ?? 0;
-        //public IEnumerable<TestBusinessObject> Tests
-        //{
-        //    get
-        //    {
-        //        foreach (var test in TestsByUser)
-        //            yield return testsBusinessService.Find(e => e.TestId == test.TestId)
-        //                .Where(e => e.IsRemoved == false).FirstOrDefault();
-        //    }
-        //}
-        //public IEnumerable<QuestionBusinessObject> Questions => SelectQuestions(e => e.IsRemoved == false && e.TestId == 7);
-        //public IEnumerable<AnswerBusinessObject> Answers => SelectAnswers(e => e.IsRemoved == false);
-
-        
-
-        
-
-        //// TODO: Implement.
-        //public StudentTestBusinessObject EndPassing()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private IEnumerable<StudentTestBusinessObject> SelectStudentTests(Func<StudentTestBusinessObject, bool> predicate)
-        //{
-        //    return studentsTestsBusinessService.Find(e => e.UserId == user.UserId).Where(predicate);
-        //}
-
-        //private IEnumerable<QuestionBusinessObject> SelectQuestions(Func<QuestionBusinessObject, bool> predicate)
-        //{
-        //    var selectedAnswers = answersBusinessService.Select();
-        //    return questionsBusinessSerivce
-        //        .Find(e => e.TestId == test.TestId)
-        //        .Join(selectedAnswers, c => c.QuestionId, a => a.QuestionId, (c, a) => c)
-        //        .Where(predicate)
-        //        .GroupBy(e => e.QuestionId)
-        //        .Select(e => e.First());
-        //}
-
-        //#endregion
     }
 }

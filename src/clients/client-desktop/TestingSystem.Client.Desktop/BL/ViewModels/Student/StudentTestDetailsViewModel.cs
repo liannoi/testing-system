@@ -14,7 +14,7 @@
 
 using System.Windows.Input;
 using Client.Desktop.BL.Infrastructure;
-using TestingSystem.Client.Desktop.BL.WindowManagementServices.PassingTest;
+using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 
 namespace TestingSystem.Client.Desktop.BL.ViewModels.Student

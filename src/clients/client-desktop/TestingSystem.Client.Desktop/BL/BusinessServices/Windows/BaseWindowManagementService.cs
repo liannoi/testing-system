@@ -10,13 +10,14 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License.using Client.Desktop.BL.Infrastructure;
+// limitations under the License.
 
-using Client.Desktop.BL.Infrastructure;
+using Client.Desktop.BL.Infrastructure.Windows;
 
-namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows
 {
-    public class StudentTestPassEndViewModel : BaseViewModel
+    public abstract class BaseWindowManagementService
     {
+        protected IWindowsManagementStrategy Strategy;
     }
 }

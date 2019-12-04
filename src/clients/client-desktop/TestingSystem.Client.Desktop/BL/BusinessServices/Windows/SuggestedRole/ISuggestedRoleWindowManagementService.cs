@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Client.Desktop.BL.Infrastructure.Windows;
+using TestingSystem.Common.BL.BusinessObjects;
+using TestingSystem.Common.BL.BusinessServices.Authorization;
 
-namespace TestingSystem.Client.Desktop.BL.WindowManagementServices
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.SuggestedRole
 {
-    public class BaseWindowManagementService
+    public interface ISuggestedRoleWindowManagementService
     {
-        protected IWindowsManagementStrategy Strategy;
+        AuthorizationRole Role { get; set; }
+        UserBusinessObject User { get; set; }
+
+        void OpenSuggestWindow();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
-namespace TestingSystem.Client.Desktop.BL.WindowManagementServices.EndPassingTest
+namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.EndPassingTest
 {
     public interface IEndPassingTestWindowManagement
     {
