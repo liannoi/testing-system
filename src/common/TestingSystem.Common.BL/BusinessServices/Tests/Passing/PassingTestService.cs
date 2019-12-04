@@ -18,7 +18,7 @@ using System.Linq;
 using Multilayer.BusinessServices;
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
+namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
 {
     public class PassingTestService : IPassingTestService
     {
@@ -43,7 +43,7 @@ namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
         public IEnumerable<AnswerBusinessObject> Answers => GetAnswers(e => e.IsRemoved == false);
 
         public IEnumerable<QuestionBusinessObject> Questions =>
-            GetQuestions(e => e.IsRemoved == false && e.TestId == 7);
+            GetQuestions(e => e.IsRemoved == false && e.TestId == Test.TestId);
 
         public bool CheckAnswers(IEnumerable<AnswerBusinessObject> answers)
         {

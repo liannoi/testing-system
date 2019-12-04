@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Client.Desktop.BL.Infrastructure.Windows;
+using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows
+namespace TestingSystem.Client.Desktop.BL.WindowManagement.TestDetails
 {
-    public abstract class BaseWindowManagementService
+    public interface ITestDetailsWindowManagementService
     {
-        protected IWindowsManagementStrategy Strategy;
+        TestBusinessObject Test { get; set; }
+        StudentTestBusinessObject TestDetails { get; set; }
+
+        void OpenWindow();
     }
 }

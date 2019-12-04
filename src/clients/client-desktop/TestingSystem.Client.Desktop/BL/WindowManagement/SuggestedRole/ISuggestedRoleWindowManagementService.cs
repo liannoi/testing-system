@@ -13,14 +13,15 @@
 // limitations under the License.
 
 using TestingSystem.Common.BL.BusinessObjects;
+using TestingSystem.Common.BL.BusinessServices.Authorization;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.TestDetails
+namespace TestingSystem.Client.Desktop.BL.WindowManagement.SuggestedRole
 {
-    public interface ITestDetailsWindowManagementService
+    public interface ISuggestedRoleWindowManagementService
     {
-        TestBusinessObject Test { get; set; }
-        StudentTestBusinessObject TestDetails { get; set; }
+        AuthorizationRole Role { get; set; }
+        UserBusinessObject User { get; set; }
 
-        void OpenWindow();
+        void OpenSuggestWindow();
     }
 }

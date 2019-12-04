@@ -14,7 +14,7 @@
 
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.PassingTest
+namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest
 {
     public interface IPassingTestWindowManagementService
     {

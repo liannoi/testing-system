@@ -14,15 +14,15 @@
 
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
-using TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.EndPassingTest;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
+using TestingSystem.Common.BL.BusinessServices.Tests.Passing;
 using TestingSystem.Common.BL.Infrastructure.Container;
 
 namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
@@ -31,17 +31,15 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
     {
         private IBusinessService<AnswerBusinessObject> answers;
 
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
+        private readonly ContainerConfig container;
         private int countCorrectAnswers;
         private IPassingTestService passingTestService;
         private IBusinessService<QuestionBusinessObject> questions;
-        private IEndPassingTestWindowManagement windowManagement;
 
         public StudentPassTestViewModel(TestBusinessObject test)
         {
             Test = test;
-            InitializeContainers();
+            container = new ContainerConfig();
             ResolveContainers();
             InitializeServices();
             InitializeProperties();
@@ -107,7 +105,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             }
             catch (TestQuestionsOverException e)
             {
-                ProcessTestEnd();
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -125,35 +123,16 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             Answers = new ObservableCollection<AnswerBusinessObject>(passingTestService.Answers);
         }
 
-        private void ProcessTestEnd()
-        {
-            windowManagement = new EndPassingTestWindowManagement
-            {
-                PassingTestResult = new PassingTestResultBusinessObject
-                {
-                    MaxGrade = 12,
-                    CountQuestions = passingTestService.QuestionsCount,
-                    CountCorrentAnswered = CountCorrectAnswers
-                }
-            };
-        }
-
         private void InitializeTest()
         {
             UpdateQuestion();
             UpdateAnswers();
         }
 
-        private void InitializeContainers()
-        {
-            businessLogicContainer = new ContainerConfig();
-            clientContainer = new Container.ContainerConfig();
-        }
-
         private void ResolveContainers()
         {
-            questions = businessLogicContainer.Container.Resolve<IBusinessService<QuestionBusinessObject>>();
-            answers = businessLogicContainer.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
+            questions = container.Container.Resolve<IBusinessService<QuestionBusinessObject>>();
+            answers = container.Container.Resolve<IBusinessService<AnswerBusinessObject>>();
         }
 
         private void InitializeProperties()

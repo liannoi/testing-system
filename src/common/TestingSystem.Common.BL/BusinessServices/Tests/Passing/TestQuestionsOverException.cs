@@ -15,7 +15,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
+namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
 {
     [Serializable]
     public class TestQuestionsOverException : Exception

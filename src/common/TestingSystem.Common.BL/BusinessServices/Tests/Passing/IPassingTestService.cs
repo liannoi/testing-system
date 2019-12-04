@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.PassingTest
+namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
 {
     public interface IPassingTestService
     {

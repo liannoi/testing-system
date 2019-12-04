@@ -17,32 +17,6 @@
         <e p="App.xaml.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="BL" t="Include">
-          <e p="BusinessServices" t="Include">
-            <e p="PassingTest" t="Include">
-              <e p="IPassingTestService.cs" t="Include" />
-              <e p="PassingTestService.cs" t="Include" />
-              <e p="TestQuestionsOverException.cs" t="Include" />
-            </e>
-            <e p="Windows" t="Include">
-              <e p="BaseWindowManagementService.cs" t="Include" />
-              <e p="EndPassingTest" t="Include">
-                <e p="EndPassingTestWindowManagement.cs" t="Include" />
-                <e p="IEndPassingTestWindowManagement.cs" t="Include" />
-              </e>
-              <e p="PassingTest" t="Include">
-                <e p="IPassingTestWindowManagementService.cs" t="Include" />
-                <e p="PassingTestWindowManagementService.cs" t="Include" />
-              </e>
-              <e p="SuggestedRole" t="Include">
-                <e p="ISuggestedRoleWindowManagementService.cs" t="Include" />
-                <e p="SuggestedRoleWindowManagementService.cs" t="Include" />
-              </e>
-              <e p="TestDetails" t="Include">
-                <e p="ITestDetailsWindowManagementService.cs" t="Include" />
-                <e p="TestDetailsWindowManagementService.cs" t="Include" />
-              </e>
-            </e>
-          </e>
           <e p="Container" t="Include">
             <e p="ContainerConfig.cs" t="Include" />
             <e p="ContainerModule.cs" t="Include" />
@@ -55,7 +29,21 @@
               <e p="StudentDashboardViewModel.cs" t="Include" />
               <e p="StudentPassTestViewModel.cs" t="Include" />
               <e p="StudentTestDetailsViewModel.cs" t="Include" />
-              <e p="StudentTestPassEndViewModel.cs" t="Include" />
+            </e>
+          </e>
+          <e p="WindowManagement" t="Include">
+            <e p="BaseWindowManagementService.cs" t="Include" />
+            <e p="PassingTest" t="Include">
+              <e p="IPassingTestWindowManagementService.cs" t="Include" />
+              <e p="PassingTestWindowManagementService.cs" t="Include" />
+            </e>
+            <e p="SuggestedRole" t="Include">
+              <e p="ISuggestedRoleWindowManagementService.cs" t="Include" />
+              <e p="SuggestedRoleWindowManagementService.cs" t="Include" />
+            </e>
+            <e p="TestDetails" t="Include">
+              <e p="ITestDetailsWindowManagementService.cs" t="Include" />
+              <e p="TestDetailsWindowManagementService.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -99,7 +87,6 @@
         <e p="GroupBusinessObject.cs" t="Include" />
         <e p="GroupTestBusinessObject.cs" t="Include" />
         <e p="NonEntities" t="Include">
-          <e p="PassingTestResultBusinessObject.cs" t="Include" />
           <e p="RemainQuestionsBusinessObject.cs" t="Include" />
         </e>
         <e p="QuestionBusinessObject.cs" t="Include" />
@@ -124,6 +111,11 @@
         <e p="BaseBusinessService.cs" t="Include" />
         <e p="Tests" t="Include">
           <e p="ITestsService.cs" t="Include" />
+          <e p="Passing" t="Include">
+            <e p="IPassingTestService.cs" t="Include" />
+            <e p="PassingTestService.cs" t="Include" />
+            <e p="TestQuestionsOverException.cs" t="Include" />
+          </e>
           <e p="TestsService.cs" t="Include" />
         </e>
       </e>

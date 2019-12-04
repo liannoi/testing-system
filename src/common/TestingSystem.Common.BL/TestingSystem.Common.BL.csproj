@@ -80,7 +80,6 @@
     <Compile Include="BusinessObjects\AnswerBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupBusinessObject.cs" />
     <Compile Include="BusinessObjects\GroupTestBusinessObject.cs" />
-    <Compile Include="BusinessObjects\NonEntities\PassingTestResultBusinessObject.cs" />
     <Compile Include="BusinessObjects\NonEntities\RemainQuestionsBusinessObject.cs" />
     <Compile Include="BusinessObjects\QuestionBusinessObject.cs" />
     <Compile Include="BusinessObjects\RoleBusinessObject.cs" />
@@ -97,6 +96,9 @@
     <Compile Include="BusinessServices\Authorization\IAuthorizationService.cs" />
     <Compile Include="BusinessServices\BaseBusinessService.cs" />
     <Compile Include="BusinessServices\Tests\ITestsService.cs" />
+    <Compile Include="BusinessServices\Tests\Passing\IPassingTestService.cs" />
+    <Compile Include="BusinessServices\Tests\Passing\PassingTestService.cs" />
+    <Compile Include="BusinessServices\Tests\Passing\TestQuestionsOverException.cs" />
     <Compile Include="BusinessServices\Tests\TestsService.cs" />
     <Compile Include="Infrastructure\Behaviors\PasswordBehavior.cs" />
     <Compile Include="Infrastructure\Container\ContainerConfig.cs" />

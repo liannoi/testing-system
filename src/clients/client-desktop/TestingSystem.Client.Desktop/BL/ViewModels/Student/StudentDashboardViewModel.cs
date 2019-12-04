@@ -17,7 +17,7 @@ using System.Linq;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
-using TestingSystem.Client.Desktop.BL.BusinessServices.Windows.TestDetails;
+using TestingSystem.Client.Desktop.BL.WindowManagement.TestDetails;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Tests;
 using TestingSystem.Common.BL.Infrastructure.Container;
@@ -26,8 +26,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public sealed class StudentDashboardViewModel : BaseViewModel
     {
-        private ContainerConfig businessLogicContainer;
-        private Container.ContainerConfig clientContainer;
+        private readonly ContainerConfig container;
         private IBusinessService<StudentTestBusinessObject> studentsTests;
         private IBusinessService<TestBusinessObject> tests;
         private ITestsService testsService;
@@ -36,7 +35,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         public StudentDashboardViewModel(UserBusinessObject user)
         {
             User = user;
-            InitializeContainers();
+            container = new ContainerConfig();
             ResolveContainers();
             InitializeServices();
             InitializeProperties();
@@ -66,14 +65,6 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public void ShowTestDetails()
-        {
-            if (SelectedTest == null) return;
-            windowManager.Test = SelectedTest;
-            windowManager.TestDetails = studentsTests.Find(e => e.TestId == SelectedTest.TestId).FirstOrDefault();
-            windowManager.OpenWindow();
-        }
-
         private void InitializeProperties()
         {
             Tests = testsService.Tests;
@@ -86,16 +77,18 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             windowManager = new TestDetailsWindowManagementService();
         }
 
-        private void InitializeContainers()
-        {
-            businessLogicContainer = new ContainerConfig();
-            clientContainer = new Container.ContainerConfig();
-        }
-
         private void ResolveContainers()
         {
-            tests = businessLogicContainer.Container.Resolve<IBusinessService<TestBusinessObject>>();
-            studentsTests = businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
+            tests = container.Container.Resolve<IBusinessService<TestBusinessObject>>();
+            studentsTests = container.Container.Resolve<IBusinessService<StudentTestBusinessObject>>();
+        }
+
+        public void ShowTestDetails()
+        {
+            if (SelectedTest == null) return;
+            windowManager.Test = SelectedTest;
+            windowManager.TestDetails = studentsTests.Find(e => e.TestId == SelectedTest.TestId).FirstOrDefault();
+            windowManager.OpenWindow();
         }
     }
 }

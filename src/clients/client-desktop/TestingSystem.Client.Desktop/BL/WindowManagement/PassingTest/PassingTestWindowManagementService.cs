@@ -14,22 +14,22 @@
 
 using Client.Desktop.BL.Infrastructure.Windows;
 using TestingSystem.Client.Desktop.BL.ViewModels.Student;
-using TestingSystem.Client.Desktop.UI.Windows.Student;
+using TestingSystem.Client.Desktop.UI.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;
 
-namespace TestingSystem.Client.Desktop.BL.BusinessServices.Windows.TestDetails
+namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest
 {
-    public class TestDetailsWindowManagementService : BaseWindowManagementService, ITestDetailsWindowManagementService
+    public class PassingTestWindowManagementService : BaseWindowManagementService, IPassingTestWindowManagementService
     {
         public TestBusinessObject Test { get; set; }
-        public StudentTestBusinessObject TestDetails { get; set; }
 
         public void OpenWindow()
         {
-            Strategy = new WindowsManagementStrategy<StudentTestDetailsViewModel, StudentTestDetailsWindow>(
-                new StudentTestDetailsViewModel(Test, TestDetails),
-                new StudentTestDetailsWindow());
+            Strategy = new WindowsManagementStrategy<StudentPassTestViewModel, StudentPassTestWindow>(
+                new StudentPassTestViewModel(Test),
+                new StudentPassTestWindow());
             Strategy.OpenDialog();
+            Strategy.CloseParent();
         }
     }
 }
