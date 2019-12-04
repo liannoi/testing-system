@@ -30,6 +30,7 @@ namespace TestingSystem.Client.Desktop.BL.WindowManagement.TestDetails
                 new StudentTestDetailsViewModel(Test, TestDetails),
                 new StudentTestDetailsWindow());
             Strategy.OpenDialog();
+            Strategy.CloseParent();
         }
     }
 }

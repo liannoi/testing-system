@@ -62,7 +62,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BL\ViewModels\Student\StudentEndPassTestViewModel.cs" />
     <Compile Include="BL\WindowManagement\BaseWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\PassingTest\End\EndPassingTestWindowManagementService.cs" />
+    <Compile Include="BL\WindowManagement\PassingTest\End\IEndPassingTestWindowManagementService.cs" />
     <Compile Include="BL\WindowManagement\PassingTest\IPassingTestWindowManagementService.cs" />
     <Compile Include="BL\WindowManagement\PassingTest\PassingTestWindowManagementService.cs" />
     <Compile Include="BL\WindowManagement\SuggestedRole\ISuggestedRoleWindowManagementService.cs" />

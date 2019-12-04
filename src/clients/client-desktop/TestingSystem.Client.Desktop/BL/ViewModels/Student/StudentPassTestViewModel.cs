@@ -14,11 +14,13 @@
 
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
+using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 using TestingSystem.Common.BL.BusinessServices.Tests.Passing;
@@ -34,6 +36,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
         private IPassingTestService passingTestService;
         private IBusinessService<QuestionBusinessObject> questions;
         private IBusinessService<StudentTestBusinessObject> studentTests;
+        private IEndPassingTestWindowManagementService windowManager;
 
         public StudentPassTestViewModel(TestBusinessObject test, StudentTestBusinessObject testDetails)
         {
@@ -108,6 +111,9 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             catch (TestQuestionsOverException)
             {
                 passingTestService.ProcessEndTest();
+                windowManager = new EndPassingTestWindowManagementService();
+                windowManager.OpenWindow();
+                // TODO: Close safely applicaiton.
             }
         }
 

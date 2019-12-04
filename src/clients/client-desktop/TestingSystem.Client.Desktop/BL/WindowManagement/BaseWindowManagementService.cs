@@ -16,7 +16,7 @@ using Client.Desktop.BL.Infrastructure.Windows;
 
 namespace TestingSystem.Client.Desktop.BL.WindowManagement
 {
-    public abstract class BaseWindowManagementService
+    public class BaseWindowManagementService
     {
         protected IWindowsManagementStrategy Strategy;
     }
