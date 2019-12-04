@@ -1,11 +1,11 @@
 ﻿using TestingSystem.Common.BL.BusinessObjects;
+using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
 namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End
 {
     public interface IEndPassingTestWindowManagementService
     {
-        int Grade { get; set; }
-        StudentTestBusinessObject TestDetails { get; set; }
+        TestAdvancedDetailsBusinessObject TestDetails { get; set; }
 
         void OpenWindow();
     }

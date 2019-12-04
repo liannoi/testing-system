@@ -76,7 +76,6 @@ namespace TestingSystem.Common.BL.BusinessServices.Tests.Passing
             @new.RecordId = -1;
             @new.Start = TestDetailsBusinessObject.DateStart;
             @new.End = DateTime.Now;
-            @new.PCA = 100;
             studentTests.Add(@new);
         }
     }

@@ -13,11 +13,39 @@
 // limitations under the License.
 
 using Client.Desktop.BL.Infrastructure;
+using Client.Desktop.BL.Infrastructure.Windows;
+using System;
+using System.Windows;
+using System.Windows.Input;
+using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
 namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
-    // TODO: Implement.
     public class StudentEndPassTestViewModel : BaseViewModel
     {
+        public StudentEndPassTestViewModel(TestAdvancedDetailsBusinessObject testDetails)
+        {
+            TestDetails = testDetails;
+            Grade = TestDetails.Grade;
+            PCA = Convert.ToSingle(TestDetails.TestDetails.PCA);
+        }
+
+        public TestAdvancedDetailsBusinessObject TestDetails
+        {
+            get => Get<TestAdvancedDetailsBusinessObject>();
+            set => Set(value);
+        }
+
+        public int Grade
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        public float PCA
+        {
+            get => Get<float>();
+            set => Set(value);
+        }
     }
 }

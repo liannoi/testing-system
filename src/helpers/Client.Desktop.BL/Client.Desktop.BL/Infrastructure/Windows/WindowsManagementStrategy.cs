@@ -29,7 +29,6 @@ namespace Client.Desktop.BL.Infrastructure.Windows
         }
 
         public Application Current => Application.Current;
-
         public WindowCollection Windows => Application.Current.Windows;
 
         public void Open()

@@ -83,37 +83,56 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        public int CountCorrectAnswers => countCorrectAnswers > 0 ? 0 : countCorrectAnswers;
-
-        /// <summary>
-        ///     Если ответы на вопрос, все правильные - +1.
-        ///     Если хотя бы один ошибочный, то -1.
-        ///     По окончанию вопросов, посчитать количество единиц и составить пропорцию.
-        ///     Например, 7 вопросов,
-        ///     все правильные - 7 очков - 100 %
-        ///     2 очка  - ?
-        ///     2 * 100 = 200 / 7 = 28.5 (%)
-        ///     7 очков - 12 балов
-        ///     2 очка  - ? балов
-        ///     2 * 12 = 24 / 7 = 3.42 (б)
-        /// </summary>
+        
         private void Respond()
         {
-            countCorrectAnswers =
-                passingTestService.CheckAnswers(Answers) ? ++countCorrectAnswers : --countCorrectAnswers;
-            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
-            tmp.Current += 1;
-            RemainQuestions = tmp;
+            PrepareQuestion();
             try
             {
                 UpdateQuestion(RemainQuestions.Current);
             }
             catch (TestQuestionsOverException)
             {
-                passingTestService.ProcessEndTest();
-                windowManager = container.Container.Resolve<IEndPassingTestWindowManagementService>();
-                windowManager.OpenWindow();
+                ProcessEndTest();
             }
+        }
+
+        private void ProcessEndTest()
+        {
+            // Если ответы на вопрос, все правильные - +1.
+            // Если хотя бы один ошибочный, то -1.
+            // По окончанию вопросов, посчитать количество единиц и составить пропорцию.
+            // Например, 7 вопросов,
+            // все правильные - 7 очков - 100 %
+            // 2 очка  - ?
+            // 2 * 100 = 200 / 7 = 28.5 (%)
+            // 7 очков - 12 балов
+            // 2 очка  - ? балов
+            // 2 * 12 = 24 / 7 = 3.42 (б).
+            passingTestService.TestDetailsBusinessObject.TestDetails.PCA = countCorrectAnswers * 100 / passingTestService.QuestionsCount;
+
+            passingTestService.ProcessEndTest();
+            windowManager = container.Container.Resolve<IEndPassingTestWindowManagementService>();
+            windowManager.TestDetails = new TestAdvancedDetailsBusinessObject
+            {
+                TestDetails = TestDetails,
+                AmountQuestions = passingTestService.QuestionsCount,
+                CountCorrectAnswers = countCorrectAnswers,
+                MaxGrade = 12,
+                Test = Test
+            };
+            windowManager.OpenWindow();
+        }
+
+        private void PrepareQuestion()
+        {
+            if(passingTestService.CheckAnswers(Answers))
+            {
+                ++countCorrectAnswers;
+            }
+            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
+            tmp.Current += 1;
+            RemainQuestions = tmp;
         }
 
         private void UpdateQuestion(int skipCount = 0)

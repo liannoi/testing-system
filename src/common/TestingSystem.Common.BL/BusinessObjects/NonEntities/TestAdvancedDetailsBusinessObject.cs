@@ -21,5 +21,24 @@ namespace TestingSystem.Common.BL.BusinessObjects.NonEntities
         public DateTime DateStart { get; set; } = DateTime.Now;
         public StudentTestBusinessObject TestDetails { get; set; }
         public TestBusinessObject Test { get; set; }
+        public int AmountQuestions { get; set; }
+        public int CountCorrectAnswers { get; set; }
+        public int MaxGrade { get; set; }
+        public int Grade
+        {
+            get
+            {
+                int result = CountCorrectAnswers * MaxGrade / AmountQuestions;
+                if (result <= 0)
+                {
+                    result = 1;
+                }
+                else if (result > MaxGrade)
+                {
+                    result = MaxGrade;
+                }
+                return result;
+            }
+        }
     }
 }
