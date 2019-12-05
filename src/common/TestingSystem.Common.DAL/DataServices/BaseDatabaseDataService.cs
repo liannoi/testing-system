@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Data.Entity;
 using Multilayer.DataServices;
 using Multilayer.Infrastructure.Helpers;
-using System.Data.Entity;
 
 namespace TestingSystem.Common.DAL.DataServices
 {

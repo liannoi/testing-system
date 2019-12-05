@@ -14,7 +14,7 @@
 
 using System.Windows;
 
-namespace TestingSystem.Client.Desktop.UI.UI.Windows.Student
+namespace TestingSystem.Client.Desktop.UI.Windows.Student
 {
     /// <summary>
     ///     Interaction logic for StudentPassTestWindow.xaml

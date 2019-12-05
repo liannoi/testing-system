@@ -27,7 +27,7 @@ namespace TestingSystem.Client.Desktop.BL.Container
 
         private IContainer Build()
         {
-            ContainerBuilder builder = new ContainerBuilder();
+            var builder = new ContainerBuilder();
             builder.RegisterModule<ContainerModule>();
             return builder.Build();
         }

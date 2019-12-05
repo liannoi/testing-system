@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using Autofac;
 using Multilayer.BusinessServices;
-using System;
 using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest;
 using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End;
 using TestingSystem.Client.Desktop.BL.WindowManagement.SuggestedRole;
@@ -67,16 +67,19 @@ namespace TestingSystem.Client.Desktop.BL.Container
                 businessLogicContainer.Container.Resolve<IBusinessService<UserRoleBusinessObject>>());
 
             // SuggestedRoleWindowManagementService.
-            Inject(builder, typeof(SuggestedRoleWindowManagementService), typeof(ISuggestedRoleWindowManagementService));
+            Inject(builder, typeof(SuggestedRoleWindowManagementService),
+                typeof(ISuggestedRoleWindowManagementService));
 
             // StudentTestsService.
-            Inject(builder, typeof(StudentTestsService), typeof(IStudentTestsService), "studentsTestsBusinessService", businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>());
+            Inject(builder, typeof(StudentTestsService), typeof(IStudentTestsService), "studentsTestsBusinessService",
+                businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>());
 
             // TestDetailsWindowManagementService.
             Inject(builder, typeof(TestDetailsWindowManagementService), typeof(ITestDetailsWindowManagementService));
 
             // EndPassingTestWindowManagementService.
-            Inject(builder, typeof(EndPassingTestWindowManagementService), typeof(IEndPassingTestWindowManagementService));
+            Inject(builder, typeof(EndPassingTestWindowManagementService),
+                typeof(IEndPassingTestWindowManagementService));
 
             // PassingTestWindowManagementService.
             Inject(builder, typeof(PassingTestWindowManagementService), typeof(IPassingTestWindowManagementService));
@@ -84,9 +87,12 @@ namespace TestingSystem.Client.Desktop.BL.Container
             // PassingTestService.
             builder.RegisterType(typeof(PassingTestService))
                 .As(typeof(IPassingTestService))
-                .WithParameter("questions", businessLogicContainer.Container.Resolve<IBusinessService<QuestionBusinessObject>>())
-                .WithParameter("answers", businessLogicContainer.Container.Resolve<IBusinessService<AnswerBusinessObject>>())
-                .WithParameter("studentTests", businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>());
+                .WithParameter("questions",
+                    businessLogicContainer.Container.Resolve<IBusinessService<QuestionBusinessObject>>())
+                .WithParameter("answers",
+                    businessLogicContainer.Container.Resolve<IBusinessService<AnswerBusinessObject>>())
+                .WithParameter("studentTests",
+                    businessLogicContainer.Container.Resolve<IBusinessService<StudentTestBusinessObject>>());
         }
 
         private void Inject<TParam>(ContainerBuilder builder, Type registerType, Type asType, string parameterName,

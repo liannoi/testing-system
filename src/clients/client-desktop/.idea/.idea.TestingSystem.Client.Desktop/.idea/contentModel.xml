@@ -27,6 +27,7 @@
             </e>
             <e p="Student" t="Include">
               <e p="StudentDashboardViewModel.cs" t="Include" />
+              <e p="StudentEndPassTestViewModel.cs" t="Include" />
               <e p="StudentPassTestViewModel.cs" t="Include" />
               <e p="StudentTestDetailsViewModel.cs" t="Include" />
             </e>
@@ -34,6 +35,10 @@
           <e p="WindowManagement" t="Include">
             <e p="BaseWindowManagementService.cs" t="Include" />
             <e p="PassingTest" t="Include">
+              <e p="End" t="Include">
+                <e p="EndPassingTestWindowManagementService.cs" t="Include" />
+                <e p="IEndPassingTestWindowManagementService.cs" t="Include" />
+              </e>
               <e p="IPassingTestWindowManagementService.cs" t="Include" />
               <e p="PassingTestWindowManagementService.cs" t="Include" />
             </e>

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Helpers;
 using Multilayer.BusinessServices;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
@@ -29,13 +29,13 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public class StudentPassTestViewModel : BaseViewModel
     {
-        private Container.ContainerConfig container;
-        private ContainerConfig businessLogicContainer;
-        private int countCorrectAnswers;
         private IBusinessService<AnswerBusinessObject> answers;
+        private ContainerConfig businessLogicContainer;
+        private Container.ContainerConfig container;
+        private int countCorrectAnswers;
+        private IPassingTestService passingTestService;
         private IBusinessService<QuestionBusinessObject> questions;
         private IBusinessService<StudentTestBusinessObject> studentTests;
-        private IPassingTestService passingTestService;
         private IEndPassingTestWindowManagementService windowManager;
 
         public StudentPassTestViewModel(TestBusinessObject test, StudentTestBusinessObject testDetails)
@@ -83,7 +83,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             set => Set(value);
         }
 
-        
+
         private void Respond()
         {
             PrepareQuestion();
@@ -109,7 +109,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
             // 7 очков - 12 балов
             // 2 очка  - ? балов
             // 2 * 12 = 24 / 7 = 3.42 (б).
-            passingTestService.TestDetailsBusinessObject.TestDetails.PCA = countCorrectAnswers * 100 / passingTestService.QuestionsCount;
+            passingTestService.TestDetailsBusinessObject.TestDetails.PCA =
+                countCorrectAnswers * 100 / passingTestService.QuestionsCount;
 
             passingTestService.ProcessEndTest();
             windowManager = container.Container.Resolve<IEndPassingTestWindowManagementService>();
@@ -126,11 +127,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         private void PrepareQuestion()
         {
-            if(passingTestService.CheckAnswers(Answers))
-            {
-                ++countCorrectAnswers;
-            }
-            RemainQuestionsBusinessObject tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
+            if (passingTestService.CheckAnswers(Answers)) ++countCorrectAnswers;
+            var tmp = Deeper<RemainQuestionsBusinessObject, RemainQuestionsBusinessObject>.Clone(RemainQuestions);
             tmp.Current += 1;
             RemainQuestions = tmp;
         }

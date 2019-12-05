@@ -24,19 +24,15 @@ namespace TestingSystem.Common.BL.BusinessObjects.NonEntities
         public int AmountQuestions { get; set; }
         public int CountCorrectAnswers { get; set; }
         public int MaxGrade { get; set; }
+
         public int Grade
         {
             get
             {
-                int result = CountCorrectAnswers * MaxGrade / AmountQuestions;
+                var result = CountCorrectAnswers * MaxGrade / AmountQuestions;
                 if (result <= 0)
-                {
                     result = 1;
-                }
-                else if (result > MaxGrade)
-                {
-                    result = MaxGrade;
-                }
+                else if (result > MaxGrade) result = MaxGrade;
                 return result;
             }
         }

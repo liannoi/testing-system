@@ -38,15 +38,9 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
 
         protected T Get<T>(T defValue = default(T), [CallerMemberName] string name = null)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return defValue;
-            }
+            if (string.IsNullOrEmpty(name)) return defValue;
 
-            if (properties.TryGetValue(name, out object value))
-            {
-                return (T)value;
-            }
+            if (properties.TryGetValue(name, out var value)) return (T) value;
 
             properties.AddOrUpdate(name, defValue, (s, o) => defValue);
             return defValue;
@@ -54,22 +48,13 @@ namespace Client.Desktop.BL.Infrastructure.Helpers
 
         protected void Set(object value, [CallerMemberName] string name = null)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(name)) return;
 
-            bool isExists = properties.TryGetValue(name, out object getValue);
-            if (isExists && Equals(value, getValue))
-            {
-                return;
-            }
+            var isExists = properties.TryGetValue(name, out var getValue);
+            if (isExists && Equals(value, getValue)) return;
 
             properties.AddOrUpdate(name, value, (s, o) => value);
-            if (CallPropertyChangeEvent)
-            {
-                OnPropertyChanged(name);
-            }
+            if (CallPropertyChangeEvent) OnPropertyChanged(name);
         }
     }
 }

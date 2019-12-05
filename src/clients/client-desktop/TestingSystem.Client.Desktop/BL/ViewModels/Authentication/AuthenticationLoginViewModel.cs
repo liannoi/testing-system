@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Client.Desktop.BL.Infrastructure.Events;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.Container;
 using TestingSystem.Client.Desktop.BL.WindowManagement.SuggestedRole;
 using TestingSystem.Common.BL.BusinessObjects;
@@ -114,7 +114,7 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Authentication
         private void OpenSuggestWindow(UserBusinessObject findUser, UserRoleBusinessObject userRole)
         {
             windowManager.User = findUser;
-            windowManager.Role = (AuthorizationRole)userRole.RoleId;
+            windowManager.Role = (AuthorizationRole) userRole.RoleId;
             windowManager.OpenSuggestWindow();
         }
 

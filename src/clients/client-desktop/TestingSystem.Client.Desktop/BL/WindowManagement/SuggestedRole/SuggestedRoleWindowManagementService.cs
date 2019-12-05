@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Client.Desktop.BL.Infrastructure.Windows;
 using System;
+using Client.Desktop.BL.Infrastructure.Windows;
 using TestingSystem.Client.Desktop.BL.ViewModels.Student;
 using TestingSystem.Client.Desktop.UI.Windows.Student;
 using TestingSystem.Common.BL.BusinessObjects;

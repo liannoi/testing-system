@@ -46,15 +46,9 @@ namespace TestingSystem.Common.BL.Infrastructure.Behaviors
         {
             base.OnPropertyChanged(e);
 
-            if (e.Property != PasswordProperty)
-            {
-                return;
-            }
+            if (e.Property != PasswordProperty) return;
 
-            if (skipUpdate)
-            {
-                return;
-            }
+            if (skipUpdate) return;
 
             skipUpdate = true;
             AssociatedObject.Password = e.NewValue as string ?? throw new NullReferenceException();

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Windows.Input;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
-using System.Windows.Input;
 using TestingSystem.Client.Desktop.BL.Container;
 using TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest;
 using TestingSystem.Common.BL.BusinessObjects;

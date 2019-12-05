@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TestingSystem.Client.Desktop.UI
+namespace TestingSystem.Client.Desktop
 {
     /// <summary>
     ///     Interaction logic for App.xaml

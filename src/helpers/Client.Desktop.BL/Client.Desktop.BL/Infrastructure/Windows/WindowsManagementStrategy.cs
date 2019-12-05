@@ -16,7 +16,8 @@ using System.Windows;
 
 namespace Client.Desktop.BL.Infrastructure.Windows
 {
-    public class WindowsManagementStrategy<TViewModel, TWindow> : IWindowsManagementStrategy where TViewModel : BaseViewModel
+    public class WindowsManagementStrategy<TViewModel, TWindow> : IWindowsManagementStrategy
+        where TViewModel : BaseViewModel
         where TWindow : Window
     {
         private readonly TViewModel viewModel;

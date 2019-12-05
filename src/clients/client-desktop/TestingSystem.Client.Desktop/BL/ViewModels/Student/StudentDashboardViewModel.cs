@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using Client.Desktop.BL.Infrastructure;
 using Multilayer.BusinessServices;
-using System.Collections.Generic;
-using System.Linq;
 using TestingSystem.Client.Desktop.BL.WindowManagement.TestDetails;
 using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessServices.Tests;
@@ -26,10 +26,10 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 {
     public sealed class StudentDashboardViewModel : BaseViewModel
     {
-        private Container.ContainerConfig container;
         private ContainerConfig businessLogicContainer;
-        private IBusinessService<TestBusinessObject> tests;
+        private Container.ContainerConfig container;
         private IBusinessService<StudentTestBusinessObject> studentsTests;
+        private IBusinessService<TestBusinessObject> tests;
         private IStudentTestsService testsService;
         private ITestDetailsWindowManagementService windowManager;
 
@@ -93,8 +93,8 @@ namespace TestingSystem.Client.Desktop.BL.ViewModels.Student
 
         public void ShowTestDetails()
         {
-            StudentTestBusinessObject findRecord = studentsTests.Find(e => e.RecordId == StudentTest.RecordId).FirstOrDefault();
-            TestBusinessObject findTest = tests.Find(e => e.TestId == findRecord.TestId).FirstOrDefault();
+            var findRecord = studentsTests.Find(e => e.RecordId == StudentTest.RecordId).FirstOrDefault();
+            var findTest = tests.Find(e => e.TestId == findRecord.TestId).FirstOrDefault();
             windowManager.Test = findTest;
             windowManager.TestDetails = findRecord;
             windowManager.OpenWindow();

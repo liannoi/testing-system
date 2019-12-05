@@ -15,12 +15,12 @@
 using Client.Desktop.BL.Infrastructure.Windows;
 using TestingSystem.Client.Desktop.BL.ViewModels.Student;
 using TestingSystem.Client.Desktop.UI.Windows.Student;
-using TestingSystem.Common.BL.BusinessObjects;
 using TestingSystem.Common.BL.BusinessObjects.NonEntities;
 
 namespace TestingSystem.Client.Desktop.BL.WindowManagement.PassingTest.End
 {
-    public class EndPassingTestWindowManagementService : BaseWindowManagementService, IEndPassingTestWindowManagementService
+    public class EndPassingTestWindowManagementService : BaseWindowManagementService,
+        IEndPassingTestWindowManagementService
     {
         public TestAdvancedDetailsBusinessObject TestDetails { get; set; }
 

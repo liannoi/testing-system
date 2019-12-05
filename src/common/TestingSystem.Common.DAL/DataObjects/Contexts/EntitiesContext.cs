@@ -1,6 +1,6 @@
 using System.Data.Entity;
 
-namespace TestingSystem.Common.DAL.DataObjects
+namespace TestingSystem.Common.DAL.DataObjects.Contexts
 {
     public class EntitiesContext : DbContext
     {
