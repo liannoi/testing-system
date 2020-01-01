@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\student.LAN\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\student.LAN\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_TestingSystem.Client.Desktop.465527494.00" t="ExcludeRecursive" />
-    <e p="D:\liannoi\testing-system\src\clients\client-desktop" t="IncludeFlat">
+    <e p="$USER_HOME$/Library/Caches/Rider2019.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.2/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_TestingSystem.Client.Desktop.157764272.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="Client" t="Include">
         <e p="Helpers" t="Include" />
       </e>
@@ -27,6 +27,7 @@
             </e>
             <e p="Student" t="Include">
               <e p="StudentDashboardViewModel.cs" t="Include" />
+              <e p="StudentEndPassTestViewModel.cs" t="Include" />
               <e p="StudentPassTestViewModel.cs" t="Include" />
               <e p="StudentTestDetailsViewModel.cs" t="Include" />
             </e>
@@ -34,6 +35,10 @@
           <e p="WindowManagement" t="Include">
             <e p="BaseWindowManagementService.cs" t="Include" />
             <e p="PassingTest" t="Include">
+              <e p="End" t="Include">
+                <e p="EndPassingTestWindowManagementService.cs" t="Include" />
+                <e p="IEndPassingTestWindowManagementService.cs" t="Include" />
+              </e>
               <e p="IPassingTestWindowManagementService.cs" t="Include" />
               <e p="PassingTestWindowManagementService.cs" t="Include" />
             </e>
@@ -79,7 +84,7 @@
       </e>
       <e p="TestingSystem.Client.Desktop.sln" t="IncludeFlat" />
     </e>
-    <e p="D:\liannoi\testing-system\src\Common\TestingSystem.Common.BL" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$/../../Common/TestingSystem.Common.BL" t="IncludeRecursive">
       <e p="App.config" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="BusinessObjects" t="Include">
@@ -144,7 +149,7 @@
       </e>
       <e p="TestingSystem.Common.BL.csproj" t="IncludeRecursive" />
     </e>
-    <e p="D:\liannoi\testing-system\src\Common\TestingSystem.Common.DAL" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$/../../Common/TestingSystem.Common.DAL" t="IncludeRecursive">
       <e p="App.config" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="DataObjects" t="Include">
@@ -171,7 +176,7 @@
       </e>
       <e p="TestingSystem.Common.DAL.csproj" t="IncludeRecursive" />
     </e>
-    <e p="D:\liannoi\testing-system\src\Helpers\Client.Desktop.BL\Client.Desktop.BL" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$/../../Helpers/Client.Desktop.BL/Client.Desktop.BL" t="IncludeRecursive">
       <e p="bin" t="ExcludeRecursive" />
       <e p="Client.Desktop.BL.csproj" t="IncludeRecursive" />
       <e p="Infrastructure" t="Include">
@@ -200,7 +205,7 @@
         <e p="AssemblyInfo.cs" t="Include" />
       </e>
     </e>
-    <e p="D:\liannoi\testing-system\src\Helpers\Multilayer.DataServices\Multilayer.DataServices" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$/../../Helpers/Multilayer.DataServices/Multilayer.DataServices" t="IncludeRecursive">
       <e p="App.config" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="BusinessServices" t="Include">
